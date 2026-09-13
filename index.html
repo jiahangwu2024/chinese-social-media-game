@@ -181,7 +181,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="danmu-wrap">
       <div class="danmu-screen" id="danmu-screen"></div>
       <div class="danmu-overlay">
-        <div class="dm-info">Round <span id="dm-round">1</span>/3 &nbsp;·&nbsp; Caught: <strong id="dm-caught">0</strong></div>
+        <div class="dm-info">Round <span id="dm-round">1</span>/2 &nbsp;·&nbsp; Caught: <strong id="dm-caught">0</strong></div>
         <div class="dm-bar"><div class="dm-fill" id="dm-fill" style="width:100%;transition:width .1s linear"></div></div>
       </div>
     </div>
@@ -570,13 +570,13 @@ function nextDanmuRound(){
 function showDanmuDone(){
   document.getElementById('dm-between').style.display='none';
   var scoreHtml='';
-  var labels=['Personal feelings','Opinions about Tyler','Reactions to content'];
+  var labels=['Positive comments','Critical comments'];
   S.dmScores.forEach(function(sc,i){
     scoreHtml+='<div class="dm-score-box"><div class="dm-score-val">'+sc+'</div><div class="dm-score-lbl">'+labels[i]+'</div></div>';
   });
   document.getElementById('dm-score-row').innerHTML=scoreHtml;
   document.getElementById('dm-final-insight').textContent=
-    'Xiaohongshu comments come in different types: some share personal feelings, some give opinions about the creator, and some react to the content itself. Real comment sections usually have all three. When you write your own comment, you can choose which type fits what you actually want to say.';
+    'Tyler\'s comment section is dominated by direct evaluations of him as a person — his appearance, his Chinese, his identity. Both positive and critical comments are common and completely normal. This directness is a key feature of Chinese social media culture. When you write your own comment, you can be direct too — say what you actually think.';
   document.getElementById('dm-done').style.display='block';
   S.fans+=S.dmScores.reduce(function(a,b){return a+b;},0)*20;updateFans();
 }
