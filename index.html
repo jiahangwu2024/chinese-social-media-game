@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Navigate Chinese Social Media / 玩转中国社媒</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px}
+.g{max-width:680px;width:100%;background:#fff;border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.lvbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;white-space:nowrap;background:#EEF3FA;color:#1D4ED8}
+
+.screen{display:none}.screen.on{display:block}
+.hub{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.app-hdr{text-align:center;margin-bottom:24px}
+.app-icon{width:64px;height:64px;background:linear-gradient(135deg,#FF2442,#FE2C55);border-radius:16px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.app-title{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
+.app-sub{font-size:13px;color:#888}
+.lcard{background:#fff;border:0.5px solid #e5e5e5;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.lcard:hover:not(.lk){border-color:#999}
+.lcard.lk{opacity:.4;cursor:not-allowed;pointer-events:none}
+.lic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.linfo{flex:1}.lname{font-size:13px;font-weight:500;color:#1a1a1a}.ldesc{font-size:11px;color:#888;margin-top:2px}
+.ubadge{font-size:10px;background:#F0FDF4;color:#166534;padding:2px 8px;border-radius:99px;margin-top:4px;display:inline-block}
+.card{background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:12px;background:#EEF3FA;color:#1D4ED8}
+.sec-title{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.sec-sub{font-size:12px;color:#555;line-height:1.5;margin-bottom:10px}
+.qdots{display:flex;gap:4px;margin-bottom:14px}
+.qdot{flex:1;height:4px;border-radius:99px;background:#f0f0f0}
+.qdot.dn{background:#16A34A}.qdot.cu{background:#3B82F6}
+.qcard{background:#fff;border:0.5px solid #e5e5e5;border-radius:12px;padding:16px;margin-bottom:10px}
+.qtag{font-size:10px;color:#888;margin-bottom:6px}
+.qtext{font-size:15px;font-weight:500;color:#1a1a1a;line-height:1.5;margin-bottom:4px}
+.qen{font-size:12px;color:#555;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.opt{background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:11px 13px;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+.opt:hover{border-color:#999;background:#fafafa}
+.opt.ok{border-color:#16A34A;background:#F0FDF4}
+.opt.no{border-color:#DC2626;background:#FEF2F2}
+.opt.dis{cursor:default}
+.opt-cn{font-size:14px;color:#1a1a1a;margin-bottom:2px;text-align:left}
+.opt-en{font-size:11px;color:#888;text-align:left}
+.fb{border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.6;display:none}
+.fb.on{display:block}
+.fb.ok{background:#F0FDF4;color:#166534;border:0.5px solid #86EFAC}
+.fb.no{background:#FEF2F2;color:#991B1B;border:0.5px solid #FCA5A5}
+.fbt{font-weight:600;margin-bottom:3px}
+.pbtn{width:100%;padding:12px;background:#3B82F6;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.pbtn:hover{opacity:.9}.pbtn:disabled{opacity:.4;cursor:default}
+.sbtn{width:100%;padding:12px;background:#fff;color:#1a1a1a;border:0.5px solid #e5e5e5;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
+.sbtn:hover{background:#f8f8f8;border-color:#999}
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.label-tag{background:#EEF3FA;color:#1D4ED8;border:0.5px solid #BFDBFE;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none}
+.label-tag:hover:not(.used){opacity:.8;background:#DBEAFE}
+.label-tag.active{outline:2px solid #3B82F6;background:#DBEAFE}
+.label-tag.used{opacity:.3;cursor:not-allowed;pointer-events:none}
+.stage-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.stage-item{background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.stage-item:hover{border-color:#3B82F6}
+.stage-item.assigned{border-color:#7C3AED;background:#F5F3FF}
+.stage-item.correct{border-color:#16A34A;background:#F0FDF4;cursor:default}
+.stage-item.wrong{border-color:#DC2626;background:#FEF2F2;cursor:default}
+.stage-cn{font-size:14px;color:#1a1a1a;margin-bottom:2px;line-height:1.5}
+.stage-en{font-size:11px;color:#888}
+.stage-assigned-lbl{font-size:11px;color:#7C3AED;margin-top:5px;font-weight:500}
+.danmu-wrap{background:#111;border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;height:450px}
+.danmu-screen{position:absolute;top:0;left:0;right:0;bottom:48px;overflow:hidden}
+.danmu-item{position:absolute;white-space:nowrap;font-size:14px;font-weight:500;padding:6px 14px;border-radius:99px;cursor:pointer;user-select:none}
+.danmu-item.tagged-ok{opacity:.2;cursor:default;pointer-events:none}
+.danmu-item.tagged-wrong{opacity:.15;cursor:default;pointer-events:none;text-decoration:line-through}
+.danmu-overlay{position:absolute;bottom:0;left:0;right:0;height:48px;padding:8px 14px;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dm-info{color:#fff;font-size:11px;white-space:nowrap}
+.dm-bar{height:4px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;flex:1}
+.dm-fill{height:100%;background:#fff;border-radius:99px}
+.dm-task-banner{background:#1D4ED8;color:#fff;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:8px;line-height:1.4}
+.comment-area{background:#f8f8f8;border:0.5px solid #e5e5e5;border-radius:10px;width:100%;min-height:80px;padding:10px 12px;font-size:13px;font-family:inherit;color:#1a1a1a;resize:none;margin-bottom:10px;outline:none}
+.comment-area:focus{border-color:#3B82F6}
+.checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.check-item{display:flex;align-items:center;gap:10px;background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s}
+.check-item:hover{border-color:#999}
+.check-item.checked{border-color:#16A34A;background:#F0FDF4}
+.check-box{width:18px;height:18px;border-radius:4px;border:0.5px solid #e5e5e5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:#fff}
+.check-item.checked .check-box{background:#16A34A;border-color:transparent}
+.check-txt{font-size:12px;color:#1a1a1a}
+.result-card{background:#fff;border:0.5px solid #e5e5e5;border-radius:16px;padding:24px;text-align:center;margin-bottom:14px}
+.re{font-size:44px;margin-bottom:10px}
+.rt2{font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:5px}
+.rs2{font-size:13px;color:#888;margin-bottom:16px}
+.sco{font-size:32px;font-weight:500;color:#1a1a1a}
+.scol{font-size:12px;color:#888}
+
+
+.ins{background:#fff;border:0.5px solid #e5e5e5;border-left:3px solid #3B82F6;border-radius:0 10px 10px 0;padding:12px;margin-bottom:12px}
+.inslbl{font-size:10px;color:#1D4ED8;font-weight:500;margin-bottom:5px}
+.instxt{font-size:12px;color:#555;line-height:1.6}
+.err{font-size:12px;color:#DC2626;margin-bottom:8px;display:none}
+.err.on{display:block}
+.video-summary{background:#FFF8F0;border:0.5px solid #FFD4A8;border-radius:8px;padding:16px;margin-bottom:12px;font-size:12px;line-height:1.8;color:#333}
+.video-link-btn{display:flex;align-items:center;gap:8px;background:#FF2442;color:#fff;border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:12px;width:100%;justify-content:center;text-decoration:none}
+.video-link-btn:hover{opacity:.9}
+.dm-score-row{display:flex;gap:8px;margin-bottom:10px}
+.dm-score-box{flex:1;text-align:center;background:#f8f8f8;border-radius:8px;padding:8px 4px}
+.dm-score-val{font-size:18px;font-weight:500;color:#1a1a1a}
+.dm-score-lbl{font-size:10px;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="g">
+  <div class="topbar">
+    <div class="lvbadge" id="lvbadge">看懂 Reader</div>
+    <div style="flex:1"></div>
+    
+  </div>
+
+  <!-- HUB -->
+  <div class="screen on" id="s-hub">
+    <div class="app-hdr">
+      <div class="app-icon">📱</div>
+      <div class="app-title">Navigate Chinese Social Media</div>
+      <div class="app-sub">玩转中国社媒 · Based on real Xiaohongshu data</div>
+    </div>
+    <div class="hub" id="hub-cards"></div>
+  </div>
+
+  <!-- L1 INTRO -->
+  <div class="screen" id="s-l1">
+    <div class="chip">👁️ Level 1 — 看懂 Reader</div>
+    <!-- VIDEO LINK — replace href with real URL -->
+    <a class="video-link-btn" id="video-link-btn" href="https://www.xiaohongshu.com" target="_blank">
+      ▶
+      Watch the video first (opens Xiaohongshu)
+    </a>
+    <div class="card">
+      <div class="sec-title">铁蛋儿Tyler — 「我的新形象有没有很惊艳」</div>
+      <div class="sec-sub">A viral Xiaohongshu video · 30,000 likes · 1,263 comments · Genre: Anecdote</div>
+      <div class="video-summary">
+        <div style="color:#999;font-size:10px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Video Summary (if you can't access the link)</div>
+        <div><span style="color:#16A34A;font-weight:500">Opening:</span> 粉丝说铁蛋中文说得太好了，如果头发变黑根本看不出是外国人——铁蛋决定接受挑战。<br><span style="color:#888;font-size:10px">Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he accepts the challenge.</span></div>
+        <div style="margin-top:8px"><span style="color:#1D4ED8;font-weight:500">Transformation:</span> 铁蛋染黑头发、画眉毛、戴美瞳，一步步完成造型变换。<br><span style="color:#888;font-size:10px">Tyler dyes his hair, draws his eyebrows, and puts in coloured contacts.</span></div>
+        <div style="margin-top:8px"><span style="color:#D97706;font-weight:500">The test:</span> 铁蛋走进小区，见到儿子、女儿和丈母娘——他们能认出他吗？<br><span style="color:#888;font-size:10px">Tyler meets his son, daughter, and mother-in-law — can they recognise him?</span></div>
+        <div style="margin-top:8px"><span style="color:#7C3AED;font-weight:500">Result:</span> His family's reactions are surprised and funny. Tyler reflects on what it means to truly "belong" to a culture.</div>
+      </div>
+    </div>
+    <button class="pbtn" onclick="startQuiz()">Start Task 1 — 5 questions →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="s-quiz">
+    <div class="qdots" id="qdots"></div>
+    <div id="qbody"></div>
+  </div>
+
+  <!-- STAGING -->
+  <div class="screen" id="s-staging">
+    <div class="chip">🔤 Task 2 — Genre staging</div>
+    <div class="card">
+      <div class="sec-title">Match each video segment to its stage</div>
+      <div class="sec-sub">This video is an Anecdote — a story with an emotional peak. It has three stages. <strong>Click a label</strong>, then <strong>click a segment</strong> to assign it. Click an assigned segment to remove the label and try again.</div>
+    </div>
+    <div class="labels" id="stage-labels"></div>
+    <div class="stage-wrap" id="stage-items"></div>
+    <div class="err" id="stage-err">Select a label first, then click a segment.</div>
+    <button class="pbtn" id="stage-check-btn" onclick="checkStaging()" disabled>Check my answers →</button>
+    <div id="stage-result" style="display:none">
+      <div class="ins"><div class="inslbl">Why this structure?</div><div class="instxt" id="stage-insight"></div></div>
+      <button class="pbtn" onclick="finishL1()">Continue to Level 2 →</button>
+    </div>
+  </div>
+
+  <!-- L2 DANMU -->
+  <div class="screen" id="s-l2">
+    <div class="chip">💬 Level 2 — 评论 Commenter</div>
+    <div class="card">
+      <div class="sec-title">Three rounds of danmu</div>
+      <div class="sec-sub">Each round asks you to find a different type of comment. Read carefully — the task changes each round.</div>
+    </div>
+    <div id="dm-task-banner" class="dm-task-banner"></div>
+    <div class="danmu-wrap">
+      <div class="danmu-screen" id="danmu-screen"></div>
+      <div class="danmu-overlay">
+        <div class="dm-info">Round <span id="dm-round">1</span>/3 &nbsp;·&nbsp; Caught: <strong id="dm-caught">0</strong> / <span id="dm-need">?</span></div>
+        <div class="dm-bar"><div class="dm-fill" id="dm-fill" style="width:100%;transition:width .1s linear"></div></div>
+      </div>
+    </div>
+    <button class="pbtn" id="dm-btn" onclick="startDanmuRound()">Start →</button>
+    <div id="dm-between" style="display:none">
+      <div class="ins"><div class="inslbl">Round result</div><div class="instxt" id="dm-round-insight"></div></div>
+      <button class="pbtn" id="dm-next-btn" onclick="nextDanmuRound()">Next round →</button>
+      <button class="sbtn" onclick="retryRound()">↩ Retry this round</button>
+    </div>
+    <div id="dm-done" style="display:none">
+      <div class="dm-score-row" id="dm-score-row"></div>
+      <div class="ins"><div class="inslbl">What you found</div><div class="instxt" id="dm-final-insight"></div></div>
+      <button class="pbtn" onclick="goWriteComment()">Continue to writing task →</button>
+    </div>
+  </div>
+
+  <!-- WRITE COMMENT -->
+  <div class="screen" id="s-write">
+    <div class="chip">✏️ Write your own comment</div>
+    <div class="card">
+      <div class="sec-title">Write a comment for Tyler&#39;s video in Chinese.</div>
+      <div class="sec-sub">Write something that fits Xiaohongshu's comment culture — warm, natural, and engaging. Even a short comment is fine.</div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;color:#888;font-weight:500;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px">Examples from the real comment section</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="background:#E1F5EE;border-radius:10px;padding:10px 13px">
+          <div style="font-size:13px;font-weight:600;color:#085041">这普通话太可以了</div>
+          <div style="font-size:11px;color:#085041;margin-top:2px;opacity:.8">His Mandarin is really impressive — language ability comment</div>
+        </div>
+        <div style="background:#E6F1FB;border-radius:10px;padding:10px 13px">
+          <div style="font-size:13px;font-weight:600;color:#0C447C">别说还真挺帅的</div>
+          <div style="font-size:11px;color:#0C447C;margin-top:2px;opacity:.8">He is actually quite handsome — appearance comment</div>
+        </div>
+        <div style="background:#FAEEDA;border-radius:10px;padding:10px 13px">
+          <div style="font-size:13px;font-weight:600;color:#633806">他们这一家子太快乐了</div>
+          <div style="font-size:11px;color:#633806;margin-top:2px;opacity:.8">What a happy family they are — family atmosphere comment</div>
+        </div>
+      </div>
+    </div>
+    <textarea class="comment-area" id="comment-input" placeholder="在这里写你的评论 / Write your comment here..."></textarea>
+    <div class="err" id="comment-err">Please write something before checking!</div>
+    <button class="pbtn" onclick="checkComment()">Check my comment →</button>
+    <div id="comment-result" style="display:none">
+      <div class="sec-title" style="margin-bottom:10px">Self-check: how does your comment score?</div>
+      <div class="checklist" id="comment-checklist"></div>
+      <div class="ins">
+        <div class="inslbl">A real comment from Tyler&#39;s video</div>
+        <div class="instxt">「哇你真的像中国人了！我都忘了你是老外了哈哈」<br><span style="color:#888;font-size:11px">Wow you really look Chinese now! I forgot you were a foreigner haha</span></div>
+      </div>
+      <div class="ins">
+        <div class="inslbl">What makes Xiaohongshu comments work?</div>
+        <div class="instxt" id="comment-insight"></div>
+      </div>
+      <button class="pbtn" onclick="finishL2()">See results →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="s-result">
+    <div class="result-card">
+      <div class="re" id="re">🎉</div>
+      <div class="rt2" id="rt2"></div>
+      <div class="rs2" id="rs2"></div>
+      <div class="sco" id="sco"></div>
+      <div class="scol" id="scol"></div>
+
+    </div>
+    <div class="ins"><div class="inslbl">Key takeaway</div><div class="instxt" id="r-insight"></div></div>
+    <button class="pbtn" onclick="backToHub()">Back to levels</button>
+  </div>
+</div>
+
+<script>
+// ── CONFIG — replace video URL here ─────────────────────────
+var VIDEO_URL = 'https://www.xiaohongshu.com/explore/69c9d6190000000022026e03?xsec_token=CBY9giqXd6CGnXAGA3d-68IIKS7NbiRZU3TTz9F_IMkS8=&xsec_source=app_share'; // ← paste Tyler&#39;s actual video URL here
+
+document.getElementById('video-link-btn').href = VIDEO_URL;
+
+// ── STATE ────────────────────────────────────────────────────
+var S={unlocked:[1],qIdx:0,qScore:0,qAns:false,
+       stagePick:null,stageAnswers:{},
+       dmRound:0,dmScores:[0,0,0],dmTimers:[],
+       checkedItems:{}};
+
+var levels=[
+  {id:1,icon:'👁️',name:'Level 1 — 看懂 Reader',desc:'Understand Tyler\'s video: questions + genre staging',bg:'#EEF3FA'},
+  {id:2,icon:'💬',name:'Level 2 — 评论 Commenter',desc:'Three comment hunts + write your own',bg:'#F0FDF4'},
+];
+
+// ── QUIZ DATA ─────────────────────────────────────────────────
+var Qs=[
+  {tag:'Q1 · Time & Place',cn:'这条视频发生在哪里？什么时候？',en:'Where and when does this video take place?',
+   opts:[{cn:'A. 在美国，Tyler刚到中国的时候',en:'In the US, when Tyler first arrived in China'},
+         {cn:'B. 在中国的街头，Tyler刚染完头发',en:'On the streets of China, right after Tyler dyed his hair'},
+         {cn:'C. 在中国，Tyler刚来中国的第一天',en:'In China, on Tyler\'s very first day'},
+         {cn:'D. 在Tyler的家里，他决定接受粉丝挑战的某天',en:'At Tyler\'s home, on the day he decided to take on the fan challenge',correct:true}],
+   fb:{ok:'Right — the video starts at Tyler\'s home, where he decides to take on the fan challenge and begins the transformation.',no:'The video starts at Tyler\'s home — this is where he decides to accept the challenge and begins dyeing his hair, drawing his eyebrows, and putting in contacts.'}},
+  {tag:'Q2 · What Tyler does & why',cn:'Tyler在这条视频里做了什么？他为什么这样做？',en:'What does Tyler do, and why?',
+   opts:[{cn:'A. 他教中文词汇',en:'He teaches Chinese vocabulary'},
+         {cn:'B. 他染了黑头发，测试路人能不能认出他是外国人',en:'He dyed his hair black, to test if strangers could tell he was foreign',correct:true},
+         {cn:'C. 他做了一道中国菜',en:'He cooked a Chinese dish'},
+         {cn:'D. 他采访了路人',en:'He interviewed people on the street'}],
+   fb:{ok:'Right — a fan challenged him to look Chinese since he already sounds Chinese, so he took on the experiment.',no:'Tyler dyed his hair black because fans challenged him: if you sound Chinese, why not look Chinese too?'}},
+  {tag:'Q3 · Who Tyler is & who he\'s talking to',cn:'Tyler是谁？他在对谁说话？',en:'Who is Tyler, and who is he speaking to?',
+   opts:[{cn:'A. 他是一个在中国生活了17年的美国人，在对中国小红书用户说话',en:'He is an American who has lived in China for 17 years, speaking to Chinese Xiaohongshu users',correct:true},
+         {cn:'B. 他是中国人，在对外国粉丝说话',en:'He is Chinese, speaking to foreign fans'},
+         {cn:'C. 他是一个语言老师，在对他的学生说话',en:'He is a language teacher, speaking to his students'},
+         {cn:'D. 他是一个演员，在表演一个角色',en:'He is an actor, performing a character'}],
+   fb:{ok:'Right — Tyler is a foreigner making content for a Chinese audience. That combination creates the interesting tension in his videos.',no:'Tyler is a foreigner (from the US) making content for Chinese Xiaohongshu users. That gap between "outsider" and "insider" is what makes his content interesting.'}},
+  {tag:'Q4 · Family reaction',cn:'Tyler染完头发去见自己的女儿、儿子和丈母娘。他为什么选择见家人，而不是随机路人？',en:'Tyler went to meet his daughter, son, and mother-in-law after dyeing his hair. Why test with family rather than random strangers?',
+   opts:[{cn:'A. 因为家人更容易被骗，实验更容易成功',en:'Because family are easier to fool, making the experiment easier to pass'},
+         {cn:'B. 因为丈母娘要求他染头发，所以要给她看结果',en:'Because his mother-in-law asked him to dye his hair, so he wanted to show her'},
+         {cn:'C. 因为家人最了解他的真实样子，如果连他们都认不出来，说明变化很大',en:'Because family know him best — if even they can\'t recognise him, the transformation is real',correct:true},
+         {cn:'D. 因为他不想让陌生人知道他是外国人',en:'Because he didn\'t want strangers to know he was a foreigner'}],
+   fb:{ok:'Right — testing with family who know him best makes the experiment more meaningful. Their genuine surprise shows the transformation worked.',no:'Family know Tyler best, so their reaction is the real test. If even they don\'t recognise him immediately, the change is genuinely striking.'}},
+  {tag:'Q5 · Why this video went viral',cn:'这条视频的目的是什么？为什么它收到了1263条评论？',en:'What is the purpose of this video? Why did it get 1,263 comments?',
+   opts:[{cn:'A. 目的是回应粉丝的挑战，评论多因为粉丝觉得自己参与创造了这条内容',en:'To respond to a fan challenge; many comments because fans feel they helped create it',correct:true},
+         {cn:'B. 目的是教中文词汇，评论多因为词汇很实用',en:'To teach vocabulary; many comments because the words are useful'},
+         {cn:'C. 目的是批评中国社会，话题有争议所以评论多',en:'To criticise Chinese society; controversial topic means more comments'},
+         {cn:'D. 目的是展示铁蛋的新发型，评论多因为大家喜欢讨论发型',en:'To show Tyler\'s new hairstyle; many comments because people love discussing hair'}],
+   fb:{ok:'Right — because fans suggested the challenge, they feel ownership over the result and flock to the comment section.',no:'The key is that fans suggested the challenge — so they feel like they helped make the video, and that\'s why 1,263 comments followed.'}},
+];
+
+// ── STAGING DATA ──────────────────────────────────────────────
+var stageData=[
+  {id:'orientation',label:'Orientation',label_en:'Setting the scene',
+   desc:'粉丝留言说铁蛋的中文说得太好了——如果把头发染成黑色，根本看不出是外国人。铁蛋决定接受这个挑战，看看能不能以假乱真。',
+   desc_en:'Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he decides to take on the challenge'},
+  {id:'event',label:'Remarkable Event',label_en:'The transformation',
+   desc:'铁蛋开始改变造型：染黑头发、画眉毛、戴上美瞳。一步一步把自己变成"中国人的样子"。',
+   desc_en:'Tyler dyes his hair black, draws his eyebrows, and puts in coloured contacts — step by step transforming his appearance'},
+  {id:'reaction',label:'Reaction',label_en:'The real test',
+   desc:'铁蛋走进小区，见到自己的儿子、女儿和丈母娘，看他们的第一反应——能不能认出眼前这个人是他？',
+   desc_en:'Tyler walks into his neighbourhood to meet his son, daughter, and mother-in-law — can they recognise him?'},
+];
+
+// ── DANMU DATA (3 rounds) ─────────────────────────────────────
+var dmRounds=[
+  {
+    task:'Round 1: Tap comments about <strong>Tyler&#39;s Chinese</strong> — his pronunciation, accent, or Mandarin ability.',
+    target:'language',
+    insight:'Language ability comments are very specific and direct — both praise (太可以了) and observation (海蛎子味的) are common. Chinese audiences notice and comment openly on how a foreigner speaks.',
+    items:[
+      {txt:'这普通话太可以了',en:'His Mandarin is really impressive',type:'language',col:'#E1F5EE',tc:'#085041'},
+      {txt:'大连话太6了',en:'His Dalian dialect is amazing',type:'language',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'这普通话海蛎子味的',en:'His Mandarin has a Dalian flavour',type:'language',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'别说还真挺帅的',en:'He is actually quite handsome',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'他们这一家子太快乐了',en:'What a happy family they are',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'左眉没画好',en:'The left eyebrow is not drawn well',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+    ]
+  },
+  {
+    task:'Round 2: Tap comments about <strong>Tyler&#39;s appearance</strong> — his hair, eyes, face, or overall look.',
+    target:'appearance',
+    insight:'Appearance comments are the most common type here. Both positive (挺帅的) and critical (左眉没画好; 还是像老外) comments are completely normal — directness about appearance is a key feature of Chinese social media culture.',
+    items:[
+      {txt:'别说还真挺帅的',en:'He is actually quite handsome',type:'appearance',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look much younger',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'左眉没画好',en:'The left eyebrow is not drawn well',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair does not help',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'能看出眼睛还是有点蓝',en:'You can still tell his eyes are a bit blue',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'他们这一家子太快乐了',en:'What a happy family they are',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'这普通话太可以了',en:'His Mandarin is really impressive',type:'other',col:'#E1F5EE',tc:'#085041'},
+    ]
+  },
+  {
+    task:'Round 3: Tap comments about <strong>Tyler&#39;s family</strong> — warmth, relationships, or the atmosphere of the video.',
+    target:'family',
+    insight:'Viewers are not just watching Tyler — they are watching his family. Comments about warmth and relationships show that Chinese audiences engage with the whole social world a creator inhabits.',
+    items:[
+      {txt:'他们这一家子太快乐了',en:'What a happy family they are',type:'family',col:'#FAEEDA',tc:'#633806'},
+      {txt:'好可爱的老公，好幸福的妻子',en:'Such a lovely husband, such a lucky wife',type:'family',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler, you crack me up',type:'family',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'别说还真挺帅的',en:'He is actually quite handsome',type:'other',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'大连话太6了',en:'His Dalian dialect is amazing',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair does not help',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+    ]
+  },
+];
+
+// ── COMMENT CRITERIA ──────────────────────────────────────────
+var commentCriteria=[
+  {id:'cn',text:'Written in Chinese (at least partially)'},
+  {id:'warm',text:'Has a warm or positive tone'},
+  {id:'specific',text:'Mentions something specific from the video'},
+  {id:'natural',text:'Sounds natural, not like a textbook sentence'},
+  {id:'engage',text:'Invites further interaction or conversation'},
+];
+
+// ── HUB ──────────────────────────────────────────────────────
+function renderHub(){
+  var h='';
+  levels.forEach(function(lv){
+    var un=S.unlocked.indexOf(lv.id)>=0;
+    var icon=un?'<span style="color:#888;font-size:16px">›</span>':'<span style="color:#ccc;font-size:16px">🔒</span>';
+    var badge=un&&lv.id>1?'<span class="ubadge">Unlocked ✓</span>':'';
+    h+='<div class="lcard'+(un?'':' lk')+'" onclick="startLevel('+lv.id+')">'
+      +'<div class="lic" style="background:'+lv.bg+'">'+lv.icon+'</div>'
+      +'<div class="linfo"><div class="lname">'+lv.name+'</div><div class="ldesc">'+lv.desc+'</div>'+badge+'</div>'+icon+'</div>';
+  });
+  document.getElementById('hub-cards').innerHTML=h;
+}
+function unlock(n){if(S.unlocked.indexOf(n)<0)S.unlocked.push(n);}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on')}
+
+function startLevel(n){
+  if(S.unlocked.indexOf(n)<0)return;
+  var labels=['','看懂 Reader','评论 Commenter'];
+  document.getElementById('lvbadge').textContent=labels[n];
+  if(n===1)show('s-l1');
+  else if(n===2){initDanmu();show('s-l2');}
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────
+function startQuiz(){S.qIdx=0;S.qScore=0;renderQ();show('s-quiz');}
+function renderDots(){
+  var d=document.getElementById('qdots');d.innerHTML='';
+  for(var i=0;i<Qs.length;i++){var e=document.createElement('div');e.className='qdot'+(i<S.qIdx?' dn':i===S.qIdx?' cu':'');d.appendChild(e);}
+}
+function renderQ(){
+  renderDots();S.qAns=false;var q=Qs[S.qIdx];
+  var opts=q.opts.map(function(o,i){
+    return '<button class="opt" onclick="pickOpt(this,'+i+')">'
+      +'<div class="opt-cn">'+o.cn+'</div>'
+      +'<div class="opt-en">'+o.en+'</div></button>';
+  }).join('');
+  document.getElementById('qbody').innerHTML=
+    '<div class="qcard"><div class="qtag">'+q.tag+'</div>'
+    +'<div class="qtext">'+q.cn+'</div>'
+    +'<div class="qen">'+q.en+'</div></div>'
+    +'<div class="opts">'+opts+'</div>'
+    +'<div class="fb" id="fb"></div>'
+    +'<button class="pbtn" id="nb" onclick="nextQ()" disabled>'+(S.qIdx<Qs.length-1?'Next →':'Continue to staging →')+'</button>';
+}
+function pickOpt(btn,i){
+  if(S.qAns)return;S.qAns=true;var q=Qs[S.qIdx];var ok=q.opts[i].correct;if(ok)S.qScore++;
+  document.querySelectorAll('.opt').forEach(function(b,j){b.classList.add('dis');if(q.opts[j].correct)b.classList.add('ok');else if(j===i&&!ok)b.classList.add('no');});
+  var fb=document.getElementById('fb');fb.className='fb on '+(ok?'ok':'no');
+  fb.innerHTML='<div class="fbt">'+(ok?'Correct ✓':'Not quite')+'</div>'+(ok?q.fb.ok:q.fb.no);
+  document.getElementById('nb').disabled=false;
+}
+function nextQ(){S.qIdx++;if(S.qIdx>=Qs.length)goStaging();else renderQ();}
+
+// ── STAGING ───────────────────────────────────────────────────
+function goStaging(){
+  S.stagePick=null;S.stageAnswers={};
+  var labelsHtml=stageData.map(function(s){
+    return '<span class="label-tag" id="lbl-'+s.id+'" onclick="pickLabel(\''+s.id+'\')">'
+      +s.label+' <span style="font-size:10px;opacity:.7">'+s.label_en+'</span></span>';
+  }).join('');
+  document.getElementById('stage-labels').innerHTML=labelsHtml;
+  var itemsHtml=stageData.map(function(s,i){
+    return '<div class="stage-item" id="seg-'+i+'" onclick="assignLabel('+i+')">'
+      +'<div class="stage-cn">'+(i+1)+'. '+s.desc+'</div>'
+      +'<div class="stage-en">'+s.desc_en+'</div>'
+      +'<div class="stage-assigned-lbl" id="seg-lbl-'+i+'" style="display:none"></div></div>';
+  }).join('');
+  document.getElementById('stage-items').innerHTML=itemsHtml;
+  document.getElementById('stage-check-btn').disabled=true;
+  document.getElementById('stage-result').style.display='none';
+  document.getElementById('stage-err').classList.remove('on');
+  show('s-staging');
+}
+function pickLabel(id){
+  if(document.getElementById('lbl-'+id).classList.contains('used'))return;
+  S.stagePick=id;
+  document.querySelectorAll('.label-tag').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('lbl-'+id).classList.add('active');
+  document.getElementById('stage-err').classList.remove('on');
+}
+function assignLabel(segIdx){
+  // If segment already has a label, remove it and return the label
+  var existingId=S.stageAnswers[segIdx];
+  if(existingId){
+    delete S.stageAnswers[segIdx];
+    var oldLbl=document.getElementById('lbl-'+existingId);
+    if(oldLbl){oldLbl.classList.remove('used');}
+    var seg=document.getElementById('seg-'+segIdx);
+    seg.classList.remove('assigned');
+    document.getElementById('seg-lbl-'+segIdx).style.display='none';
+    document.getElementById('seg-lbl-'+segIdx).textContent='';
+    // If no new label selected, just remove
+    if(!S.stagePick){
+      updateStageBtn();return;
+    }
+  }
+  if(!S.stagePick){document.getElementById('stage-err').classList.add('on');return;}
+  document.getElementById('stage-err').classList.remove('on');
+  S.stageAnswers[segIdx]=S.stagePick;
+  var info=stageData.find(function(s){return s.id===S.stagePick;});
+  var lbl=document.getElementById('seg-lbl-'+segIdx);
+  lbl.textContent='→ '+info.label;lbl.style.display='block';
+  document.getElementById('seg-'+segIdx).classList.add('assigned');
+  document.getElementById('lbl-'+S.stagePick).classList.remove('active');
+  document.getElementById('lbl-'+S.stagePick).classList.add('used');
+  S.stagePick=null;
+  updateStageBtn();
+}
+function updateStageBtn(){
+  document.getElementById('stage-check-btn').disabled=Object.keys(S.stageAnswers).length<stageData.length;
+}
+function checkStaging(){
+  var correct=0;
+  stageData.forEach(function(s,i){
+    var seg=document.getElementById('seg-'+i);
+    seg.classList.remove('assigned');
+    if(S.stageAnswers[i]===s.id){seg.classList.add('correct');correct++;}
+    else seg.classList.add('wrong');
+  });
+  document.getElementById('stage-insight').textContent=
+    'This video is an Anecdote: Orientation sets the scene (Tyler explains the challenge), Remarkable Event is the key moment (strangers treating him as Chinese), and Reaction is Tyler\'s reflection on belonging. Every social media anecdote follows this same pattern — now you can spot it.';
+  document.getElementById('stage-result').style.display='block';
+  document.getElementById('stage-check-btn').style.display='none';
+  
+}
+function finishL1(){
+  unlock(2);
+  document.getElementById('re').textContent=S.qScore>=4?'🌟':S.qScore>=3?'🎉':'💪';
+  document.getElementById('rt2').textContent='Level 1 complete!';
+  document.getElementById('rs2').textContent='You got '+S.qScore+' of 5 correct. Level 2 unlocked.';
+  document.getElementById('sco').textContent=S.qScore+' / 5';
+  document.getElementById('scol').textContent='comprehension score';
+  
+  document.getElementById('r-insight').textContent=
+    'You just analysed why a Xiaohongshu video works — who made it, who it\'s for, what it\'s trying to do, and how it\'s structured. In Level 2, you\'ll look at how the audience responds.';
+  renderHub();show('s-result');
+}
+
+// ── DANMU (3 rounds) ─────────────────────────────────────────
+var dmTimers=[];
+function initDanmu(){
+  S.dmRound=0;S.dmScores=[0,0,0];
+  document.getElementById('dm-btn').style.display='block';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-done').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-round').textContent='1';
+  document.getElementById('dm-fill').style.width='100%';
+  document.getElementById('danmu-screen').innerHTML='';
+  document.getElementById('dm-task-banner').innerHTML=dmRounds[0].task;
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+}
+function startDanmuRound(){
+  document.getElementById('dm-btn').style.display='none';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='100%';
+  var screen=document.getElementById('danmu-screen');screen.innerHTML='';
+  var round=dmRounds[S.dmRound];
+  var targetCount=round.items.filter(function(i){return i.type===round.target;}).length;
+  document.getElementById('dm-need').textContent=targetCount;
+  var W=screen.offsetWidth||400;
+  var DUR=18000;
+  var delays=[0,2800,5600,8400,11200,1400];
+  var caught=0;
+  round.items.forEach(function(item,idx){
+    var t=setTimeout(function(){
+      var el=document.createElement('div');el.className='danmu-item';
+      el.innerHTML='<div style="font-size:13px;font-weight:600">'+item.txt+'</div><div style="font-size:11px;opacity:.8;margin-top:2px">'+item.en+'</div>';
+      el.style.background=item.col;el.style.color=item.tc;el.style.padding='8px 14px';el.style.borderRadius='12px';el.style.minWidth='180px';
+      // Assign rows sequentially to avoid overlap
+      var rowIdx=idx%6;
+      el.style.top=(rowIdx*70+8)+'px';
+      el.style.left=(W+10)+'px';el.style.transition='left '+DUR+'ms linear';
+      el.addEventListener('click',function(){
+        if(el.classList.contains('tagged-ok')||el.classList.contains('tagged-wrong'))return;
+        if(item.type===round.target){
+          el.classList.add('tagged-ok');caught++;
+          document.getElementById('dm-caught').textContent=caught;
+        } else {
+          el.classList.add('tagged-wrong');
+        }
+      });
+      screen.appendChild(el);
+      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.left='-300px';});});
+      setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},DUR+100);
+    },delays[idx]);dmTimers.push(t);
+  });
+  var TOTAL=32000;var start=Date.now();
+  var fill=document.getElementById('dm-fill');
+  var tick=setInterval(function(){
+    var e=Date.now()-start;fill.style.width=Math.max(0,Math.round(100-e/TOTAL*100))+'%';
+    if(e>=TOTAL-2000){
+      clearInterval(tick);
+      S.dmScores[S.dmRound]=caught;
+      endDanmuRound(round,caught);
+    }
+  },100);dmTimers.push(tick);
+}
+function endDanmuRound(round,caught){
+  var total=round.items.filter(function(i){return i.type===round.target;}).length;
+  document.getElementById('dm-round-insight').textContent=
+    'You caught '+caught+' of '+total+'. '+round.insight;
+  document.getElementById('dm-between').style.display='block';
+  var isLast=S.dmRound>=dmRounds.length-1;
+  document.getElementById('dm-next-btn').textContent=isLast?'See summary →':'Next round →';
+}
+function nextDanmuRound(){
+  S.dmRound++;
+  if(S.dmRound>=dmRounds.length){
+    showDanmuDone();return;
+  }
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-round').textContent=S.dmRound+1;
+  document.getElementById('dm-task-banner').innerHTML=dmRounds[S.dmRound].task;
+  document.getElementById('danmu-screen').innerHTML='';
+  document.getElementById('dm-btn').style.display='block';
+}
+function showDanmuDone(){
+  document.getElementById('dm-between').style.display='none';
+  var scoreHtml='';
+  var labels=['Language ability','Appearance','Family atmosphere'];
+  S.dmScores.forEach(function(sc,i){
+    scoreHtml+='<div class="dm-score-box"><div class="dm-score-val">'+sc+'</div><div class="dm-score-lbl">'+labels[i]+'</div></div>';
+  });
+  document.getElementById('dm-score-row').innerHTML=scoreHtml;
+  document.getElementById('dm-final-insight').textContent=
+    'Tyler\'s comment section is dominated by direct evaluations of him as a person — his appearance, his Chinese, his identity. Both positive and critical comments are common and completely normal. This directness is a key feature of Chinese social media culture. When you write your own comment, you can be direct too — say what you actually think.';
+  document.getElementById('dm-done').style.display='block';
+  
+}
+
+// ── WRITE COMMENT ─────────────────────────────────────────────
+function goWriteComment(){
+  S.checkedItems={};
+  document.getElementById('comment-input').value='';
+  document.getElementById('comment-result').style.display='none';
+  document.getElementById('comment-err').classList.remove('on');
+  var checks=commentCriteria.map(function(c){
+    return '<div class="check-item" id="chk-'+c.id+'" onclick="toggleCheck(\''+c.id+'\')">'
+      +'<div class="check-box" id="chkbox-'+c.id+'"></div>'
+      +'<div class="check-txt">'+c.text+'</div></div>';
+  }).join('');
+  document.getElementById('comment-checklist').innerHTML=checks;
+  show('s-write');
+}
+function toggleCheck(id){
+  S.checkedItems[id]=!S.checkedItems[id];
+  var item=document.getElementById('chk-'+id);
+  var box=document.getElementById('chkbox-'+id);
+  if(S.checkedItems[id]){item.classList.add('checked');box.innerHTML='✓';}
+  else{item.classList.remove('checked');box.innerHTML='';}
+}
+function checkComment(){
+  var val=document.getElementById('comment-input').value.trim();
+  if(!val){document.getElementById('comment-err').classList.add('on');return;}
+  document.getElementById('comment-err').classList.remove('on');
+  var checked=Object.values(S.checkedItems).filter(Boolean).length;
+  document.getElementById('comment-insight').textContent=
+    'Good Xiaohongshu comments feel personal and warm — they react to something specific in the video rather than making a generic statement. '
+    +'The most effective comments make the creator feel seen and appreciated, and they often invite a response. '
+    +'You can express a personal feeling, share an opinion, or react to something you noticed — all three work well.';
+  document.getElementById('comment-result').style.display='block';
+  
+}
+function finishL2(){
+  document.getElementById('re').textContent='🎉';
+  document.getElementById('rt2').textContent='Level 2 complete!';
+  document.getElementById('rs2').textContent='You\'ve moved from reader to commenter.';
+  document.getElementById('sco').textContent='';document.getElementById('scol').textContent='';
+  
+  document.getElementById('r-insight').textContent=
+    'You\'ve now read Tyler\'s video closely, understood its structure, spotted different types of comments in the real comment section, and written your own. '
+    +'The writing task probably showed you the gap between knowing what a good comment looks like and being able to produce one — that gap is the starting point for the next level.';
+  renderHub();show('s-result');
+}
+function retryRound(){
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='100%';
+  document.getElementById('danmu-screen').innerHTML='';
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  document.getElementById('dm-btn').style.display='block';
+}
+function backToHub(){renderHub();show('s-hub');}
+renderHub();
+</script>
+</body>
+</html>
