@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+<title>Navigate Chinese Social Media / 玩转中国社媒</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F6F1E9;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px}
+.g{max-width:680px;width:100%;background:#FFFDF9;border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.lvbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;white-space:nowrap;background:#E8EDF3;color:#2C4A6E}
+.fans{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;color:#1F1A17}
+.screen{display:none}.screen.on{display:block}
+.hub{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.app-hdr{text-align:center;margin-bottom:24px}
+.app-icon{width:64px;height:64px;background:linear-gradient(135deg,#B93A2B,#B93A2B);border-radius:16px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.app-title{font-size:20px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px}
+.app-sub{font-size:13px;color:#6E635A}
+.lcard{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.lcard:hover:not(.lk){border-color:#B3A796}
+.lcard.lk{opacity:.4;cursor:not-allowed;pointer-events:none}
+.lic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.linfo{flex:1}.lname{font-size:13px;font-weight:500;color:#1F1A17}.ldesc{font-size:11px;color:#6E635A;margin-top:2px}
+.ubadge{font-size:11px;background:#E2EEEA;color:#24574C;padding:2px 8px;border-radius:99px;margin-top:4px;display:inline-block}
+.card{background:#F6F1E9;border-radius:12px;padding:16px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:12px;background:#E8EDF3;color:#2C4A6E}
+.sec-title{font-size:13px;font-weight:500;color:#1F1A17;margin-bottom:6px}
+.sec-sub{font-size:12px;color:#5A514A;line-height:1.5;margin-bottom:10px}
+.qdots{display:flex;gap:4px;margin-bottom:14px}
+.qdot{flex:1;height:4px;border-radius:99px;background:#EFE8DC}
+.qdot.dn{background:#2F6B5E}.qdot.cu{background:#B93A2B}
+.qcard{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:16px;margin-bottom:10px}
+.qtag{font-size:11px;color:#6E635A;margin-bottom:6px}
+.qtext{font-size:15px;font-weight:500;color:#1F1A17;line-height:1.5;margin-bottom:4px}
+.qen{font-size:12px;color:#5A514A;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.opt{background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:11px 13px;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+.opt:hover{border-color:#B3A796;background:#FBF8F2}
+.opt.ok{border-color:#2F6B5E;background:#E2EEEA}
+.opt.no{border-color:#A8322A;background:#FBEAE6}
+.opt.dis{cursor:default}
+.opt-cn{font-size:14px;color:#1F1A17;margin-bottom:2px;text-align:left}
+.opt-en{font-size:11px;color:#6E635A;text-align:left}
+.fb{border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.6;display:none}
+.fb.on{display:block}
+.fb.ok{background:#E2EEEA;color:#24574C;border:1px solid #A9CFC4}
+.fb.no{background:#FBEAE6;color:#8A2A22;border:1px solid #E5A79C}
+.fbt{font-weight:600;margin-bottom:3px}
+.pbtn{width:100%;padding:12px;background:#B93A2B;color:#FFFDF9;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.pbtn:hover{opacity:.9}.pbtn:disabled{opacity:.4;cursor:default}
+.sbtn{width:100%;padding:12px;background:#FFFDF9;color:#1F1A17;border:1px solid #E6DED2;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
+.sbtn:hover{background:#F6F1E9;border-color:#B3A796}
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.label-tag{background:#E8EDF3;color:#2C4A6E;border:1px solid #C9D5E3;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none}
+.label-tag:hover:not(.used){opacity:.8;background:#DCE4EE}
+.label-tag.active{outline:2px solid #B93A2B;background:#DCE4EE}
+.label-tag.used{opacity:.3;cursor:not-allowed;pointer-events:none}
+.stage-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.stage-item{background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.stage-item:hover{border-color:#B93A2B}
+.stage-item.assigned{border-color:#5B4A8A;background:#EEEBF5}
+.stage-item.correct{border-color:#2F6B5E;background:#E2EEEA;cursor:default}
+.stage-item.wrong{border-color:#A8322A;background:#FBEAE6;cursor:default}
+.stage-cn{font-size:14px;color:#1F1A17;margin-bottom:2px;line-height:1.5}
+.stage-en{font-size:11px;color:#6E635A}
+.stage-assigned-lbl{font-size:11px;color:#5B4A8A;margin-top:5px;font-weight:500}
+/* ── Match lines staging ── */
+.match-lbl{touch-action:none;border-radius:10px;padding:10px 12px;cursor:pointer;user-select:none;transition:all .18s;border:2px solid transparent;position:relative}
+.match-lbl:hover{filter:brightness(.95)}
+.match-lbl.sel{box-shadow:0 0 0 3px #B93A2B;z-index:2}
+.match-lbl.done{opacity:.7;cursor:pointer}
+.match-lbl.correct-lbl{opacity:1!important;cursor:default}
+.match-lbl.wrong-lbl{cursor:default}
+.match-lbl-name{font-size:13px;font-weight:700;line-height:1.2}
+.match-lbl-sub{font-size:11px;opacity:.7;margin-top:2px}
+.match-lbl-num{font-size:14px;font-weight:800;opacity:.25;display:block;margin-bottom:2px}
+.match-seg{background:#FFFDF9;border:1.5px solid #E6DED2;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .18s}
+.match-seg:hover:not(.seg-locked){border-color:#B93A2B;background:#F7F3EC}
+.match-seg.seg-active{border-color:#B93A2B;background:#E8EDF3}
+.match-seg.seg-locked{cursor:default}
+.match-seg.correct-seg{border-color:#2F6B5E;background:#E2EEEA;border-width:2px}
+.match-seg.wrong-seg{border-color:#A8322A;background:#FBEAE6;border-width:2px}
+.seg-cn{font-size:12px;color:#1F1A17;line-height:1.5}
+.seg-en{font-size:11px;color:#6E635A;line-height:1.4;margin-top:2px}
+@keyframes shake2{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.shk{animation:shake2 .3s}
+.danmu-wrap{background:#26201C;border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;height:360px}
+.danmu-screen{position:absolute;top:0;left:0;right:0;bottom:48px;overflow:hidden}
+.danmu-item{position:absolute;white-space:nowrap;font-size:14px;font-weight:500;padding:6px 14px;border-radius:99px;cursor:pointer;user-select:none}
+.dm-en-gloss{font-size:11px;opacity:.55;font-weight:400;margin-left:4px}
+.danmu-item.tagged-ok{opacity:.2;cursor:default;pointer-events:none}
+.danmu-item.tagged-wrong{opacity:.15;cursor:default;pointer-events:none;text-decoration:line-through}
+.danmu-overlay{position:absolute;bottom:0;left:0;right:0;height:48px;padding:8px 14px;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dm-info{color:#FFFDF9;font-size:11px;white-space:nowrap}
+.dm-bar{height:4px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;flex:1}
+.dm-fill{height:100%;background:#FFFDF9;border-radius:99px}
+.dm-task-banner{background:#2C4A6E;color:#FFFDF9;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:8px;line-height:1.4}
+.comment-area{background:#F6F1E9;border:1px solid #E6DED2;border-radius:10px;width:100%;min-height:80px;padding:10px 12px;font-size:13px;font-family:inherit;color:#1F1A17;resize:none;margin-bottom:10px;outline:none}
+.comment-area:focus{border-color:#B93A2B}
+.checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.check-item{display:flex;align-items:center;gap:10px;background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s}
+.check-item:hover{border-color:#B3A796}
+.check-item.checked{border-color:#2F6B5E;background:#E2EEEA}
+.check-box{width:18px;height:18px;border-radius:4px;border:1px solid #E6DED2;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#FFFDF9;background:#FFFDF9}
+.check-item.checked .check-box{background:#2F6B5E;border-color:transparent}
+.check-txt{font-size:12px;color:#1F1A17}
+.result-card{background:#FFFDF9;border:1px solid #E6DED2;border-radius:16px;padding:24px;text-align:center;margin-bottom:14px}
+.re{font-size:44px;margin-bottom:10px}
+.rt2{font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:5px}
+.rs2{font-size:13px;color:#6E635A;margin-bottom:16px}
+.sco{font-size:32px;font-weight:500;color:#1F1A17}
+.scol{font-size:12px;color:#6E635A}
+.fan-gain{display:flex;justify-content:center;margin:16px 0;padding:14px;background:#F6F1E9;border-radius:10px}
+.fw{text-align:center}.fwv{font-size:22px;font-weight:500;color:#1F1A17}.fwl{font-size:11px;color:#6E635A;margin-top:2px}
+.ins{background:#FFFDF9;border:1px solid #E6DED2;border-left:3px solid #B93A2B;border-radius:0 10px 10px 0;padding:12px;margin-bottom:12px}
+.inslbl{font-size:11px;color:#2C4A6E;font-weight:500;margin-bottom:5px}
+.instxt{font-size:12px;color:#5A514A;line-height:1.6}
+.err{font-size:12px;color:#A8322A;margin-bottom:8px;display:none}
+.err.on{display:block}
+.video-summary{background:#FBF1DE;border:1px solid #E8CB94;border-radius:8px;padding:16px;margin-bottom:12px;font-size:12px;line-height:1.8;color:#2E2824}
+.video-link-btn{display:flex;align-items:center;gap:8px;background:#B93A2B;color:#FFFDF9;border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:12px;width:100%;justify-content:center;text-decoration:none}
+.video-link-btn:hover{opacity:.9}
+.dm-score-row{display:flex;gap:8px;margin-bottom:10px}
+.dm-score-box{flex:1;text-align:center;background:#F6F1E9;border-radius:8px;padding:8px 4px}
+.dm-score-val{font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17}
+.dm-score-lbl{font-size:11px;color:#6E635A;margin-top:2px}
+/* ── Classroom additions ── */
+.tbar-btn{font-size:12px;min-height:32px;padding:0 12px;border-radius:99px;border:1px solid #D4C9B8;background:#FFFDF9;color:#4A423C;cursor:pointer;font-family:inherit}
+.tbar-btn:hover{border-color:#B3A796}
+.hub-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hub-actions .sbtn{flex:1;margin-top:0;min-width:140px}
+.done-badge{font-size:11px;background:#E2EEEA;color:#24574C;padding:2px 8px;border-radius:99px;margin-top:4px;display:inline-block}
+.teacher-panel{border:1px dashed #2C4A6E;background:#F7F3EC;border-radius:12px;padding:14px;margin-top:16px}
+.jump-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.jump-btn{min-height:40px;border-radius:10px;border:1px solid #C9D5E3;background:#FFFDF9;color:#2C4A6E;font-size:13px;font-family:inherit;cursor:pointer}
+.jump-btn:hover{background:#E8EDF3}
+.seg-tag{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.gloss-row{display:flex;justify-content:flex-end;margin-bottom:8px}
+body.no-gloss .dm-en-gloss{display:none}
+.name-input{width:100%;min-height:44px;border:1px solid #D4C9B8;border-radius:10px;padding:0 12px;font-size:15px;font-family:inherit;background:#FFFDF9;color:#1F1A17;outline:none}
+.name-input:focus{border-color:#B93A2B}
+.rep-sec{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.rep-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.rep-title{font-size:14px;font-weight:600;color:#1F1A17}
+.rep-score{font-size:14px;font-weight:600;color:#2C4A6E;white-space:nowrap}
+.rep-row{display:flex;gap:8px;font-size:13px;color:#2E2824;padding:5px 0;border-top:1px solid #EFE8DC;line-height:1.5}
+.rep-ok{color:#2F6B5E;font-weight:700}.rep-no{color:#A8322A;font-weight:700}
+.rep-na{font-size:12px;color:#6E635A}
+.rep-quote{background:#F6F1E9;border-radius:8px;padding:10px 12px;font-size:15px;line-height:1.6;color:#1F1A17;margin-bottom:8px;white-space:pre-wrap;word-break:break-word}
+/* ── Visual refresh: paper + vermilion ── */
+:root{--serif:'Noto Serif SC','Songti SC','STSong',serif;--sans:'Noto Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  --paper:#F6F1E9;--card:#FFFDF9;--line:#E6DED2;--ink:#1F1A17;--ink2:#5A514A;--ink3:#6E635A;--red:#B93A2B;--red-d:#8F2B1F;--red-t:#F6E3DD}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;padding:32px 16px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(60,40,20,.04),0 12px 40px rgba(60,40,20,.08)}
+.topbar{margin-bottom:24px}
+.lvbadge,.chip{font-size:12px;font-weight:500;padding:4px 12px;background:var(--red-t);color:var(--red)}
+.chip{margin-bottom:16px;letter-spacing:.3px}
+.app-hdr{margin-bottom:28px}
+.app-icon{width:64px;height:64px;border-radius:14px;background:var(--red);color:#FFF8F0;font-family:var(--serif);font-weight:900;font-size:30px;margin-bottom:16px;box-shadow:inset 0 0 0 3px rgba(255,248,240,.25)}
+.app-title{font-family:var(--serif);font-size:28px;font-weight:900;letter-spacing:.5px;margin-bottom:6px}
+.app-sub{font-size:14px;color:var(--ink3)}
+.lcard{border-radius:16px;padding:16px 18px;gap:14px}
+.lcard:hover:not(.lk){border-color:var(--ink);transform:translateY(-1px)}
+.lcard.lk{opacity:.5}
+.lic{width:44px;height:44px;border-radius:99px}
+.lname{font-size:15px;font-weight:600}.ldesc{font-size:13px;color:var(--ink3);margin-top:3px}
+.ubadge,.done-badge{font-size:12px;padding:2px 10px;margin-top:6px}
+.card{background:var(--paper);border-radius:16px;padding:18px}
+.sec-title{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.5;margin-bottom:8px}
+.sec-sub{font-size:13px;color:var(--ink2);line-height:1.7}
+.qdots{gap:6px;margin-bottom:20px}.qdot{height:6px;background:var(--line)}
+.qdot.dn{background:#2F6B5E}.qdot.cu{background:var(--red)}
+.qcard{border:none;background:transparent;padding:4px 2px 8px;margin-bottom:8px}
+.qtag{font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:.5px;margin-bottom:8px}
+.qtext{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.55;margin-bottom:6px}
+.qen{font-size:14px;color:var(--ink2);line-height:1.5}
+.opts{gap:10px;margin-bottom:16px}
+.opt{border-radius:14px;padding:14px 16px;background:var(--card);min-height:48px}
+.opt:hover{border-color:var(--ink);background:var(--card)}
+.opt.ok{border:2px solid #2F6B5E;padding:13px 15px}.opt.no{border:2px solid #A8322A;padding:13px 15px;background:#F9E1DB}.opt.ok{background:#E2EEEA}
+.opt-cn{font-size:15px;line-height:1.55;margin-bottom:3px}.opt-en{font-size:12px;color:var(--ink3)}
+.fb{border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.75;margin-bottom:14px}
+.fb.ok,.fb.no{border:none}
+.fb.no{background:var(--ink);color:#F6F1E9}
+.fbt{font-family:var(--serif);font-size:16px;margin-bottom:4px}
+.pbtn{min-height:52px;padding:14px;background:var(--red);color:#FFF8F0;border-radius:14px;font-size:15px;letter-spacing:.3px;transition:background .15s,transform .1s}
+.pbtn:hover{opacity:1;background:var(--red-d)}.pbtn:active{transform:translateY(1px)}
+.pbtn:disabled{opacity:1;background:var(--line);color:var(--ink3)}
+.sbtn{min-height:48px;border-radius:14px;font-size:14px;background:var(--card);border-color:var(--line)}
+.sbtn:hover{background:var(--paper);border-color:var(--ink)}
+.pbtn:focus-visible,.sbtn:focus-visible,.opt:focus-visible,.tbar-btn:focus-visible,.jump-btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.match-lbl{border-radius:12px;padding:12px 14px}
+.match-lbl.sel{box-shadow:0 0 0 3px var(--ink)}
+.match-lbl-name{font-size:14px}.match-lbl-sub{font-size:12px}
+.match-seg{border-radius:12px;padding:12px 14px;border-width:1px;background:var(--card)}
+.match-seg:hover:not(.seg-locked){border-color:var(--ink);background:var(--card)}
+.seg-cn{font-size:13px;line-height:1.65}.seg-en{font-size:12px;color:var(--ink3)}
+.danmu-wrap{background:#26201C;border-radius:18px;height:380px}
+.danmu-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 115%,#4A3A30 0%,rgba(38,32,28,0) 60%);pointer-events:none}
+.danmu-overlay{height:52px;background:rgba(20,16,14,.9);padding:8px 16px}
+.danmu-screen{bottom:52px}
+.dm-info{font-size:13px}.dm-fill{background:#7FC3B0}
+.danmu-item{font-size:15px;padding:7px 15px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.dm-en-gloss{font-size:11px}
+.dm-task-banner{background:var(--ink);color:#F6F1E9;border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.6;margin-bottom:10px}
+.dm-task-banner strong{color:#F2B8AC}
+.comment-area{background:var(--card);border:2px solid var(--line);border-radius:14px;min-height:100px;padding:12px 14px;font-size:15px;line-height:1.6}
+.comment-area:focus{border-color:var(--ink)}
+.check-item{min-height:48px;border-radius:12px;padding:10px 14px}
+.check-box{width:20px;height:20px;border:1.5px solid #B3A796;border-radius:6px}
+.check-txt{font-size:14px}
+.result-card{border-radius:20px;padding:28px 24px;background:var(--paper);border:none}
+.rt2{font-family:var(--serif);font-size:22px;font-weight:600}
+.rs2{font-size:14px;color:var(--ink2)}
+.sco{font-family:var(--serif);font-size:36px;font-weight:900;color:var(--red)}
+.ins{border:none;border-radius:14px;background:var(--paper);padding:16px 18px;margin-bottom:14px}
+.inslbl{font-size:12px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:6px}
+.instxt{font-size:14px;color:var(--ink2);line-height:1.75}
+.video-summary{background:var(--card);border-color:var(--line);border-radius:14px;padding:16px 18px;font-size:14px;line-height:1.8}
+.video-link-btn{background:transparent;color:var(--red);border:1.5px solid var(--red);border-radius:14px;min-height:48px;font-size:15px}
+.video-link-btn:hover{opacity:1;background:var(--red-t)}
+.dm-score-box{background:var(--paper);border-radius:12px;padding:12px 4px}
+.dm-score-val{font-family:var(--serif);font-size:22px;font-weight:900}.dm-score-lbl{font-size:12px}
+.mark{width:64px;height:64px;margin:0 auto 14px;border-radius:99px;background:var(--red);color:#FFF8F0;display:flex;align-items:center;justify-content:center;font-size:0}
+.re.mark{margin-bottom:14px}
+.tbar-btn{background:var(--card);border-color:var(--line);color:var(--ink2);min-height:36px}
+.tbar-btn:hover{border-color:var(--ink)}
+.teacher-panel{border-color:#2C4A6E;background:#F2F5F8;border-radius:16px}
+.rep-sec{border-radius:14px;background:var(--card)}
+.rep-title{font-family:var(--serif)}.rep-score{color:var(--red)}
+.name-input{border-color:var(--line);background:var(--card)}.name-input:focus{border-color:var(--ink)}
+.err{color:#A8322A;font-size:13px}
+/* ── Comment check (two dimensions) ── */
+.dim{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.dim-h{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.dim-num{flex-shrink:0;width:32px;height:32px;border-radius:99px;background:var(--ink);color:#F6F1E9;font-family:var(--serif);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center}
+.dim-title{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.5}
+.dim-en{font-family:var(--sans);font-weight:400;font-size:13px;color:var(--ink3)}
+.dim-sub{font-size:13px;color:var(--ink2);line-height:1.6;margin-top:2px}
+.lc-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;margin-bottom:8px;font-size:14px;line-height:1.65}
+.lc-mark{flex-shrink:0;width:22px;height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:1px;color:#FFFDF9}
+.lc-body{flex:1;min-width:0}
+.lc-ok{background:#E2EEEA}.lc-ok .lc-mark{background:#2F6B5E}
+.lc-good{background:#E2EEEA}.lc-good .lc-mark{background:#2F6B5E}
+.lc-warn{background:#FBF1DE}.lc-warn .lc-mark{background:#9A6212}
+.lc-tip{background:#E8EDF3}.lc-tip .lc-mark{background:#2C4A6E;font-family:Georgia,serif;font-style:italic}
+.check-row{margin-bottom:0}
+button.check-item{width:100%;text-align:left;font-family:inherit;color:inherit;background:var(--card);border:1px solid var(--line)}
+button.check-item.checked{border-color:#2F6B5E;background:#E2EEEA}
+.check-row .en-tog{margin-left:14px}
+.check-row .en-txt{margin:0 14px 4px}
+.rep-sub{font-size:12px;font-weight:700;color:var(--ink3);margin:12px 0 2px}
+/* ── Danmu wrong-pick explanations ── */
+.wp-box{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.wp-title{font-size:12px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:8px}
+.wp-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:14px;line-height:1.65;color:var(--ink2)}
+.wp-quote{font-weight:600;color:var(--ink);margin-bottom:2px}
+.wp-none{font-size:14px}
+/* ── Guide character 小白 ── */
+.guide{position:fixed;right:16px;bottom:16px;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+.guide>*{pointer-events:auto}
+.guide-av{width:64px;height:64px;border-radius:99px;border:2px solid #FFFDF9;background:#F6E3DD;padding:2px;cursor:pointer;box-shadow:0 6px 20px rgba(60,40,20,.22);display:flex;align-items:center;justify-content:center}
+.guide-av:focus-visible{outline:3px solid #B93A2B;outline-offset:2px}
+.guide .m{display:none}
+.guide[data-mood="normal"] .m-normal,.guide[data-mood="happy"] .m-happy,.guide[data-mood="oops"] .m-oops,.guide[data-mood="think"] .m-think{display:inline}
+.guide.bounce .guide-av{animation:gbounce .5s ease}
+@keyframes gbounce{0%,100%{transform:translateY(0)}35%{transform:translateY(-8px)}65%{transform:translateY(2px)}}
+.guide-bubble{position:relative;max-width:min(280px,calc(100vw - 32px));background:#1F1A17;color:#F6F1E9;border-radius:16px 16px 4px 16px;padding:12px 34px 12px 14px;font-size:14px;line-height:1.65;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.guide-bubble[hidden]{display:none}
+.guide-name{font-size:11px;font-weight:700;color:#F2B8AC;letter-spacing:.5px;margin-bottom:2px}
+.guide-x{position:absolute;top:6px;right:6px;width:28px;height:28px;border:none;background:none;color:#D8CFC3;font-size:18px;line-height:1;cursor:pointer;border-radius:99px}
+.guide-x:hover{background:rgba(255,253,249,.1)}
+.guide-bubble .en-tog{color:#F2B8AC}
+.g{margin-bottom:96px}
+@media (prefers-reduced-motion:reduce){.guide.bounce .guide-av{animation:none}}
+/* ── Danmu instant labels ── */
+.dm-pop{position:absolute;z-index:5;white-space:nowrap;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px;pointer-events:none;animation:dmpop 1.1s ease forwards}
+.dm-pop-ok{background:#7FC3B0;color:#12302A}.dm-pop-no{background:#F2B8AC;color:#4A1A14}
+@keyframes dmpop{0%{opacity:0;transform:translateY(8px) scale(.9)}15%{opacity:1;transform:translateY(0) scale(1.05)}70%{opacity:1;transform:translateY(-6px)}100%{opacity:0;transform:translateY(-16px)}}
+@media (prefers-reduced-motion:reduce){.dm-pop{animation:none}}
+/* ── Guess the likes ── */
+.likes-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.lk-card{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;font-family:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+button.lk-card{cursor:pointer;min-height:56px}button.lk-card:hover{border-color:var(--ink)}
+.lk-top{display:flex;align-items:center;gap:8px}
+.lk-who{font-size:12px;color:var(--ink3)}
+.lk-rank{margin-left:auto;font-family:var(--serif);font-weight:900;color:var(--ink3)}
+.lk-mine{font-size:11px;font-weight:700;color:#FFFDF9;background:var(--red);border-radius:99px;padding:1px 8px}
+.lk-text{font-size:15px;line-height:1.6}
+.lk-img{font-style:italic;color:var(--ink2)}
+.lk-picked{border:2px solid var(--red)}
+.lk-stats{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2)}
+.lk-bar{flex:1;height:8px;border-radius:99px;background:var(--paper);overflow:hidden}.lk-bar span{display:block;height:100%;background:var(--red);border-radius:99px}
+.lk-num{display:flex;align-items:center;gap:4px;font-weight:700;color:var(--red)}
+.lk-why{font-size:13px;line-height:1.6;color:var(--ink2);background:var(--paper);border-radius:10px;padding:8px 10px}
+.lk-row .en-tog{margin-left:14px}.lk-row .en-txt{margin:0 14px 2px}
+.lk-pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-width:260px}
+.lk-pics img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
+/* ── Comment section feed ── */
+.fav{flex-shrink:0;width:32px;height:32px;border-radius:99px;background:#E8EDF3;color:#2C4A6E;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.fav-me{background:var(--red);color:#FFFDF9}
+.feed{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 14px}
+.feed-h{font-size:13px;font-weight:700;color:var(--ink2);padding:8px 0}
+.f-item{display:flex;gap:10px;padding:10px 0;border-top:1px solid #EFE8DC}
+.f-sub{margin-left:42px;border-top:none;padding-top:4px}
+.f-sub .fav{width:24px;height:24px;font-size:11px}
+.f-body{flex:1;min-width:0}
+.f-who{font-size:12px;color:var(--ink3)}
+.f-tag{font-size:11px;color:var(--red);font-weight:700}
+.f-text{font-size:14px;line-height:1.6;margin-top:2px;word-break:break-word}
+.f-meta{display:flex;gap:14px;font-size:12px;color:var(--ink3);margin-top:4px}.f-meta span{display:flex;align-items:center;gap:3px}
+.f-mine{background:#FBF1DE;margin:0 -14px;padding:10px 14px;border-radius:12px}
+.f-empty{font-size:13px;color:var(--ink3);padding:10px 0}
+.thread{background:var(--paper);border-radius:14px;padding:4px 12px}
+.thread .f-item:first-child{border-top:none}
+.reply-pick{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.rp-opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;font-family:inherit;color:inherit;font-size:14px;line-height:1.55;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;min-height:48px}
+.rp-opt.on{border:2px solid var(--ink);padding:9px 11px}
+.rp-dot{flex-shrink:0;width:16px;height:16px;border-radius:99px;border:2px solid #B3A796;margin-top:3px}
+.rp-opt.on .rp-dot{border-color:var(--red);background:radial-gradient(circle,var(--red) 45%,transparent 50%)}
+/* ── Inline reply ── */
+.reply-tip{font-size:13px;line-height:1.6;color:var(--ink2);background:var(--paper);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.f-reply-btn{background:none;border:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--red);cursor:pointer;min-height:32px;padding:0 4px;margin-left:auto}
+.f-reply-btn:hover{text-decoration:underline}
+.reply-box{margin:8px 0 4px;padding:10px;border-radius:12px;background:var(--paper)}
+/* ── English toggles ── */
+.en-tog{display:block;width:fit-content;min-height:32px;margin-top:4px;padding:4px 0;background:none;border:none;font-family:inherit;font-size:12px;color:inherit;opacity:.8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.en-tog:hover{opacity:1}
+.en-tog:focus-visible{outline:2px solid #B93A2B;outline-offset:2px}
+.en-txt{margin-top:2px;font-size:13px;line-height:1.6;opacity:.85;font-weight:400;font-family:var(--sans)}
+@media print{.en-tog{display:none}}
+/* ── Phone ── */
+@media (max-width:520px){
+  body{padding:0}
+  .g{border-radius:0;padding:16px 16px 28px;box-shadow:none;min-height:100vh}
+  .qtext{font-size:16px}.qen{font-size:13px}
+  .opt{padding:12px 13px}.opt-cn{font-size:15px}.opt-en{font-size:12px}
+  .sec-sub,.instxt,.fb{font-size:13px}
+  #match-grid{grid-template-columns:1fr!important}
+  #match-labels{flex-direction:row!important}
+  #match-labels .match-lbl{flex:1;min-width:0;padding:8px}
+  .match-lbl-name{font-size:12px}
+  #match-svg{display:none}
+  .seg-cn{font-size:13px}.seg-en{font-size:11px}
+  .danmu-wrap{height:340px}
+  .qtext{font-size:18px}
+  .app-title{font-size:24px}
+  .g{border:none}
+  .danmu-item{font-size:13px;padding:6px 12px}
+  .comment-area{font-size:16px}
+}
+/* ── Print / PDF ── */
+@media print{
+  body{background:#FFFDF9;padding:0;display:block}
+  .g{box-shadow:none;max-width:none;padding:0}
+  .no-print{display:none!important}
+  .rep-sec{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="g">
+  <div class="topbar">
+    <div class="lvbadge" id="lvbadge">看懂 Reader</div>
+    <div style="flex:1"></div>
+    <button class="tbar-btn no-print" id="home-btn" onclick="backToHub()" style="visibility:hidden">返回关卡 Home</button>
+    <div class="fans" style="display:none">👥&nbsp;<span id="fancount">0</span>&nbsp;<span style="font-size:11px;color:#6E635A">粉丝</span></div>
+  </div>
+
+  <!-- HUB -->
+  <div class="screen on" id="s-hub">
+    <div class="app-hdr">
+      <div class="app-icon" aria-hidden="true">社</div>
+      <div class="app-title">Navigate Chinese Social Media</div>
+      <div class="app-sub">玩转中国社媒 · Based on real Xiaohongshu data</div>
+    </div>
+    <div class="hub" id="hub-cards"></div>
+    <div class="hub-actions no-print">
+      <button class="sbtn" onclick="showReport()">我的学习记录 My record</button>
+      <button class="sbtn" onclick="resetProgress()">重新开始 Start over</button>
+    </div>
+    <div class="teacher-panel no-print" id="teacher-panel" style="display:none">
+      <div class="sec-title" style="color:#2C4A6E">教师模式 · 直接跳转 Teacher mode</div>
+      <div class="sec-sub" style="margin-bottom:0" data-en="All levels are unlocked. Jump to any part for a classroom demo.">所有关卡已解锁，可以跳到任意环节做课堂演示。</div>
+      <div class="jump-grid">
+        <button class="jump-btn" onclick="tJump('l1')">视频导入</button>
+        <button class="jump-btn" onclick="tJump('quiz')">任务一 理解题</button>
+        <button class="jump-btn" onclick="tJump('staging')">任务二 体裁结构</button>
+        <button class="jump-btn" onclick="tJump('dm0')">弹幕 第1轮 语言</button>
+        <button class="jump-btn" onclick="tJump('dm1')">弹幕 第2轮 外貌</button>
+        <button class="jump-btn" onclick="tJump('dm2')">弹幕 第3轮 家庭</button>
+        <button class="jump-btn" onclick="tJump('likes')">猜点赞</button>
+        <button class="jump-btn" onclick="tJump('write')">写评论</button>
+        <button class="jump-btn" onclick="tJump('reply')">评论区与回复</button>
+        <button class="jump-btn" onclick="tJump('report')">学习记录</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- L1 INTRO -->
+  <div class="screen" id="s-l1">
+    <div class="chip">Level 1 — 看懂 Reader</div>
+    <!-- VIDEO LINK — replace href with real URL -->
+    <a class="video-link-btn" id="video-link-btn" href="https://www.xiaohongshu.com" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg> 先去看视频（跳转小红书）<span style="font-size:11px;opacity:.75;margin-left:6px">Watch the video first</span>
+    </a>
+    <div class="card">
+      <div class="sec-title">铁蛋儿Tyler — 「我的新形象有没有很惊艳」</div>
+      <div class="sec-sub">小红书爆款视频 · 3万点赞 · 1,263条评论 · 体裁：轶事 <span style="font-size:11px;color:#8A7F75;font-weight:400">· Anecdote</span></div>
+      <div class="video-summary">
+        <div style="color:#6E635A;font-size:12px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">视频简介（如无法访问链接）<span style="margin-left:4px;font-size:11px;opacity:.6">Video Summary</span></div>
+        <div><span style="color:#2F6B5E;font-weight:500">Opening:</span> 粉丝说铁蛋中文说得太好了，如果头发变黑根本看不出是外国人——铁蛋决定接受挑战。<br><span style="color:#6E635A;font-size:11px">Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he accepts the challenge.</span></div>
+        <div style="margin-top:8px"><span style="color:#2C4A6E;font-weight:500">Transformation:</span> 铁蛋染黑头发、画眉毛、戴美瞳，一步步完成造型变换。<br><span style="color:#6E635A;font-size:11px">Tyler dyes his hair, draws his eyebrows, and puts in coloured contacts.</span></div>
+        <div style="margin-top:8px"><span style="color:#9A6212;font-weight:500">The test:</span> 铁蛋走进小区，见到儿子、女儿和丈母娘——他们能认出他吗？<br><span style="color:#6E635A;font-size:11px">Tyler meets his son, daughter, and mother-in-law — can they recognise him?</span></div>
+        <div style="margin-top:8px"><span style="color:#5B4A8A;font-weight:500">Result 结果：</span> 家人们既惊讶又开心，Tyler也借此思考"真正融入"一种文化意味着什么。<br><span style="color:#6E635A;font-size:11px">His family's reactions are surprised and funny. Tyler reflects on what it means to truly "belong" to a culture.</span></div>
+      </div>
+    </div>
+    <button class="pbtn" onclick="startQuiz()">开始任务一 — 5道题 → <span style="font-size:11px;opacity:.75;font-weight:400">Start Task 1</span></button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="s-quiz">
+    <div class="qdots" id="qdots"></div>
+    <div id="qbody"></div>
+  </div>
+
+  <!-- STAGING -->
+  <div class="screen" id="s-staging">
+    <div class="chip">Task 2 — Genre Staging</div>
+    <div class="card" style="background:#E8EDF3;border:1px solid #C9D5E3">
+      <div class="sec-title" style="color:#2C4A6E">这条视频是一个「轶事（Anecdote）」</div>
+      <div class="sec-sub" style="color:#2C4A6E" data-en="This video is an anecdote. Every anecdote follows the same three-stage structure: ① Orientation → ② Remarkable Event → ③ Reaction.">所有轶事都遵循同一个三段式结构：<br>
+        <span style="color:#2F6B5E;font-weight:600">① Orientation 背景</span> →
+        <span style="color:#9A6212;font-weight:600">② Remarkable Event 意外事件</span> →
+        <span style="color:#A8322A;font-weight:600">③ Reaction 反应</span>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#5A514A;text-align:center;margin-bottom:10px" data-en="Tap a stage label first, then tap the matching video clip. Tap a matched label again to undo.">先点一个阶段标签，再点对应的视频片段。<br>再点一次已匹配的标签可以撤销。</div>
+    <div style="position:relative" id="match-root">
+      <svg id="match-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible"></svg>
+      <div id="match-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div id="match-labels" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div id="match-segs" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+    <div class="err" id="stage-err" style="margin-top:10px"></div>
+    <button class="pbtn" id="stage-check-btn" onclick="checkStaging()" style="margin-top:12px" disabled>检查我的答案 Check →</button>
+    <div id="stage-result" style="display:none">
+      <div class="ins"><div class="inslbl">为什么是这个结构？</div><div class="instxt" id="stage-insight"></div></div>
+      <button class="pbtn" onclick="showStagingSummary()">查看总结 Summary →</button>
+    </div>
+  </div>
+
+  <!-- STAGING SUMMARY -->
+  <div class="screen" id="s-staging-summary">
+    <div class="chip">Genre Staging — 完成</div>
+    <div style="text-align:center;padding:20px 0 12px">
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"></path><path d="M4 19V5"></path></svg></div>
+      <div style="font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px">你学会了轶事体裁结构</div>
+      <div style="font-size:13px;color:#6E635A" data-en="You&#x27;ve learned the structure of the anecdote genre — one of the most common storytelling patterns on Xiaohongshu.">小红书最常见的叙事模式之一</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="background:#E2EEEA;border:1px solid #A9CFC4;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#2F6B5E;margin-bottom:4px">① Orientation 背景</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="Sets the scene — who is involved, where it happens, and where the challenge came from, so viewers understand the situation first.">交代背景——人物、地点、挑战由何而来。让观众先了解情境。</div>
+      </div>
+      <div style="background:#FBF1DE;border:1px solid #E8CB94;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#9A6212;margin-bottom:4px">② Remarkable Event 意外事件</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="The heart of the story — the surprising moment. This is what drives comments and shares.">故事核心——令人意外的那一刻。这是吸引评论和转发的关键。</div>
+      </div>
+      <div style="background:#FBEAE6;border:1px solid #E5A79C;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#A8322A;margin-bottom:4px">③ Reaction 反应</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="The genuine reaction — emotion gives the story warmth, and viewers connect with it.">真实反应——情感表达让故事有温度，观众由此产生共鸣。</div>
+      </div>
+    </div>
+    <div class="ins">
+      <div class="inslbl">核心规律 Key pattern</div>
+      <div class="instxt" data-en="The anecdote is one of the most common video genres on Xiaohongshu. If a video has a setting, an unexpected event and a reaction, it fits this pattern. Once you can recognise it, you can predict where a video is going and understand why comments cluster around certain moments.">「轶事」是小红书最常见的视频体裁之一。内容有背景、有意外事件、有反应，就符合这个模式。学会识别它，你就能预测视频走向，也能理解评论为什么集中在某些片段上。</div>
+    </div>
+    <button class="pbtn" onclick="finishL1()">继续：Level 2 评论任务 Continue →</button>
+  </div>
+
+  <!-- L2 DANMU -->
+  <div class="screen" id="s-l2">
+    <div class="chip">Level 2 — 评论 Commenter</div>
+    <div class="card">
+      <div class="sec-title">三轮弹幕练习</div>
+      <div class="sec-sub" data-en="Three danmu (bullet comment) rounds. Each round has a different task: find the comments that match that round&#x27;s goal and tap them to tag them. Read each round&#x27;s instructions carefully.">每轮任务不同——找出符合当轮要求的评论，点击即可标记。仔细阅读每轮任务说明。</div>
+    </div>
+    <div id="dm-task-banner" class="dm-task-banner"></div>
+    <div class="gloss-row no-print"><button class="tbar-btn" id="gloss-btn" onclick="toggleGloss()">英文注释：开</button></div>
+    <div class="danmu-wrap">
+      <div class="danmu-screen" id="danmu-screen"></div>
+      <div class="danmu-overlay">
+        <div class="dm-info">第 <span id="dm-round">1</span> / 3 轮 &nbsp;&middot;&nbsp; 抓到：<strong id="dm-caught">0</strong> / <span id="dm-need">?</span></div>
+        <div class="dm-bar"><div class="dm-fill" id="dm-fill" style="width:100%;transition:width .1s linear"></div></div>
+      </div>
+    </div>
+    <button class="pbtn" id="dm-btn" onclick="startDanmuRound()">开始 Start →</button>
+    <div id="dm-between" style="display:none">
+      <div class="ins"><div class="inslbl">本轮结果 This round</div><div class="instxt" id="dm-round-insight"></div></div>
+      <button class="pbtn" id="dm-next-btn" onclick="nextDanmuRound()">Next round →</button>
+      <button class="sbtn" onclick="retryRound()">↩ 重试本轮 Retry</button>
+    </div>
+    <div id="dm-done" style="display:none">
+      <div class="dm-score-row" id="dm-score-row"></div>
+      <div class="ins"><div class="inslbl">你发现了什么 What you found</div><div class="instxt" id="dm-final-insight"></div></div>
+      <button class="pbtn" onclick="goLikes()">继续：猜猜哪条最火 Continue →</button>
+    </div>
+  </div>
+
+  <!-- WRITE COMMENT -->
+  <div class="screen" id="s-write">
+    <div class="chip">Write your own comment</div>
+    <div class="card">
+      <div class="sec-title">用中文为Tyler的视频写一条评论。</div>
+      <div class="sec-sub" data-en="Write a comment on Tyler&#x27;s video in Chinese. Make it fit Xiaohongshu comment culture — genuine, natural and engaging. A short comment is totally fine.">写一条符合小红书评论文化的内容——真诚、自然、有互动感。短评也完全可以。</div>
+    </div>
+    <div class="card" style="background:#F6F1E9;margin-bottom:12px">
+      <div class="sec-title" style="font-size:12px;margin-bottom:8px">真实评论示例（你刚才在弹幕里找到过这些） · Real examples you just found</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#2F6B5E;font-weight:600;margin-bottom:3px">语言能力 Language Ability</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「这普通话太可以了」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">This Mandarin is seriously impressive</div>
+        </div>
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#2C4A6E;font-weight:600;margin-bottom:3px">外貌造型 Appearance</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「别说还真挺帅的」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">Honestly, he's actually quite good-looking</div>
+        </div>
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#9A6212;font-weight:600;margin-bottom:3px">家庭氛围 Family Atmosphere</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「他们这一家子太快乐了」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">This whole family is just so full of joy</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 10px;background:#E8EDF3;border-radius:8px;font-size:11px;color:#2C4A6E;line-height:1.5" data-en="You can also comment from another angle — share how you felt after watching, or react to the video&#x27;s creative idea.">
+        你也可以从其他角度评论——比如表达你看完的感受，或者对视频创意的反应。
+      </div>
+    </div>
+    <textarea class="comment-area" id="comment-input" placeholder="在这里写你的评论 / Write your comment here..."></textarea>
+    <div class="err" id="comment-err">Please write something before checking!</div>
+    <button class="pbtn" id="check-comment-btn" onclick="checkComment()">检查我的评论 Check →</button>
+    <div id="comment-result" style="display:none">
+      <div class="dim">
+        <div class="dim-h"><span class="dim-num">1</span><div><div class="dim-title">维度一：语言检查 <span class="dim-en">Language check</span></div>
+        <div class="dim-sub" data-en="Automatic, rule-based check of common grammar and vocabulary issues. It can only catch common problems — ask your teacher or classmates to take a look too.">自动检查常见的语法和用词问题。只能发现常见错误，不能代替老师批改。</div></div></div>
+        <div id="lang-check"></div>
+      </div>
+      <div class="dim">
+        <div class="dim-h"><span class="dim-num">2</span><div><div class="dim-title">维度二：自评——符合社交媒体语境吗？ <span class="dim-en">Self-check: social media fit</span></div>
+        <div class="dim-sub" data-en="Compare these statements with your comment and tap each one that is true for it.">对照你的评论，符合的就点一下。</div></div></div>
+        <div class="checklist" id="comment-checklist"></div>
+      </div>
+      <div class="ins">
+        <div class="inslbl">铁蛋视频里的真实评论 A real comment</div>
+        <div class="instxt">「哇你真的像中国人了！我都忘了你是老外了哈哈」<br><span style="color:#6E635A;font-size:11px">Wow you really look Chinese now! I forgot you were a foreigner haha</span></div>
+      </div>
+      <div class="ins">
+        <div class="inslbl">好评论的秘诀 What makes a good comment</div>
+        <div class="instxt" id="comment-insight"></div>
+      </div>
+      <button class="pbtn" onclick="goReply()">下一步：放进评论区看看 Next →</button>
+    </div>
+  </div>
+
+  <!-- GUESS THE LIKES -->
+  <div class="screen" id="s-likes">
+    <div class="chip">Level 2 — 猜猜哪条最火 Guess the likes</div>
+    <div class="card">
+      <div class="sec-title">哪条评论点赞最多？</div>
+      <div class="sec-sub" data-en="These are real comments from the comment section of Tyler's video. Which one do you think got the most likes? Tap to choose, and the real numbers will be revealed.">下面是铁蛋这条视频评论区里的真实评论。你觉得哪一条得到的点赞最多？点一下选择，然后揭晓真实数据。</div>
+    </div>
+    <div id="likes-list" class="likes-list"></div>
+    <div id="likes-after" style="display:none">
+      <div class="ins"><div class="inslbl">为什么这些评论受欢迎？ Why are these popular?</div>
+        <div class="instxt" data-en="The most-liked comments tend to be short and funny, closely tied to what happens in the video, and often use a meme, a celebrity comparison, a picture or a question that others want to answer. Comments that focus on an awkward or sensitive detail get very few likes. Likes and replies are how users judge whether a comment works.">点赞多的评论往往<strong>简短、好笑</strong>，<strong>紧扣视频内容</strong>，还常常用梗、名人对比、图片或者提问，让别人想接话。只盯着尴尬或敏感细节的评论，点赞很少。点赞和回复，就是用户在评价一条评论好不好。</div>
+      </div>
+      <button class="pbtn" onclick="goWriteComment()">继续：写评论 Continue →</button>
+    </div>
+  </div>
+
+  <!-- COMMENT SECTION PREVIEW + REPLY -->
+  <div class="screen" id="s-reply">
+    <div class="chip">Level 2 — 评论区 Comment section</div>
+    <div class="card">
+      <div class="sec-title">你的评论放进评论区了</div>
+      <div class="sec-sub" data-en="Here is your comment next to real comments. Task: tap “Reply” under one comment and write a one-sentence reply.">这是你的评论和真实评论排在一起的样子。<strong>任务：</strong>点一条评论下面的「回复」，写一句回复。</div>
+    </div>
+    <div class="reply-tip" data-en="Tip: real replies are usually very short and build on what the other person said, e.g. “He's just missing the swirl on his chin” or “Oh right, that's him!”">小提示：真实的回复通常很短，会接着对方的话说，比如「下巴上缺一个漩涡」「啊对，就是他！」</div>
+    <div class="feed" id="feed"></div>
+    <button class="pbtn" style="margin-top:14px" onclick="showWriteSummary()">查看完成总结 Summary →</button>
+  </div>
+
+  <!-- WRITE SUMMARY -->
+  <div class="screen" id="s-write-summary">
+    <div class="chip">完成 Complete</div>
+    <div style="text-align:center;padding:20px 0 12px">
+      <div class="mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></div>
+      <div style="font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px" data-en="You&#x27;ve completed both levels: Reader and Commenter.">你完成了「看懂」和「写评论」两个层次</div>
+      <div style="font-size:13px;color:#6E635A">Navigate Chinese Social Media</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="background:#E2EEEA;border-radius:12px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:600;color:#2F6B5E;margin-bottom:4px">✓ Level 1 — 看懂 Reader</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="You analysed the video&#x27;s context, the relationships involved and its genre structure, and understood why it drew so much engagement.">你分析了视频的语境、人物关系和体裁结构，理解了内容为什么能引发大量互动。</div>
+      </div>
+      <div style="background:#E8EDF3;border-radius:12px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:600;color:#2C4A6E;margin-bottom:4px">✓ Level 2 — 评论 Commenter</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="You spotted three types of real comments in the danmu, guessed which comments users liked most, and wrote your own comment and a reply in Chinese.">你在弹幕中识别了三类真实评论，猜了哪条评论最受欢迎，还用中文写了自己的评论和回复。</div>
+      </div>
+    </div>
+    <div class="ins"><div class="inslbl">最重要的一课 The key lesson</div>
+    <div class="instxt" data-en="Writing a comment isn&#x27;t just about saying something in Chinese. An appropriate comment fits the context of the social media platform and relates to the video. There is no fixed standard for a good comment. First, make sure your grammar and vocabulary are correct. But in the end, the people who judge whether your comment is appropriate are the platform&#x27;s users: they will see your comment, and they may like it or reply to it. Good comments tend to attract lots of likes, discussion and replies.">写评论不只是用中文说一句话。一条<strong>得体</strong>的评论，要符合社交媒体平台的语境，也要和视频内容相关。评论的好坏没有固定的标准：首先要注意语法和词汇用得正确；而最终评判你的评论是否得体的，是平台上的广大用户——他们会看到你的评论，可能给你点赞，也可能回复你。好的评论往往会收获很多点赞、讨论和回复。</div></div>
+    <button class="pbtn" onclick="finishL2()">查看最终得分 →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="s-result">
+    <div class="result-card">
+      <div class="re mark" id="re"></div>
+      <div class="rt2" id="rt2"></div>
+      <div class="rs2" id="rs2"></div>
+      <div class="sco" id="sco"></div>
+      <div class="scol" id="scol"></div>
+      <div class="fan-gain" style="display:none"><div class="fw"><div class="fwv" id="fan-total">0</div><div class="fwl">粉丝 followers</div></div></div>
+    </div>
+    <div class="ins"><div class="inslbl">关键收获</div><div class="instxt" id="r-insight"></div></div>
+    <button class="pbtn" onclick="backToHub()">返回关卡</button>
+    <button class="sbtn" onclick="showReport()">查看学习记录 My record →</button>
+  </div>
+
+  <!-- REPORT (for screenshot / PDF submission) -->
+  <div class="screen" id="s-report">
+    <div class="chip">学习记录 · Learning record</div>
+    <div class="card">
+      <label class="sec-title" for="stu-name" style="display:block">姓名 Name</label>
+      <input class="name-input" id="stu-name" placeholder="写上你的名字 / Your name" oninput="S.name=this.value;save()"/>
+      <div class="sec-sub" id="rep-date" style="margin:8px 0 0"></div>
+    </div>
+    <div id="rep-body"></div>
+    <div class="no-print">
+      <button class="pbtn" onclick="window.print()">打印 / 存为 PDF</button>
+      <button class="sbtn" onclick="backToHub()">返回关卡</button>
+      <div style="font-size:12px;color:#5A514A;text-align:center;margin-top:10px">也可以直接截图提交 · You can also screenshot this page</div>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDE CHARACTER 小白 (original character, not a real person) -->
+<div class="guide no-print" id="guide" data-mood="normal">
+  <div class="guide-bubble" id="guide-bubble" hidden>
+    <button type="button" class="guide-x" aria-label="关闭提示 Close" onclick="guideHide()">×</button>
+    <div class="guide-name">小白 Xiaobai</div>
+    <div id="guide-text" role="status" aria-live="polite"></div>
+  </div>
+  <button type="button" class="guide-av" id="guide-av" aria-label="小白：点我看提示 Tap for a tip" aria-expanded="false" onclick="guideToggle()"><svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
+<circle cx="32" cy="32" r="31" fill="#F6E3DD"></circle>
+<path d="M13 64c1.5-10 9-16 19-16s17.5 6 19 16z" fill="#2C4A6E"></path>
+<path d="M27 48l5 6 5-6" fill="none" stroke="#FFFDF9" stroke-width="2" stroke-linejoin="round"></path>
+<circle cx="32" cy="31" r="14.5" fill="#F2CFB3"></circle>
+<path d="M17.5 28c0-9.5 6.5-15 14.5-15s14.5 5.5 14.5 15c-4.5-2-9.5-2.8-14.5-2.8S22 26 17.5 28z" fill="#B93A2B"></path>
+<rect x="16.5" y="25" width="31" height="4.5" rx="2.2" fill="#8F2B1F"></rect>
+<circle cx="32" cy="12" r="3.2" fill="#B93A2B"></circle>
+<circle cx="23.5" cy="36" r="2.2" fill="#E9A9A0" opacity=".75"></circle>
+<circle cx="40.5" cy="36" r="2.2" fill="#E9A9A0" opacity=".75"></circle>
+<g class="m m-normal"><circle cx="27" cy="32" r="1.7" fill="#1F1A17"></circle><circle cx="37" cy="32" r="1.7" fill="#1F1A17"></circle><path d="M28.5 38q3.5 2.6 7 0" fill="none" stroke="#1F1A17" stroke-width="1.6" stroke-linecap="round"></path></g>
+<g class="m m-happy"><path d="M25 32.5q2-2.4 4 0M35 32.5q2-2.4 4 0" fill="none" stroke="#1F1A17" stroke-width="1.7" stroke-linecap="round"></path><path d="M27.5 37q4.5 5 9 0z" fill="#8F2B1F"></path></g>
+<g class="m m-oops"><circle cx="27" cy="32" r="1.7" fill="#1F1A17"></circle><circle cx="37" cy="32" r="1.7" fill="#1F1A17"></circle><path d="M29 39.5q3-2 6 0" fill="none" stroke="#1F1A17" stroke-width="1.6" stroke-linecap="round"></path><path d="M46 23c-1.6 2.4-2.2 3.7-2.2 4.6a2.2 2.2 0 0 0 4.4 0c0-.9-.6-2.2-2.2-4.6z" fill="#8FB8D6"></path></g>
+<g class="m m-think"><circle cx="28" cy="31" r="1.7" fill="#1F1A17"></circle><circle cx="38" cy="31" r="1.7" fill="#1F1A17"></circle><path d="M29.5 38.5h5" fill="none" stroke="#1F1A17" stroke-width="1.6" stroke-linecap="round"></path><circle cx="50" cy="16" r="1.6" fill="#6E635A"></circle><circle cx="54" cy="11" r="2.2" fill="#6E635A"></circle></g>
+</svg></button>
+</div>
+<script>
+// ── CONFIG — replace video URL here ─────────────────────────
+var VIDEO_URL = 'https://www.xiaohongshu.com/explore/69c9d6190000000022026e03?xsec_token=CBY9giqXd6CGnXAGA3d-68IIKS7NbiRZU3TTz9F_IMkS8=&xsec_source=app_share'; // ← paste Tyler&#39;s actual video URL here
+
+document.getElementById('video-link-btn').href = VIDEO_URL;
+
+var MARK_CHECK='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>';
+// ── STATE ────────────────────────────────────────────────────
+var S={fans:0,unlocked:[1],qIdx:0,qScore:0,qAns:false,
+       stagePick:null,stageAnswers:{},
+       dmRound:0,dmScores:[0,0,0],dmTimers:[],
+       checkedItems:{},
+       qResults:[],quizDone:false,stageCorrect:null,dmDone:[false,false,false],dmWrong:[0,0,0],dmWrongItems:[[],[],[]],
+       comment:'',commentChecked:false,l1Done:false,l2Done:false,name:''};
+
+// ── SAVE / LOAD PROGRESS (this browser only) ──────────────────
+var SAVE_KEY='navcsm-progress-v1';
+var SAVE_FIELDS=['fans','unlocked','qScore','qResults','quizDone','stageCorrect','dmScores','dmDone','dmWrong','dmWrongItems','checkedItems','comment','commentChecked','langResult','likeGuess','reply','replyTo','replyResult','l1Done','l2Done','name'];
+function save(){
+  try{var o={};SAVE_FIELDS.forEach(function(k){o[k]=S[k];});localStorage.setItem(SAVE_KEY,JSON.stringify(o));}catch(e){}
+}
+function load(){
+  try{var raw=localStorage.getItem(SAVE_KEY);if(!raw)return;var o=JSON.parse(raw);
+    SAVE_FIELDS.forEach(function(k){if(o[k]!==undefined)S[k]=o[k];});}catch(e){}
+}
+function resetProgress(){
+  if(!confirm('确定要清空所有进度重新开始吗？\nClear all progress and start over?'))return;
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  location.reload();
+}
+
+// ── TEACHER MODE: open the page with ?teacher=1 ───────────────
+var TEACHER=/[?&#]teacher/.test(location.search+location.hash);
+
+var levels=[
+  {id:1,icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#2C4A6E" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>',name:'Level 1 — 看懂 Reader',desc:'Understand Tyler\'s video: questions + genre staging',bg:'#E8EDF3'},
+  {id:2,icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#2F6B5E" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"></path></svg>',name:'Level 2 — 评论 Commenter',desc:'Three comment hunts + write your own',bg:'#E2EEEA'},
+];
+
+// ── QUIZ DATA ─────────────────────────────────────────────────
+var Qs=[
+  {tag:'Q1 · Time & Place',cn:'这条视频发生在哪里？什么时候？',en:'Where and when does this video take place?',
+   opts:[{cn:'A. 在中国，Tyler刚来中国不久',en:'In China, shortly after Tyler first arrived'},
+         {cn:'B. 在Tyler家里，他在街上接受路人采访那天',en:'At Tyler\'s home, on the day he was interviewed by strangers on the street'},
+         {cn:'C. 在Tyler的家里，他接受粉丝挑战、开始染发造型那天',en:'At Tyler\'s home, on the day he took on the fan challenge and began his makeover',correct:true},
+         {cn:'D. 在录音棚，Tyler录制中文歌曲的那天',en:'In a recording studio, on the day Tyler recorded a Chinese song'}],
+   fb:{ok:'Right — the video starts at Tyler\'s home, where he decides to take on the fan challenge and begins the transformation.',no:'The video starts at Tyler\'s home — this is where he decides to accept the challenge and begins dyeing his hair, drawing his eyebrows, and putting in contacts.',en_ok:'正确——视频发生在Tyler在中国的家里，他在家接受了粉丝挑战，开始染发、画眉、戴美瞳。地点：家中；时间：决定开始挑战那天。',en_no:'视频从家中开始——Tyler在家里接受粉丝挑战，开始染发、画眉、戴美瞳。地点在国内，时间是挑战当天。'}},
+  {tag:'Q2 · What Tyler does & why',cn:'Tyler在这条视频里做了什么？他为什么这样做？',en:'What does Tyler do, and why?',
+   opts:[{cn:'A. 他教中文词汇',en:'He teaches Chinese vocabulary'},
+         {cn:'B. 他染了黑头发，测试其他人能不能认出他是外国人',en:'He dyed his hair black, to test whether other people could still tell he was foreign',correct:true},
+         {cn:'C. 他做了一道中国菜',en:'He cooked a Chinese dish'},
+         {cn:'D. 他采访了路人',en:'He interviewed people on the street'}],
+   fb:{ok:'Right — a fan challenged him to look Chinese since he already sounds Chinese, so he took on the experiment.',no:'Tyler dyed his hair black because fans challenged him: if you sound Chinese, why not look Chinese too?',en_ok:'正确——粉丝挑战他：既然声音这么像中国人，为什么不试试外形也像？所以他开始做这个实验。',en_no:'Tyler染黑头发是因为粉丝的挑战——你说话这么像中国人，为什么不试试外形也像？'}},
+  {tag:'Q3 · Who Tyler is & who he\'s talking to',cn:'Tyler是谁？他在对谁说话？',en:'Who is Tyler, and who is he speaking to?',
+   opts:[{cn:'A. 他是一个在中国生活了17年的美国人，在对中国小红书用户说话',en:'He is an American who has lived in China for 17 years, speaking to Chinese Xiaohongshu users',correct:true},
+         {cn:'B. 他是中国人，在对外国粉丝说话',en:'He is Chinese, speaking to foreign fans'},
+         {cn:'C. 他是一个语言老师，在对他的学生说话',en:'He is a language teacher, speaking to his students'},
+         {cn:'D. 他是一个演员，在表演一个角色',en:'He is an actor, performing a character'}],
+   fb:{ok:'Right — Tyler is a foreigner making content for a Chinese audience. That combination creates the interesting tension in his videos.',no:'Tyler is a foreigner (from the US) making content for Chinese Xiaohongshu users. That gap between "outsider" and "insider" is what makes his content interesting.',en_ok:'正确——Tyler是在中国生活17年的外国人，专门为中国观众制作内容。这种局外人融入局内的张力，是他视频最吸引人的地方。',en_no:'Tyler是美国人，在中国生活多年，观众主要是小红书用户。这种外国人深度融入中国生活的反差，是他内容最特别的地方。'}},
+  {tag:'Q4 · Family reaction',cn:'Tyler染完头发去见自己的女儿、儿子和丈母娘。他为什么选择见家人，而不是随机路人？',en:'Tyler went to meet his daughter, son, and mother-in-law after dyeing his hair. Why test with family rather than random strangers?',
+   opts:[{cn:'A. 因为家人更容易被骗，实验更容易成功',en:'Because family are easier to fool, making the experiment easier to pass'},
+         {cn:'B. 因为丈母娘要求他染头发，所以要给她看结果',en:'Because his mother-in-law asked him to dye his hair, so he wanted to show her'},
+         {cn:'C. 因为家人最了解他的真实样子，如果连他们都认不出来，说明变化很大',en:'Because family know him best — if even they can\'t recognise him, the transformation is real',correct:true},
+         {cn:'D. 因为他不想让陌生人知道他是外国人',en:'Because he didn\'t want strangers to know he was a foreigner'}],
+   fb:{ok:'Right — testing with family who know him best makes the experiment more meaningful. Their genuine surprise shows the transformation worked.',no:'Family know Tyler best, so their reaction is the real test. If even they don\'t recognise him immediately, the change is genuinely striking.',en_ok:'正确——家人最了解他的真实样子，连家人都没认出来，说明这次改变真的很有说服力。',en_no:'家人最熟悉Tyler，所以他们的反应是最真实的测试。连家人都没认出他，说明造型改变真的很成功。'}},
+  {tag:'Q5 · Why this video went viral',cn:'这条视频的目的是什么？为什么它收到了1263条评论？',en:'What is the purpose of this video? Why did it get 1,263 comments?',
+   opts:[{cn:'A. 目的是回应粉丝的挑战，评论多因为粉丝觉得自己参与创造了这条内容',en:'To respond to a fan challenge; many comments because fans feel they helped create it',correct:true},
+         {cn:'B. 目的是教中文词汇，评论多因为词汇很实用',en:'To teach vocabulary; many comments because the words are useful'},
+         {cn:'C. 目的是批评中国社会，话题有争议所以评论多',en:'To criticise Chinese society; controversial topic means more comments'},
+         {cn:'D. 目的是展示铁蛋的新发型，评论多因为大家喜欢讨论发型',en:'To show Tyler\'s new hairstyle; many comments because people love discussing hair'}],
+   fb:{ok:'Right — because fans suggested the challenge, they feel ownership over the result and flock to the comment section.',no:'The key is that fans suggested the challenge — so they feel like they helped make the video, and that\'s why 1,263 comments followed.',en_ok:'正确——正因为挑战来自粉丝的建议，他们觉得自己参与创造了这条内容，于是纷纷涌入评论区。',en_no:'关键在于：挑战是粉丝提出的，所以粉丝觉得自己也参与制造了这条视频，这就是为什么有1263条评论。'}},
+];
+
+// ── STAGING DATA ──────────────────────────────────────────────
+var stageData=[
+  {id:'orientation',label:'Orientation',label_en:'Setting the scene',
+   desc:'粉丝留言说铁蛋的中文说得太好了——如果把头发染成黑色，根本看不出是外国人。铁蛋决定接受这个挑战，看看能不能以假乱真。',
+   desc_en:'Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he decides to take on the challenge'},
+  {id:'event',label:'Remarkable Event',label_en:'The transformation',
+   desc:'铁蛋开始改变造型：染黑头发、画眉毛、戴上美瞳。一步一步把自己变成"中国人的样子"。',
+   desc_en:'Tyler dyes his hair black, draws his eyebrows, and puts in coloured contacts — step by step transforming his appearance'},
+  {id:'reaction',label:'Reaction',label_en:'The real test',
+   desc:'铁蛋走进小区，见到自己的儿子、女儿和丈母娘，看他们的第一反应——能不能认出眼前这个人是他？',
+   desc_en:'Tyler walks into his neighbourhood to meet his son, daughter, and mother-in-law — can they recognise him?'},
+];
+
+// ── DANMU DATA (3 rounds) ─────────────────────────────────────
+// Each item: txt=Chinese comment, en=English gloss, type=target category or 'other'
+var dmRounds=[
+  {
+    task:'第一轮：找出评价铁蛋<strong>语言能力</strong>的评论——提到他说话方式、口音或普通话水平的。',
+    task_en:'Round 1: Find comments about Tyler\'s Chinese language ability — how he speaks, his accent, or his Mandarin.',
+    target:'language',
+    insight:'这一轮说明：中国社交媒体观众对外国人的语言能力非常敏感。正面评价（「太可以了」）和带观察性质的评论（「海蛎子味的」「大连话太6了」）都很常见，直接而具体。',
+    insight_en:'Chinese social media audiences pay close attention to language ability, especially for a foreigner. Both positive and observational language comments are normal and specific.',
+    items:[
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'language',col:'#E1F5EE',tc:'#085041'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'language',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'这普通话海蛎子味的',en:'His Mandarin has a real oyster-sauce (coastal) accent to it',type:'language',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'10年老外都到17年了',en:'He used to say "10 years in China", now it\'s 17 — time flies!',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'中文说得也太溜了吧',en:'His Chinese is just too fluent',type:'language',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'变成马斯克了哥',en:'He turned into Musk, bro',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'黑色显得更高级了铁蛋儿',en:'The black hair looks more sophisticated, Tyler!',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'好可爱的老公',en:'What a cute husband',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'哈哈，太有创意了',en:'Haha, so creative!',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'other',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+    ]
+  },
+  {
+    task:'第二轮：找出评价铁蛋<strong>外貌造型</strong>的评论——提到他的头发、眼睛、样子或整体改变效果的。',
+    task_en:'Round 2: Find comments about Tyler\'s appearance — his hair, eyes, face, or overall look after the transformation.',
+    target:'appearance',
+    insight:'外貌类评论是这条视频中最多的。观众对造型细节的评价既有正面（「真挺帅的」「年轻了好几岁」），也有直接指出不足（「左眉没画好」「还是像老外」）。这种直接评价外貌的风格在中国社媒很正常，是重要的文化特点。',
+    insight_en:'Appearance comments dominate this video. Both complimentary and critical appearance comments are completely normal on Chinese social media — a cultural difference from many Western platforms.',
+    items:[
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'appearance',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair doesn\'t help',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'但是你的样子一看就知道是老外呦',en:'But one look at your face and you can still tell you\'re a foreigner',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'能看出眼睛还是有点蓝',en:'You can still see his eyes are a bit blue',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'这一打扮年轻了好几岁',en:'This look takes years off him',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'黑色显得更高级了铁蛋儿',en:'The black hair looks more sophisticated, Tyler!',type:'appearance',col:'#FAEEDA',tc:'#633806'},
+      {txt:'变成马斯克了哥',en:'He turned into Musk, bro',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'你下次可以把肤色调黄一点',en:'Next time try adjusting your skin tone more yellow',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'今天这个改完也很好看',en:'Today\'s look is really nice even after the makeover',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'中文说得也太溜了吧',en:'His Chinese is just too fluent',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'10年老外都到17年了',en:'He used to say "10 years in China", now it\'s 17 — time flies!',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'哈哈，太有创意了',en:'Haha, so creative!',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'孩子们好可爱，家庭真幸福',en:'The kids are so cute — what a happy family',type:'other',col:'#E1F5EE',tc:'#085041'},
+    ]
+  },
+  {
+    task:'第三轮：找出评价铁蛋<strong>家庭氛围</strong>的评论——提到他和家人的关系、或者视频里温暖幸福感的。',
+    task_en:'Round 3: Find comments about Tyler\'s family atmosphere — his relationship with family, or the warm feeling of the video.',
+    target:'family',
+    insight:'这些评论说明：观众不只在看铁蛋一个人，他们在看整个家庭。对幸福感和家庭关系的评论，反映出中国社媒观众会投入到创作者的整个生活世界里——这是为什么在内容里展示家庭是很有效的策略。',
+    insight_en:'Viewers are not just watching Tyler — they are watching his family. This reveals that Chinese social media audiences engage with a creator\'s whole social world, not just the individual.',
+    items:[
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'family',col:'#FAEEDA',tc:'#633806'},
+      {txt:'好可爱的老公，好幸福的妻子',en:'Such a cute husband, what a lucky wife',type:'family',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'这家人好可爱啊',en:'This family is just adorable',type:'family',col:'#FAEEDA',tc:'#633806'},
+      {txt:'孩子们好可爱，家庭真幸福',en:'The kids are so cute — what a happy family',type:'family',col:'#E1F5EE',tc:'#085041'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'other',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair doesn\'t help',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'10年老外都到17年了',en:'He used to say "10 years", now it\'s 17!',type:'other',col:'#E1F5EE',tc:'#085041'},
+    ]
+  },
+];
+
+var DM_ABOUT={"这普通话太可以了": {"cn": "夸他的普通话很好，是在评价语言能力", "en": "praises his Mandarin — it is about his language ability"}, "大连话太6了": {"cn": "夸他的大连话说得好，是在评价语言（方言）能力", "en": "praises his Dalian dialect — it is about his language ability"}, "这普通话海蛎子味的": {"cn": "说他的普通话带大连口音（“海蛎子味”），是在评价语言", "en": "says his Mandarin has a coastal Dalian accent — it is about his language"}, "中文说得也太溜了吧": {"cn": "夸他中文说得流利，是在评价语言能力", "en": "says his Chinese is really fluent — it is about his language ability"}, "10年老外都到17年了": {"cn": "说的是铁蛋在中国生活了多久（以前叫“10年老外”，现在已经17年了），是在感叹时间过得快", "en": "is about how long Tyler has lived in China (he used to be “the 10-year foreigner”, now it is 17 years) — it comments on how time flies"}, "变成马斯克了哥": {"cn": "把铁蛋的新造型比作马斯克，是在评价他的外貌", "en": "compares Tyler’s new look to Elon Musk — it is about his appearance"}, "黑色显得更高级了铁蛋儿": {"cn": "说黑头发让他看起来更高级，是在评价发色和造型", "en": "says the black hair makes him look classier — it is about his hair and look"}, "左眉没画好": {"cn": "指出左边眉毛没画好，是在评价化妆造型的细节", "en": "points out the left eyebrow isn’t drawn well — it is about a detail of his makeover"}, "别说还真挺帅的": {"cn": "夸他变装后挺帅，是在评价外貌", "en": "says he actually looks handsome — it is about his appearance"}, "黑头发一下都年轻了": {"cn": "说黑头发让他显得年轻，是在评价外貌", "en": "says the black hair makes him look younger — it is about his appearance"}, "还是像老外，头发改变也没用": {"cn": "认为他换了发色还是像外国人，是在评价外貌", "en": "says he still looks foreign despite the new hair — it is about his appearance"}, "但是你的样子一看就知道是老外呦": {"cn": "说他的长相一看就是外国人，是在评价外貌", "en": "says his face still gives him away as a foreigner — it is about his appearance"}, "能看出眼睛还是有点蓝": {"cn": "注意到他的眼睛还是有点蓝，是在评价外貌细节", "en": "notices his eyes are still a bit blue — it is about an appearance detail"}, "这一打扮年轻了好几岁": {"cn": "说这个造型让他年轻了好几岁，是在评价外貌", "en": "says the look takes years off him — it is about his appearance"}, "你下次可以把肤色调黄一点": {"cn": "建议他下次把肤色也调一调，是在评论外貌造型", "en": "suggests adjusting his skin tone next time — it is about his makeover"}, "今天这个改完也很好看": {"cn": "夸改完的造型好看，是在评价外貌", "en": "says the new look is nice — it is about his appearance"}, "他们这一家子太快乐了": {"cn": "说这一家人很快乐，是在评价家庭氛围", "en": "says the whole family is so happy — it is about the family atmosphere"}, "好可爱的老公": {"cn": "夸铁蛋是个可爱的老公，说的是他在家庭里的角色", "en": "calls Tyler a cute husband — it is about his role in the family"}, "好可爱的老公，好幸福的妻子": {"cn": "夸老公可爱、妻子幸福，是在评价夫妻关系和家庭", "en": "praises the cute husband and happy wife — it is about the couple and the family"}, "这家人好可爱啊": {"cn": "夸这家人可爱，是在评价家庭", "en": "says the family is adorable — it is about the family"}, "孩子们好可爱，家庭真幸福": {"cn": "夸孩子可爱、家庭幸福，是在评价家庭氛围", "en": "praises the kids and the happy family — it is about the family atmosphere"}, "哈哈，太有创意了": {"cn": "夸视频的点子有创意，是在评价视频本身", "en": "praises the video’s creative idea — it is about the video itself"}, "铁蛋你可逗死我了": {"cn": "说铁蛋太搞笑了，是对他本人和视频好笑的反应", "en": "says Tyler is hilarious — it is a reaction to him and the video being funny"}};
+var DM_CAT={"这普通话太可以了": "language", "大连话太6了": "language", "这普通话海蛎子味的": "language", "中文说得也太溜了吧": "language", "10年老外都到17年了": "time", "变成马斯克了哥": "appearance", "黑色显得更高级了铁蛋儿": "appearance", "左眉没画好": "appearance", "别说还真挺帅的": "appearance", "黑头发一下都年轻了": "appearance", "还是像老外，头发改变也没用": "appearance", "但是你的样子一看就知道是老外呦": "appearance", "能看出眼睛还是有点蓝": "appearance", "这一打扮年轻了好几岁": "appearance", "你下次可以把肤色调黄一点": "appearance", "今天这个改完也很好看": "appearance", "他们这一家子太快乐了": "family", "好可爱的老公": "family", "好可爱的老公，好幸福的妻子": "family", "这家人好可爱啊": "family", "孩子们好可爱，家庭真幸福": "family", "哈哈，太有创意了": "creative", "铁蛋你可逗死我了": "funny"};
+var DM_CAT_CN={language:'语言',appearance:'外貌',family:'家庭',time:'在中国的时间',creative:'视频创意',funny:'搞笑'};
+function dmPop(scr,el,ok,txt){
+  var sr=scr.getBoundingClientRect(),er=el.getBoundingClientRect();
+  var p=document.createElement('span');p.className='dm-pop '+(ok?'dm-pop-ok':'dm-pop-no');p.textContent=txt;
+  p.style.left=Math.max(4,Math.min(sr.width-150,er.left-sr.left+er.width/2-60))+'px';p.style.top=Math.max(2,er.top-sr.top-28)+'px';
+  scr.appendChild(p);setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},1100);
+}
+var DM_TARGET_CN={language:'语言能力',appearance:'外貌造型',family:'家庭氛围'};
+var DM_TARGET_EN={language:'language ability',appearance:'appearance',family:'family atmosphere'};
+
+
+// ── REAL COMMENT DATA (from the video's comment section; usernames anonymised) ──
+var REAL_COMMENTS=[
+  {id:'img',who:'网友A',img:true,cn:'[图片评论] 巴斯光年的图 + 染黑头发后铁蛋的截图',en:'[Image comment] a picture of Buzz Lightyear from Toy Story next to a screenshot of Tyler',likes:2244,replies:'5+',
+   why:'一个字都没写，只用两张图做对比，就很好笑。网友在回复里接着玩梗，互动特别多。',why_en:'Not a single word — just two pictures side by side, and it is hilarious. Other users kept the joke going in the replies.'},
+  {id:'young',who:'网友B',cn:'为啥染了黑头发显得更年轻了呢[表情]',en:'How come dyeing his hair black makes him look younger? [sticker]',likes:1491,replies:21,
+   why:'用提问的方式说外貌，别人忍不住来回答，所以回复很多（21 条）。',why_en:'It comments on his looks as a question, so people want to answer — that is why it got 21 replies.'},
+  {id:'musk',who:'网友C',cn:'变成马斯克了哥 [表情包]',en:'Bro, you turned into Musk [meme image]',likes:1305,replies:18,
+   why:'很短、好笑，用名人做对比，还配了表情包。',why_en:'Short and funny, with a celebrity comparison and a meme image.'},
+  {id:'feixiang',who:'网友D',cn:'铁蛋还是黑头发显得你高级，有点像费翔[表情]',en:'Tyler, black hair really makes you look classy — you look a bit like Fei Xiang [emoji]',likes:834,replies:14,
+   why:'直接叫“铁蛋”，像朋友聊天；夸得具体（黑头发显得高级），也有名人对比。',why_en:'It calls him “Tiedan” directly like a friend, gives a specific compliment, and makes a celebrity comparison.'},
+  {id:'euro',who:'网友E',cn:'真变成欧洲人的感觉',en:'He really feels like a European now',likes:200,replies:2,
+   why:'也在说外貌，但没有梗，也没有给别人接话的点。',why_en:'Also about his looks, but there is no joke and nothing for others to respond to.'},
+  {id:'cao',who:'网友F',cn:'戴隐形眼镜的时候好像听到了个“cao”，可能是听错了（无恶意）',en:'When he was putting in his contacts I think I heard a “cao” (a swear word) — maybe I misheard (no offence meant)',likes:8,replies:3,
+   why:'关注的是一个尴尬的小细节（好像说了脏话），大多数用户不感兴趣。注意“（无恶意）”：评论者自己也知道这话可能冒犯，所以先缓和语气。',why_en:'It focuses on an awkward little detail (a possible swear word) that most users do not care about. Note “(no offence meant)”: the commenter knows it might offend and softens it.'}
+];
+var REAL_THREAD=[
+  {who:'网友G',cn:'下巴上缺一个漩涡[表情]',en:'He is just missing the swirl on his chin [sticker]',likes:137},
+  {who:'网友A（原评论者）',cn:'回复 网友G：你给安排下[表情]',en:'(original commenter) Reply to G: Then you sort that out for him [sticker]',likes:0},
+  {who:'网友H',cn:'啊对，就是他！我说怎么这么眼熟！[表情]',en:'Oh right, that is him! No wonder he looked so familiar! [sticker]',likes:15},
+  {who:'网友A（原评论者）',cn:'回复 网友H：对哈[表情]',en:'(original commenter) Reply to H: Right, haha [sticker]',likes:0},
+  {who:'网友I',cn:'有点像',en:'Kind of looks like him',likes:0}
+];
+var IMG_COMMENT=['data:image/jpeg;base64,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','data:image/jpeg;base64,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'];
+var REPLY_TARGETS=['young','musk','feixiang'];
+function rcById(id){for(var i=0;i<REAL_COMMENTS.length;i++)if(REAL_COMMENTS[i].id===id)return REAL_COMMENTS[i];}
+function fmtN(n){return typeof n==='number'?n.toLocaleString('en-US'):n;}
+var HEART='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg>';
+function avatar(label,cls){var m=label.match(/[A-Z]/);var ch=label==='我'?'我':(m?m[0]:label.charAt(0));return '<span class="fav '+(cls||'')+'" aria-hidden="true">'+esc(ch)+'</span>';}
+
+// ── GUESS THE LIKES ──
+var likesOrder=[];
+function goLikes(){
+  likesOrder=REAL_COMMENTS.map(function(c){return c.id;});
+  for(var i=likesOrder.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=likesOrder[i];likesOrder[i]=likesOrder[j];likesOrder[j]=t;}
+  document.getElementById('lvbadge').textContent='评论 Commenter';
+  renderLikes(false);
+  document.getElementById('likes-after').style.display='none';
+  show('s-likes');
+}
+function renderLikes(revealed){
+  var ids=revealed?REAL_COMMENTS.slice().sort(function(a,b){return b.likes-a.likes;}).map(function(c){return c.id;}):likesOrder;
+  var max=REAL_COMMENTS[0].likes;
+  document.getElementById('likes-list').innerHTML=ids.map(function(id,rank){
+    var c=rcById(id);var mine=S.likeGuess===id;
+    var body='<span class="lk-top">'+avatar(c.who)+'<span class="lk-who">'+esc(c.who)+'</span>'
+      +(revealed?'<span class="lk-rank">#'+(rank+1)+'</span>':'')+(revealed&&mine?'<span class="lk-mine">你的选择</span>':'')+'</span>'
+      +(c.img?'<span class="lk-pics"><img src="'+IMG_COMMENT[0]+'" alt="巴斯光年 Buzz Lightyear"><img src="'+IMG_COMMENT[1]+'" alt="染黑头发后的铁蛋 Tyler with black hair"></span><span class="lk-text lk-img">这条评论只有两张图，没有文字</span>'
+             :'<span class="lk-text">'+esc(c.cn)+'</span>');
+    if(!revealed){
+      return '<div class="lk-row" data-en="'+escAttr(c.en)+'"><button type="button" class="lk-card" onclick="pickLike(\''+id+'\')">'+body+'</button></div>';
+    }
+    return '<div class="lk-row" data-en="'+escAttr(c.en+' — '+c.why_en)+'"><div class="lk-card lk-rev'+(mine?' lk-picked':'')+'">'+body
+      +'<span class="lk-stats"><span class="lk-bar"><span style="width:'+Math.max(2,Math.round(c.likes/max*100))+'%"></span></span>'
+      +'<span class="lk-num">'+HEART+' '+fmtN(c.likes)+'</span><span class="lk-rep">回复 '+c.replies+'</span></span>'
+      +'<span class="lk-why">'+esc(c.why)+'</span></div></div>';
+  }).join('');
+}
+function pickLike(id){
+  S.likeGuess=id;save();
+  renderLikes(true);
+  document.getElementById('likes-after').style.display='block';
+  if(id==='img')guideSay('happy','你猜对了！点赞最多的是一条没有文字的图片评论。','You got it! The most-liked comment is an image comment with no words at all.',7000);
+  else guideSay('think','点赞最多的其实是一条图片评论（2,244 赞）！看看每条下面的原因。','The most-liked one is actually an image comment (2,244 likes)! Read the reasons under each one.',7000);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── COMMENT SECTION PREVIEW + REPLY ──
+var replyOpen=null;
+function goReply(){
+  if(!S.comment){var v=document.getElementById('comment-input').value.trim();if(v)S.comment=v;}
+  replyOpen=null;renderFeed();show('s-reply');
+}
+function feedItem(c,extra){
+  return '<div class="f-item">'+avatar(c.who)+'<div class="f-body"><div class="f-who">'+esc(c.who)+'</div>'
+    +'<div class="f-text'+(c.img?' lk-img':'')+'" data-en="'+escAttr(c.en)+'">'+esc(c.cn)+'</div>'
+    +'<div class="f-meta"><span>'+HEART+' '+fmtN(c.likes)+'</span>'+(c.replies?'<span>回复 '+c.replies+'</span>':'')
+    +'<button type="button" class="f-reply-btn" onclick="openReply(\''+c.id+'\')">回复 Reply</button></div>'+(extra||'')+'</div></div>';
+}
+function myReplyHtml(id){
+  var h='';
+  if(S.reply&&S.replyTo===id){
+    var c=rcById(id);
+    h+='<div class="f-item f-sub f-mine">'+avatar('我','fav-me')+'<div class="f-body"><div class="f-who">'+esc(S.name||'你')+' <span class="f-tag">刚刚 · 你的回复</span></div>'
+      +'<div class="f-text">回复 '+esc(c.who)+'：'+esc(S.reply)+'</div><div class="f-meta"><span>'+HEART+' 0</span></div>';
+    var warns=(S.replyResult||[]).filter(function(r){return r.lv==='warn'||r.lv==='tip';});
+    if(warns.length)h+=warns.map(function(r){return '<div class="lc-item lc-'+r.lv+'" style="margin-top:8px"><span class="lc-mark" aria-hidden="true">'+LV_MARK[r.lv]+'</span><div class="lc-body" data-en="'+escAttr(r.en)+'">'+esc(r.cn)+'</div></div>';}).join('');
+    else h+='<div class="lc-item lc-ok" style="margin-top:8px"><span class="lc-mark" aria-hidden="true">✓</span><div class="lc-body" data-en="Language check passed.">语言检查通过。</div></div>';
+    h+='</div></div>';
+  }
+  if(replyOpen===id){
+    h+='<div class="reply-box"><label class="f-who" for="reply-input">回复 '+esc(rcById(id).who)+'</label>'
+      +'<textarea class="comment-area" id="reply-input" style="min-height:64px;margin:6px 0 8px" placeholder="写一句回复…">'+(S.replyTo===id&&S.reply?esc(S.reply):'')+'</textarea>'
+      +'<div class="err" id="reply-err">请先写一句回复。 Write a reply first.</div>'
+      +'<button type="button" class="pbtn" style="min-height:44px;padding:10px" onclick="postReply(\''+id+'\')">发布 Post</button></div>';
+  }
+  return h;
+}
+function renderFeed(){
+  var h='<div class="feed-h">评论 1,257</div>';
+  if(S.comment){
+    h+='<div class="f-item f-mine">'+avatar('我','fav-me')+'<div class="f-body"><div class="f-who">'+esc(S.name||'你')+' <span class="f-tag">刚刚 · 你的评论</span></div>'
+      +'<div class="f-text">'+esc(S.comment)+'</div><div class="f-meta"><span>'+HEART+' 0</span><span>回复 0</span></div></div></div>';
+  } else {
+    h+='<div class="f-empty">你还没有写评论。 You have not written a comment yet.</div>';
+  }
+  REPLY_TARGETS.forEach(function(id){h+=feedItem(rcById(id),myReplyHtml(id));});
+  document.getElementById('feed').innerHTML=h;
+}
+function openReply(id){
+  replyOpen=(replyOpen===id)?null:id;renderFeed();
+  var t=document.getElementById('reply-input');if(t)t.focus();
+}
+function postReply(id){
+  var v=document.getElementById('reply-input').value.trim();
+  if(!v){document.getElementById('reply-err').classList.add('on');return;}
+  S.reply=v;S.replyTo=id;S.replyResult=langCheck(v,{minHan:2});save();
+  replyOpen=null;renderFeed();
+  var nWarn=S.replyResult.filter(function(r){return r.lv==='warn';}).length;
+  if(nWarn)guideSay('think','回复发出去了！语言检查有 '+nWarn+' 个地方可以改，点「回复」可以重新写。','Reply posted! The language check found '+nWarn+' thing(s) to fix — tap “Reply” to rewrite it.',7000);
+  else guideSay('happy','回复发出去了！想一想：你是在接对方的话吗？','Reply posted! Ask yourself: are you building on what they said?',7000);
+}
+// ── COMMENT CRITERIA ──────────────────────────────────────────
+var commentCriteria=[
+  {id:'warm',text:'语气友好、真诚，不会让博主不舒服',en:'The tone is friendly and sincere, and would not make the creator uncomfortable'},
+  {id:'specific',text:'提到了视频里的具体细节（比如染发、见家人、丈母娘的反应）',en:'It mentions a specific detail from the video (e.g. the hair dye, meeting the family, the mother-in-law\'s reaction)'},
+  {id:'natural',text:'听起来像网友随口说的话，不像课本句子',en:'It sounds like something a real user would type, not a textbook sentence'},
+  {id:'style',text:'简短、口语化，符合小红书评论的风格',en:'It is short and casual, in the style of Xiaohongshu comments'},
+  {id:'engage',text:'能引发互动（比如提问、开玩笑、回应博主）',en:'It invites interaction (e.g. asking a question, joking, responding to the creator)'},
+];
+
+// ── RULE-BASED LANGUAGE CHECK ─────────────────────────────────
+// Catches common learner issues only; not a full grammar checker.
+var OK_LATIN=['tyler','ok','app','vlog','diy','up','ps','yyds','emo','cp'];
+var GRAMMAR_RULES=[
+  {re:/(说|写|画|长|做|变|唱|讲|打扮|化|染|演|拍|剪|笑|学|玩|跳|吃|穿)的(很|太|真|好|特别|非常|挺|不错|有点|真的)/g,
+   cn:'「{m}」：动词后面说明程度时用「得」，不用「的」。比如「说得很好」「画得不错」。',
+   en:'After a verb, use 得 (not 的) to say how well something is done, e.g. 说得很好, 画得不错.'},
+  {re:/(很|非常|太|特别|挺|超|十分)(很|非常|太|特别|挺|超|十分)/g,
+   cn:'「{m}」：两个程度副词连在一起了，用一个就够了。',
+   en:'Two degree adverbs in a row — one is enough.'},
+  {re:/(?<![真可就还总也倒硬])是(很|非常|特别|挺|超)/g,
+   cn:'「{m}」：形容词前面一般不加「是」。说「他很帅」，不说「他是很帅」。',
+   en:'Adjectives don\'t need 是 in front of them: say 他很帅, not 他是很帅.'},
+  {re:/(我|你|他|她|我们|大家)(很|非常|太)(喜欢|爱|想)(很|非常|太)/g,
+   cn:'「{m}」：程度副词的位置重复了，检查一下句子结构。',
+   en:'A degree adverb appears twice here — check the sentence structure.'},
+  {re:/[\u4e00-\u9fff]{1,2}(?<!得)(很|非常|特别|挺|十分)(?=[，,。.！!？?~～\s]|$)/g,
+   cn:'「{m}」：「很、非常、特别」这类词要放在动词或形容词<strong>前面</strong>。说「我很喜欢」，不说「我喜欢很」。',
+   en:'Words like 很, 非常, 特别 go BEFORE the verb or adjective: say 我很喜欢, not 我喜欢很.'},
+  {re:/(太|很|真|非常|特别|好)(好|棒|帅|溜|厉害|好看|漂亮|地道|流利|可爱|年轻|高级|有意思)了?(中文|汉语|普通话|头发|发型|造型|眼睛|眉毛|家人|一家人|孩子|老公|视频|实验)/g,
+   cn:'「{m}」：说的对象要放在<strong>前面</strong>。说「中文太好了」「造型很好看」，不说「太好了中文」。',
+   en:'Put the thing you are describing FIRST: 中文太好了 / 造型很好看, not 太好了中文.'},
+  {re:/(一个|一位|这个|那个)(人们|们)/g,
+   cn:'「{m}」：「们」表示复数，前面不用「一个」「这个」。',
+   en:'们 marks plural, so it doesn\'t go with 一个 / 这个.'}
+];
+var TIP_RULES=[
+  {re:/太([\u4e00-\u9fff0-9]{1,4}?)(?=[，,。.！!？?~～\s]|$)/g,
+   test:function(m){return m.indexOf('了')<0&&!/[啦吧呀啊]$/.test(m);},
+   cn:'「{m}」：口语里「太……了」常常一起用，比如「太好看了」「太可以了」。',
+   en:'In speech, 太 usually pairs with 了 at the end: 太好看了, 太可以了.'}
+];
+var ORAL_MARKERS=['哈哈','哇','啊','呀','吧','呢','啦','嘛','绝了','笑死','救命','真的','太可以了','太6了','好家伙','谁懂','属于是','家人们','姐妹们','宝子'];
+function langCheck(t,opts){
+  var minHan=(opts&&opts.minHan)||5;
+  var out=[];
+  var han=(t.match(/[\u4e00-\u9fff]/g)||[]).length;
+  var NAME_TYPOS=['tyle','tylor','tyller','tayler','tailer','tiler','tylar','tylr','tyer'];
+  var nameTypos=(t.match(/[A-Za-z]+/g)||[]).filter(function(w){return NAME_TYPOS.indexOf(w.toLowerCase())>=0;});
+  var latin=(t.match(/[A-Za-z]+/g)||[]).filter(function(w,i,a){return OK_LATIN.indexOf(w.toLowerCase())<0&&NAME_TYPOS.indexOf(w.toLowerCase())<0&&a.indexOf(w)===i;});
+  if(nameTypos.length)out.push({lv:'warn',cn:'「'+nameTypos[0]+'」：名字拼错了？应该是 Tyler，也可以用他的中文名「铁蛋」。',en:'“'+nameTypos[0]+'”: is the name misspelled? It should be Tyler — or use his Chinese name 铁蛋.'});
+  // 1 Chinese
+  if(han===0)out.push({lv:'warn',cn:'评论里没有汉字，请用中文写。',en:'There are no Chinese characters in your comment. Please write it in Chinese.'});
+  else out.push({lv:'ok',cn:'用中文写作。',en:'Written in Chinese.'});
+  // 2 English words
+  if(latin.length)out.push({lv:'warn',cn:'评论里有英文单词：'+latin.join('、')+'。试试用中文表达。',en:'Your comment contains English words: '+latin.join(', ')+'. Try saying them in Chinese.'});
+  // 3 length
+  if(han>0&&han<minHan)out.push({lv:'warn',cn:'评论有点短（'+han+' 个汉字）。可以再加一句，说说具体哪里有意思。',en:'Your comment is quite short ('+han+' characters). Add a sentence about what exactly you liked.'});
+  else if(han>100)out.push({lv:'tip',cn:'评论比较长（'+han+' 个汉字）。小红书评论通常比较短，可以挑最想说的一两句。',en:'Your comment is long ('+han+' characters). Xiaohongshu comments are usually short — pick the one or two things you most want to say.'});
+  else if(han>0)out.push({lv:'ok',cn:'长度合适（'+han+' 个汉字）。',en:'Good length ('+han+' characters).'});
+  // 4 grammar
+  var gHits=0;
+  GRAMMAR_RULES.forEach(function(r){(t.match(r.re)||[]).forEach(function(m){gHits++;out.push({lv:'warn',cn:r.cn.replace(/<\/?strong>/g,'').replace('{m}',m),en:r.en});});});
+  TIP_RULES.forEach(function(r){(t.match(r.re)||[]).forEach(function(m){if(r.test(m)){out.push({lv:'tip',cn:r.cn.replace('{m}',m),en:r.en});}});});
+  if(han>0&&!gHits)out.push({lv:'ok',cn:'没有发现常见的语法问题（自动检查不能发现所有错误）。',en:'No common grammar problems found (the automatic check cannot catch every error).'});
+  // 5 punctuation
+  if(/[\u4e00-\u9fff][,.?!;:]|[,.?!;:][\u4e00-\u9fff]/.test(t))
+    out.push({lv:'tip',cn:'中文句子里一般用全角标点：，。？！',en:'Chinese sentences normally use full-width punctuation: ，。？！'});
+  // 6 highlight: casual / online expressions
+  var used=ORAL_MARKERS.filter(function(w){return t.indexOf(w)>=0;});
+  if(used.length)out.push({lv:'good',cn:'亮点：用了口语表达「'+used.slice(0,4).join('」「')+'」，读起来像真实的评论。',en:'Nice: you used casual expressions ('+used.slice(0,4).join(', ')+'), which makes it read like a real comment.'});
+  return out;
+}
+var LV_MARK={ok:'✓',good:'★',warn:'!',tip:'i'};
+function renderLangCheck(res){
+  document.getElementById('lang-check').innerHTML=res.map(function(r){
+    return '<div class="lc-item lc-'+r.lv+'"><span class="lc-mark" aria-hidden="true">'+LV_MARK[r.lv]+'</span>'
+      +'<div class="lc-body" data-en="'+escAttr(r.en)+'">'+esc(r.cn)+'</div></div>';
+  }).join('');
+}
+
+// ── HUB ──────────────────────────────────────────────────────
+function renderHub(){
+  var h='';
+  levels.forEach(function(lv){
+    var un=S.unlocked.indexOf(lv.id)>=0;
+    var icon=un?'<span style="color:#6E635A;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>':'<span style="color:#8A7F75;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>';
+    var done=(lv.id===1&&S.l1Done)||(lv.id===2&&S.l2Done);
+    var badge=done?'<span class="done-badge">已完成 Done'+(lv.id===1?' · 理解 '+S.qScore+'/5':'')+'</span>'
+      :(un&&lv.id>1?'<span class="ubadge">Unlocked ✓</span>':'');
+    h+='<div class="lcard'+(un?'':' lk')+'" onclick="startLevel('+lv.id+')">'
+      +'<div class="lic" style="background:'+lv.bg+'">'+lv.icon+'</div>'
+      +'<div class="linfo"><div class="lname">'+lv.name+'</div><div class="ldesc">'+lv.desc+'</div>'+badge+'</div>'+icon+'</div>';
+  });
+  document.getElementById('hub-cards').innerHTML=h;
+}
+function unlock(n){if(S.unlocked.indexOf(n)<0)S.unlocked.push(n);}
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  document.getElementById('home-btn').style.visibility=id==='s-hub'?'hidden':'visible';
+  window.scrollTo(0,0);
+  if(typeof guideScreen==='function')guideScreen(id);
+}
+function updateFans(){document.getElementById('fancount').textContent=S.fans;}
+function startLevel(n){
+  if(S.unlocked.indexOf(n)<0)return;
+  var labels=['','看懂 Reader','评论 Commenter'];
+  document.getElementById('lvbadge').textContent=labels[n];
+  if(n===1)show('s-l1');
+  else if(n===2){initDanmu();show('s-l2');}
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────
+function startQuiz(){S.qIdx=0;S.qScore=0;S.qResults=[];S.quizDone=false;renderQ();show('s-quiz');}
+function renderDots(){
+  var d=document.getElementById('qdots');d.innerHTML='';
+  for(var i=0;i<Qs.length;i++){var e=document.createElement('div');e.className='qdot'+(i<S.qIdx?' dn':i===S.qIdx?' cu':'');d.appendChild(e);}
+}
+function renderQ(){
+  renderDots();S.qAns=false;var q=Qs[S.qIdx];
+  var opts=q.opts.map(function(o,i){
+    return '<button class="opt" onclick="pickOpt(this,'+i+')">'
+      +'<div class="opt-cn">'+o.cn+'</div>'
+      +'<div class="opt-en">'+o.en+'</div></button>';
+  }).join('');
+  document.getElementById('qbody').innerHTML=
+    '<div class="qcard"><div class="qtag">'+q.tag+'</div>'
+    +'<div class="qtext">'+q.cn+'</div>'
+    +'<div class="qen">'+q.en+'</div></div>'
+    +'<div class="opts">'+opts+'</div>'
+    +'<div class="fb" id="fb"></div>'
+    +'<button class="pbtn" id="nb" onclick="nextQ()" disabled>'+(S.qIdx<Qs.length-1?'Next →':'Continue to staging →')+'</button>';
+}
+function pickOpt(btn,i){
+  if(S.qAns)return;S.qAns=true;var q=Qs[S.qIdx];var ok=!!q.opts[i].correct;if(ok)S.qScore++;
+  if(!S.qResults)S.qResults=[];S.qResults[S.qIdx]=ok;
+  document.querySelectorAll('.opt').forEach(function(b,j){b.classList.add('dis');if(q.opts[j].correct)b.classList.add('ok');else if(j===i&&!ok)b.classList.add('no');});
+  var fb=document.getElementById('fb');fb.className='fb on '+(ok?'ok':'no');
+  var fbCn=ok?(q.fb.en_ok||''):(q.fb.en_no||'');
+  var fbEn=ok?q.fb.ok:q.fb.no;
+  var enId='fb-en-'+S.qIdx;
+  fb.innerHTML='<div class="fbt">'+(ok?'正确 ✓':'再想想')+'</div>'+fbCn;
+  if(fbEn){var enDiv=document.createElement('div');enDiv.style.marginTop='6px';
+    var tog=document.createElement('span');tog.textContent='查看英文解释 ▸';
+    tog.style.cssText='font-size:11px;opacity:.7;cursor:pointer;text-decoration:underline';
+    var enTxt=document.createElement('div');enTxt.id=enId;enTxt.textContent=fbEn;
+    enTxt.style.cssText='display:none;margin-top:4px;font-size:11px;opacity:.85;line-height:1.5';
+    tog.addEventListener('click',function(){
+      var open=enTxt.style.display!=='none';
+      enTxt.style.display=open?'none':'block';
+      tog.textContent=open?'查看英文解释 ▸':'收起英文解释 ▾';
+    });
+    enDiv.appendChild(tog);enDiv.appendChild(enTxt);fb.appendChild(enDiv);}
+  document.getElementById('nb').disabled=false;
+  if(ok)guideSay('happy','答对了！你读懂了这一段。','Correct! You understood this part.',3500);
+  else guideSay('oops','没关系，读一读下面的解释，再回想一下视频。','No worries — read the explanation below and think back to the video.',5000);
+  if(S.qIdx===Qs.length-1)S.quizDone=true;
+  save();
+}
+function toggleEl(id){var el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+
+function escAttr(t){return String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function makeCnEnBlock(cn,en){return '<div data-en="'+escAttr(en)+'">'+cn+'</div>';}
+function setCnEn(el,cn,en){el.textContent=cn;el.setAttribute('data-en',en);addEnToggles(el.parentNode);}
+// Adds a "查看英文" toggle to every element carrying data-en
+function addEnToggles(root){
+  (root||document).querySelectorAll('[data-en]').forEach(function(el){
+    for(var i=0;i<el.children.length;i++){if(el.children[i].classList.contains('en-tog'))return;}
+    var b=document.createElement('button');b.type='button';b.className='en-tog';b.textContent='查看英文 ▸';
+    var t=document.createElement('div');t.className='en-txt';t.textContent=el.getAttribute('data-en');t.hidden=true;
+    if(getComputedStyle(el).textAlign==='center'){b.style.marginLeft='auto';b.style.marginRight='auto';}
+    b.setAttribute('aria-expanded','false');
+    b.addEventListener('click',function(ev){ev.stopPropagation();t.hidden=!t.hidden;b.textContent=t.hidden?'查看英文 ▸':'收起英文 ▾';b.setAttribute('aria-expanded',String(!t.hidden));});
+    el.appendChild(b);el.appendChild(t);
+  });
+}
+
+function nextQ(){S.qIdx++;if(S.qIdx>=Qs.length)showQuizSummary();else renderQ();}
+
+// ── QUIZ SUMMARY ───────────────────────────────
+function showQuizSummary(){
+  var correct=S.qScore;var total=Qs.length;
+  var rows=Qs.map(function(q,i){
+    var ok=S.qResults&&S.qResults[i];
+    return '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #EFE8DC">'
+      +'<span style="font-size:16px;flex-shrink:0;margin-top:1px">'+(ok?'<span class="rep-ok">✓</span>':'<span class="rep-no">✗</span>')+'</span>'
+      +'<div><div style="font-size:11px;color:#6E635A;margin-bottom:2px">'+q.tag+'</div>'
+      +'<div style="font-size:13px;font-weight:500;color:#1F1A17;margin-bottom:2px">'+q.cn+'</div>'
+      +'<div style="font-size:11px;color:#5A514A">'+q.en+'</div></div></div>';
+  }).join('');
+  var scoreMsg=correct===total?'满分！你完全读懂了这条视频。':correct>=3?'答对了'+correct+'题——理解得不错！':'答对了'+correct+'题，继续加油。';
+  var scoreEn=correct===total?'Full marks! You fully understood this video.':correct>=3?'You got '+correct+' right — good understanding!':'You got '+correct+' right. Keep going!';
+  document.getElementById('qbody').innerHTML=
+    '<div style="text-align:center;padding:16px 0 12px">'
+    +'<div class="mark">'+MARK_CHECK+'</div>'
+    +'<div style="font-size:20px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px">'+correct+' / '+total+'</div>'
+    +'<div style="font-size:13px;color:#6E635A;text-align:center">'+makeCnEnBlock(scoreMsg,scoreEn)+'</div></div>'
+    +'<div style="margin-bottom:14px">'+rows+'</div>'
+    +'<div class="ins"><div class="inslbl">这五道题考查了什么？ What did these test?</div>'
+    +'<div class="instxt">'+makeCnEnBlock('这些问题帮你从<strong>语境（field）</strong>、<strong>关系（tenor）</strong>和<strong>体裁（genre）</strong>三个角度理解这条视频。','These questions help you understand the video from three angles: field (context), tenor (relationships) and genre.')+'</div></div>'
+    +'<button class="pbtn" onclick="goStaging()">继续：体裁结构任务 Continue →</button>';
+  document.getElementById('qdots').innerHTML='';
+}
+
+// ── STAGING (connect-the-lines 连线题) ─────────────────────────
+var stageColors=[
+  {bg:'#E2EEEA',border:'#2F6B5E',text:'#24574C',stroke:'#2F6B5E',num:'①'},
+  {bg:'#FBF1DE',border:'#9A6212',text:'#7A4E0E',stroke:'#9A6212',num:'②'},
+  {bg:'#FBEAE6',border:'#A8322A',text:'#8A2A22',stroke:'#A8322A',num:'③'}
+];
+var matchState={};var selLabel=null;var lblOrder=[];var isDragging=false;var dragFromId=null;var dragFromDi=-1;var dragWasSel=false;var dragWasMatched=false;
+
+function goStaging(){
+  matchState={};selLabel=null;
+  lblOrder=[0,1,2];
+  for(var i=lblOrder.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));var t=lblOrder[i];lblOrder[i]=lblOrder[j];lblOrder[j]=t;
+  }
+  var labelsEl=document.getElementById('match-labels');labelsEl.innerHTML='';
+  var segsEl=document.getElementById('match-segs');segsEl.innerHTML='';
+  lblOrder.forEach(function(di){
+    var s=stageData[di];var col=stageColors[di];
+    var el=document.createElement('div');
+    el.className='match-lbl';el.id='lbl-'+s.id;
+    el.style.background=col.bg;el.style.border='2px solid '+col.border;el.style.color=col.text;
+    el.innerHTML='<span class="match-lbl-num">'+col.num+'</span>'
+      +'<div class="match-lbl-name">'+s.label+'</div>'
+      +'<div class="match-lbl-sub">'+s.label_en+'</div>';
+    // taps and drags on labels are both handled in setupDragListeners (pointer events)
+    labelsEl.appendChild(el);
+  });
+  var segOrder=[0,1,2];
+  for(var si=segOrder.length-1;si>0;si--){
+    var sj=Math.floor(Math.random()*(si+1));var st=segOrder[si];segOrder[si]=segOrder[sj];segOrder[sj]=st;
+  }
+  segOrder.forEach(function(di){
+    var s=stageData[di];
+    var el=document.createElement('div');
+    el.className='match-seg';el.id='seg-'+di;
+    el.dataset.di=di;
+    el.innerHTML='<div class="seg-cn">'+s.desc+'</div><div class="seg-en">'+s.desc_en+'</div>';
+    el.addEventListener('click',function(){onSegClick(di);});
+    segsEl.appendChild(el);
+  });
+  document.getElementById('stage-check-btn').disabled=true;
+  document.getElementById('stage-result').style.display='none';
+  document.getElementById('stage-check-btn').style.display='block';
+  document.getElementById('stage-err').style.display='none';
+  drawLines();
+  show('s-staging');
+  setupDragListeners();
+}
+
+function onLabelClick(id,di){
+  if(matchState[id]!==undefined){disconnectLabel(id);return;}
+  if(selLabel===id){
+    selLabel=null;
+    var e=document.getElementById('lbl-'+id);if(e)e.classList.remove('sel');
+    return;
+  }
+  if(selLabel){var old=document.getElementById('lbl-'+selLabel);if(old)old.classList.remove('sel');}
+  selLabel=id;
+  var e=document.getElementById('lbl-'+id);if(e)e.classList.add('sel');
+}
+
+function onSegClick(segIdx){
+  if(!selLabel){
+    var err=document.getElementById('stage-err');
+    err.textContent='请先点一个阶段标签，再点视频片段。 Tap a stage label first.';
+    err.style.display='block';
+    setTimeout(function(){err.style.display='none';},2000);
+    return;
+  }
+  var existing=null;
+  Object.keys(matchState).forEach(function(k){if(matchState[k]===segIdx)existing=k;});
+  if(existing===selLabel){disconnectLabel(selLabel);return;}
+  if(existing){delete matchState[existing];updateLabelDone(existing);}
+  matchState[selLabel]=segIdx;
+  var lblEl=document.getElementById('lbl-'+selLabel);
+  if(lblEl){lblEl.classList.remove('sel');lblEl.classList.add('done');}
+  selLabel=null;
+  document.getElementById('stage-err').style.display='none';
+  drawLines();
+  document.getElementById('stage-check-btn').disabled=Object.keys(matchState).length<stageData.length;
+}
+
+function disconnectLabel(id){
+  delete matchState[id];
+  var lblEl=document.getElementById('lbl-'+id);
+  if(lblEl){lblEl.classList.remove('sel','done');if(selLabel===id)selLabel=null;}
+  drawLines();
+  document.getElementById('stage-check-btn').disabled=true;
+}
+
+function updateLabelDone(id){
+  var el=document.getElementById('lbl-'+id);if(!el)return;
+  if(matchState[id]!==undefined)el.classList.add('done');
+  else el.classList.remove('done');
+}
+
+function getNodeRight(el,container){
+  var er=el.getBoundingClientRect();var cr=container.getBoundingClientRect();
+  return{x:er.right-cr.left,y:er.top-cr.top+er.height/2};
+}
+function getNodeLeft(el,container){
+  var er=el.getBoundingClientRect();var cr=container.getBoundingClientRect();
+  return{x:er.left-cr.left,y:er.top-cr.top+er.height/2};
+}
+
+function drawLines(previewPt){
+  var svg=document.getElementById('match-svg');
+  var root=document.getElementById('match-root');
+  svg.innerHTML='';
+  // Stage tag on each matched clip — this is what shows the match on phones, where lines are hidden
+  document.querySelectorAll('.match-seg .seg-tag').forEach(function(t){t.parentNode.removeChild(t);});
+  Object.keys(matchState).forEach(function(lblId){
+    var segEl=document.getElementById('seg-'+matchState[lblId]);
+    var di=stageData.findIndex(function(s){return s.id===lblId;});
+    if(!segEl||di<0)return;
+    var col=stageColors[di];var tag=document.createElement('span');
+    tag.className='seg-tag';tag.style.background=col.border;tag.style.color='#FFFDF9';
+    tag.textContent=col.num+' '+stageData[di].label;segEl.appendChild(tag);
+  });
+  Object.keys(matchState).forEach(function(lblId){
+    var segIdx=matchState[lblId];
+    var lblEl=document.getElementById('lbl-'+lblId);
+    var segEl=document.getElementById('seg-'+segIdx);
+    if(!lblEl||!segEl)return;
+    var di=stageData.findIndex(function(s){return s.id===lblId;});
+    var col=stageColors[di];
+    var A=getNodeRight(lblEl,root);var B=getNodeLeft(segEl,root);
+    var cx1=A.x+(B.x-A.x)*0.45;var cy1=A.y;
+    var cx2=A.x+(B.x-A.x)*0.55;var cy2=B.y;
+    var isCorrect=lblEl.classList.contains('correct-lbl');
+    var isWrong=lblEl.classList.contains('wrong-lbl');
+    var path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d','M'+A.x+','+A.y+' C'+cx1+','+cy1+' '+cx2+','+cy2+' '+B.x+','+B.y);
+    path.setAttribute('stroke',isCorrect?'#2F6B5E':isWrong?'#A8322A':col.stroke);
+    path.setAttribute('stroke-width',isCorrect||isWrong?'3':'2.5');
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke-opacity',isCorrect||isWrong?'1':'.7');
+    path.setAttribute('stroke-dasharray',isCorrect||isWrong?'':'6,3');
+    path.style.pointerEvents='stroke';path.style.cursor=isCorrect||isWrong?'default':'pointer';
+    if(!isCorrect&&!isWrong){path.addEventListener('click',function(){disconnectLabel(lblId);});}
+    svg.appendChild(path);
+    if(!isCorrect&&!isWrong){
+      var mx=(A.x+B.x)/2;var my=(A.y+B.y)/2;
+      var circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx',mx);circle.setAttribute('cy',my);circle.setAttribute('r','8');
+      circle.setAttribute('fill','#FFFDF9');circle.setAttribute('stroke',col.stroke);circle.setAttribute('stroke-width','1.5');
+      circle.style.pointerEvents='all';circle.style.cursor='pointer';
+      var xt=document.createElementNS('http://www.w3.org/2000/svg','text');
+      xt.setAttribute('x',mx);xt.setAttribute('y',my+4);xt.setAttribute('text-anchor','middle');
+      xt.setAttribute('font-size','10');xt.setAttribute('fill',col.stroke);xt.setAttribute('pointer-events','none');
+      xt.textContent='×';
+      circle.addEventListener('click',function(){disconnectLabel(lblId);});
+      svg.appendChild(circle);svg.appendChild(xt);
+    }
+  });
+  // draw drag preview rubber-band line
+  if(previewPt&&dragFromId){
+    var fromEl=document.getElementById('lbl-'+dragFromId);
+    if(fromEl){
+      var A2=getNodeRight(fromEl,root);
+      var B2=previewPt;
+      var cx1b=A2.x+(B2.x-A2.x)*0.45;var cy1b=A2.y;
+      var cx2b=A2.x+(B2.x-A2.x)*0.55;var cy2b=B2.y;
+      var col2=stageColors[dragFromDi>=0?dragFromDi:0];
+      var prev=document.createElementNS('http://www.w3.org/2000/svg','path');
+      prev.setAttribute('d','M'+A2.x+','+A2.y+' C'+cx1b+','+cy1b+' '+cx2b+','+cy2b+' '+B2.x+','+B2.y);
+      prev.setAttribute('stroke',col2.stroke);
+      prev.setAttribute('stroke-width','2');
+      prev.setAttribute('fill','none');
+      prev.setAttribute('stroke-opacity','.5');
+      prev.setAttribute('stroke-dasharray','5,4');
+      prev.style.pointerEvents='none';
+      svg.appendChild(prev);
+    }
+  }
+}
+
+function setupDragListeners(){
+  var root=document.getElementById('match-root');
+  var svg=document.getElementById('match-svg');
+  // pointer move on root – draw preview
+  root.onpointermove=function(e){
+    if(!isDragging)return;
+    var cr=root.getBoundingClientRect();
+    var pt={x:e.clientX-cr.left,y:e.clientY-cr.top};
+    drawLines(pt);
+  };
+  // pointer up on root – cancel drag if not over a seg
+  root.onpointerup=function(e){
+    if(!isDragging)return;
+    isDragging=false;
+    root.releasePointerCapture&&root.releasePointerCapture(e.pointerId);
+    // check if released over a seg
+    var target=document.elementFromPoint(e.clientX,e.clientY);
+    var segEl=target&&(target.closest?target.closest('.match-seg'):null);
+    var lblHit=target&&(target.closest?target.closest('.match-lbl'):null);
+    if(segEl&&segEl.dataset&&segEl.dataset.di!==undefined){
+      var di=parseInt(segEl.dataset.di,10);
+      onSegClick(di);
+    } else if(lblHit&&dragFromId&&lblHit.id==='lbl-'+dragFromId){
+      // a tap on a label (no drag): matched → undo; already selected → deselect; else keep selected
+      if(dragWasMatched){disconnectLabel(dragFromId);}
+      else if(dragWasSel){lblHit.classList.remove('sel');selLabel=null;}
+    } else {
+      // cancel – deselect
+      if(dragFromId){
+        var lblEl=document.getElementById('lbl-'+dragFromId);
+        if(lblEl&&selLabel===dragFromId){lblEl.classList.remove('sel');}
+      }
+      selLabel=null;
+    }
+    dragFromId=null;dragFromDi=-1;
+    drawLines();
+  };
+  // attach pointerdown to each label for drag start
+  document.querySelectorAll('.match-lbl').forEach(function(lblEl){
+    lblEl.onpointerdown=function(e){
+      var id=lblEl.id.replace('lbl-','');
+      var di=stageData.findIndex(function(s){return s.id===id;});
+      if(lblEl.classList.contains('correct-lbl')||lblEl.classList.contains('wrong-lbl'))return;
+      e.preventDefault();
+      dragWasSel=(selLabel===id);
+      dragWasMatched=(matchState[id]!==undefined);
+      isDragging=true;
+      dragFromId=id;
+      dragFromDi=di;
+      selLabel=id;
+      // clear old sel
+      document.querySelectorAll('.match-lbl.sel').forEach(function(x){x.classList.remove('sel');});
+      lblEl.classList.add('sel');
+      root.setPointerCapture&&root.setPointerCapture(e.pointerId);
+    };
+  });
+}
+
+function checkStaging(){
+  var correct=0;
+  stageData.forEach(function(s,i){
+    var lblEl=document.getElementById('lbl-'+s.id);
+    var segEl=document.getElementById('seg-'+i);
+    if(lblEl){lblEl.classList.remove('sel','done');}
+    if(segEl){segEl.classList.remove('seg-active');}
+    if(matchState[s.id]===i){
+      correct++;
+      if(lblEl)lblEl.classList.add('correct-lbl');
+      if(segEl){segEl.classList.add('correct-seg','seg-locked');}
+    } else {
+      if(lblEl)lblEl.classList.add('wrong-lbl');
+      var wrongSegEl=segEl;
+      if(wrongSegEl){
+        wrongSegEl.classList.add('wrong-seg','seg-locked');
+        wrongSegEl.classList.add('shk');
+        setTimeout(function(){wrongSegEl.classList.remove('shk');},400);
+      }
+    }
+  });
+  drawLines();
+  document.getElementById('stage-insight').innerHTML=makeCnEnBlock(
+    '这条视频是一个<strong>轶事（Anecdote）</strong>：'
+    +'① <strong>Orientation</strong>——交代背景（粉丝提出挑战，Tyler决定接受）；'
+    +'② <strong>Remarkable Event</strong>——意外事件（Tyler染发、画眉、戴美瞳，完成变装）；'
+    +'③ <strong>Reaction</strong>——真实反应（Tyler走进小区见家人，家人们惊讶又开心）。'
+    ,'This video is an anecdote: ① Orientation — setting the scene (fans set a challenge and Tyler accepts); ② Remarkable Event — the unexpected event (Tyler dyes his hair, draws his eyebrows and puts in coloured contacts); ③ Reaction — the genuine reaction (Tyler walks into his neighbourhood to meet his family, who are surprised and delighted).');
+  document.getElementById('stage-result').style.display='block';
+  document.getElementById('stage-check-btn').style.display='none';
+  S.fans+=correct===stageData.length?200:100;updateFans();
+  S.stageCorrect=correct;save();
+  if(correct===stageData.length)guideSay('happy','三段都对了！你已经看懂这个故事的结构。','All three are right! You understand how this story is built.',5000);
+  else guideSay('oops','有 '+(stageData.length-correct)+' 段放错了，看看下面的解释，想想每一段的作用。',(stageData.length-correct)+' matched incorrectly — read the explanation below and think about what each stage does.',6000);
+}
+function showStagingSummary(){show('s-staging-summary');}
+function finishL1(){
+  unlock(2);S.l1Done=true;save();
+  document.getElementById('re').innerHTML=MARK_CHECK;
+  document.getElementById('rt2').textContent='Level 1 完成！';
+  setCnEn(document.getElementById('rs2'),'答对了 '+S.qScore+' / 5 题，Level 2 已解锁！','You got '+S.qScore+' / 5 right — Level 2 is unlocked!');
+  document.getElementById('sco').textContent=S.qScore+' / 5';
+  document.getElementById('scol').textContent='理解得分 Comprehension score';
+  document.getElementById('fan-total').textContent=S.fans;
+  document.getElementById('r-insight').innerHTML=makeCnEnBlock(
+    '你刚才分析了一条小红书视频的构成——谁做的、为谁做的、想达到什么效果、以及如何组织结构。Level 2 将带你看观众是怎么回应的。',
+    'You just analysed why a Xiaohongshu video works — who made it, who it\'s for, what it\'s trying to do, and how it\'s structured. In Level 2, you\'ll look at how the audience responds.');
+  renderHub();show('s-result');
+}
+
+// ── DANMU (3 rounds) ─────────────────────────────────────────
+var dmTimers=[];
+function resetDmWrong(r){if(!S.dmWrongItems)S.dmWrongItems=[[],[],[]];if(r<3){S.dmWrongItems[r]=[];S.dmWrong[r]=0;}}
+function initDanmu(){
+  S.dmRound=0;resetDmWrong(0);
+  document.getElementById('dm-btn').style.display='block';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-done').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-round').textContent='1';
+  document.getElementById('dm-fill').style.width='0%';
+  document.getElementById('danmu-screen').innerHTML='';
+  var r0=dmRounds[0];document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(r0.task,r0.task_en);
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+}
+function startDanmuRound(){
+  document.getElementById('dm-btn').style.display='none';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='0%';
+  var scr=document.getElementById('danmu-screen');scr.innerHTML='';
+  var round=dmRounds[S.dmRound];
+  var total=round.items.filter(function(i){return i.type===round.target;}).length;
+  document.getElementById('dm-need').textContent=total;
+  guideHide();
+  if(!S.dmWrongItems)S.dmWrongItems=[[],[],[]];
+  if(!S.dmWrongItems[S.dmRound])S.dmWrongItems[S.dmRound]=[];
+  launchWave(round,0,total,scr);
+}
+function launchWave(round,caught,total,scr,taggedOk,taggedWrong){
+  if(!taggedOk)taggedOk={};
+  if(!taggedWrong)taggedWrong={};
+  var W=scr.offsetWidth||400;
+  var ROW_H=W<480?44:52;
+  var ROWS=Math.max(3,Math.floor(((scr.offsetHeight||312)-40)/ROW_H)+1);
+  var DUR=8000;
+  var SPACING=900;
+  scr.innerHTML='';
+  var combo=0;
+  // shuffle the order every pass so distractors are mixed in with the answers
+  var order=round.items.slice();
+  for(var si=order.length-1;si>0;si--){var sj=Math.floor(Math.random()*(si+1));var sx=order[si];order[si]=order[sj];order[sj]=sx;}
+  order.forEach(function(item,idx){
+    var t=setTimeout(function(){
+      var el=document.createElement('div');el.className='danmu-item';
+      el.innerHTML=item.txt+(item.en?'<span class="dm-en-gloss"> — '+item.en+'</span>':'');
+      el.style.background=item.col;el.style.color=item.tc;
+      el.style.top=((idx%ROWS)*ROW_H+8)+'px';
+      el.style.left=(W+10)+'px';el.style.transition='left '+DUR+'ms linear';
+      // Restore tagged state from previous wave
+      if(taggedOk[item.txt]){el.classList.add('tagged-ok');}
+      else if(taggedWrong[item.txt]){el.classList.add('tagged-wrong');}
+      el.addEventListener('click',function(){
+        if(el.classList.contains('tagged-ok')||el.classList.contains('tagged-wrong'))return;
+        if(item.type===round.target){
+          el.classList.add('tagged-ok');taggedOk[item.txt]=true;caught++;combo++;
+          dmPop(scr,el,true,'✓ '+DM_CAT_CN[round.target]+(combo>=2?'  连对 ×'+combo:''));
+          document.getElementById('guide').setAttribute('data-mood','happy');
+          document.getElementById('dm-caught').textContent=caught;
+          document.getElementById('dm-fill').style.width=Math.round(caught/total*100)+'%';
+          if(caught>=total){
+            dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+            S.dmScores[S.dmRound]=caught;
+            setTimeout(function(){endDanmuRound(round,caught);},400);
+          }
+        } else {
+          el.classList.add('tagged-wrong');taggedWrong[item.txt]=true;combo=0;
+          dmPop(scr,el,false,'✗ 这是'+(DM_CAT_CN[DM_CAT[item.txt]]||'别的话题'));
+          if(S.dmWrongItems[S.dmRound].indexOf(item.txt)<0)S.dmWrongItems[S.dmRound].push(item.txt);
+          S.dmWrong[S.dmRound]=S.dmWrongItems[S.dmRound].length;save();
+          document.getElementById('guide').setAttribute('data-mood','oops');
+        }
+      });
+      scr.appendChild(el);
+      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.left='-300px';});});
+      setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},DUR+200);
+    },idx*SPACING);dmTimers.push(t);
+  });
+  var relaunchDelay=round.items.length*SPACING+DUR+600;
+  var rt=setTimeout(function(){
+    if(caught<total){launchWave(round,caught,total,scr,taggedOk,taggedWrong);}
+  },relaunchDelay);
+  dmTimers.push(rt);
+}
+// Explains each wrong tap: what the comment is really about
+function wrongPicksHtml(r,target){
+  var list=(S.dmWrongItems&&S.dmWrongItems[r])||[];
+  var tcn=DM_TARGET_CN[target],ten=DM_TARGET_EN[target];
+  var h='<div class="wp-box"><div class="wp-title">你点错的弹幕 · Your wrong picks</div>';
+  if(!list.length){
+    return h+'<div class="wp-none">'+makeCnEnBlock('这一轮没有点错，很棒！','No wrong picks this round — well done!')+'</div></div>';
+  }
+  list.forEach(function(txt){
+    var a=DM_ABOUT[txt]||{cn:'和本轮任务无关',en:'is not related to this round\'s task'};
+    h+='<div class="wp-item"><div class="wp-quote">「'+esc(txt)+'」</div>'
+      +makeCnEnBlock('这条不是在说'+tcn+'。它'+esc(a.cn)+'。',
+        'This one is not about '+ten+'. It '+a.en+'.')+'</div>';
+  });
+  return h+'</div>';
+}
+function endDanmuRound(round,caught){
+  var total=round.items.filter(function(i){return i.type===round.target;}).length;
+  var insHtml='<strong>抓到了 '+caught+' / '+total+' 条 · Found '+caught+' / '+total+'</strong><br>'
+    +makeCnEnBlock(round.insight,round.insight_en)+wrongPicksHtml(S.dmRound,round.target);
+  document.getElementById('dm-round-insight').innerHTML=insHtml;
+  S.dmDone[S.dmRound]=true;save();
+  var nWrong=(S.dmWrongItems&&S.dmWrongItems[S.dmRound]||[]).length;
+  if(nWrong)guideSay('think','这一轮完成！你点错了 '+nWrong+' 条，下面有解释，看看它们其实在说什么。','Round complete! You tapped '+nWrong+' wrong — see the explanations below for what they are really about.',7000);
+  else guideSay('happy','这一轮完成，一条都没点错！','Round complete — not a single wrong tap!',5000);
+  document.getElementById('dm-between').style.display='block';
+  var isLast=S.dmRound>=dmRounds.length-1;
+  document.getElementById('dm-next-btn').textContent=isLast?'查看总结 →':'下一轮 →';
+}
+function nextDanmuRound(){
+  S.dmRound++;
+  resetDmWrong(S.dmRound);
+  if(S.dmRound>=dmRounds.length){
+    showDanmuDone();return;
+  }
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-round').textContent=S.dmRound+1;
+  var r=dmRounds[S.dmRound];
+  document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(r.task,r.task_en);
+  document.getElementById('danmu-screen').innerHTML='';
+  document.getElementById('dm-btn').style.display='block';
+}
+function showDanmuDone(){
+  document.getElementById('dm-between').style.display='none';
+  var scoreHtml='';
+  var labels=['语言能力','外貌造型','家庭氛围'];
+  S.dmScores.forEach(function(sc,i){
+    scoreHtml+='<div class="dm-score-box"><div class="dm-score-val">'+sc+'</div><div class="dm-score-lbl">'+labels[i]+'</div></div>';
+  });
+  document.getElementById('dm-score-row').innerHTML=scoreHtml;
+  document.getElementById('dm-final-insight').innerHTML=makeCnEnBlock(
+    '铁蛋评论区的主要内容是对他本人的直接评价——外貌、中文水平、身份认同。正面评价和直接的批评都很常见，都属于正常互动。这种直接性是中国社媒文化的重要特点。写你自己的评论时，你也可以直接说出你的真实感受。',
+    'Tyler\'s comment section is dominated by direct evaluations — appearance, language, identity. Both positive and critical comments are normal. When you write your own, be direct and specific.');
+  document.getElementById('dm-done').style.display='block';
+  S.fans+=S.dmScores.reduce(function(a,b){return a+b;},0)*20;updateFans();
+}
+
+// ── WRITE COMMENT ─────────────────────────────────────────────
+function goWriteComment(){
+  S.checkedItems={};S.commentChecked=false;
+  document.getElementById('check-comment-btn').textContent='检查我的评论 Check →';
+  document.getElementById('comment-input').value=S.comment||'';
+  document.getElementById('comment-result').style.display='none';
+  document.getElementById('comment-err').classList.remove('on');
+  var checks=commentCriteria.map(function(c){
+    return '<div class="check-row" data-en="'+escAttr(c.en)+'">'
+      +'<button type="button" class="check-item" id="chk-'+c.id+'" aria-pressed="false" onclick="toggleCheck(\''+c.id+'\')">'
+      +'<span class="check-box" id="chkbox-'+c.id+'"></span>'
+      +'<span class="check-txt">'+c.text+'</span></button></div>';
+  }).join('');
+  document.getElementById('comment-checklist').innerHTML=checks;
+  show('s-write');
+}
+function toggleCheck(id){
+  S.checkedItems[id]=!S.checkedItems[id];
+  var item=document.getElementById('chk-'+id);
+  var box=document.getElementById('chkbox-'+id);
+  if(S.checkedItems[id]){item.classList.add('checked');box.innerHTML='✓';}
+  else{item.classList.remove('checked');box.innerHTML='';}
+  item.setAttribute('aria-pressed',S.checkedItems[id]?'true':'false');
+  save();
+}
+function checkComment(){
+  var val=document.getElementById('comment-input').value.trim();
+  if(!val){document.getElementById('comment-err').classList.add('on');return;}
+  document.getElementById('comment-err').classList.remove('on');
+  S.comment=val;S.commentChecked=true;
+  S.langResult=langCheck(val);renderLangCheck(S.langResult);save();
+  var nWarn=S.langResult.filter(function(r){return r.lv==='warn';}).length;
+  if(nWarn)guideSay('think','维度一有 '+nWarn+' 个地方可以改一改。改完再检查一次吧！','Dimension 1 found '+nWarn+' thing(s) to fix. Revise and check again!',7000);
+  else guideSay('happy','语言检查通过！再对照维度二，想想你的评论放在评论区里合不合适。','Language check passed! Now use Dimension 2 to think about whether it fits the comment section.',7000);
+  document.getElementById('check-comment-btn').textContent='修改后重新检查 Check again →';
+  var checked=Object.values(S.checkedItems).filter(Boolean).length;
+  document.getElementById('comment-insight').innerHTML=makeCnEnBlock(
+    '好的小红书评论应该有温度、有具体内容——要对视频里的某个细节做出真实反应，而不是写泛泛的评语。最有效果的评论能让创作者感受到被看见和认可，并且往往能引发互动。说出你的真实感受、分享观点、对酷点表达惊喜——都很适合。',
+    'Good Xiaohongshu comments feel personal and warm — they react to something specific in the video rather than making a generic statement. The most effective comments make the creator feel seen and appreciated, and they often invite a response. You can express a personal feeling, share an opinion, or react to something you noticed — all three work well.');
+  document.getElementById('comment-result').style.display='block';
+  S.fans+=checked*20;updateFans();
+}
+function showWriteSummary(){show('s-write-summary');}
+function finishL2(){
+  S.l2Done=true;save();
+  document.getElementById('re').innerHTML=MARK_CHECK;
+  document.getElementById('rt2').textContent='Level 2 完成！';
+  setCnEn(document.getElementById('rs2'),'你已经从「读者」升级为「评论者」。',"You've gone from Reader to Commenter.");
+  document.getElementById('sco').textContent='';document.getElementById('scol').textContent='';
+  document.getElementById('fan-total').textContent=S.fans;
+  document.getElementById('r-insight').innerHTML=makeCnEnBlock(
+    '你已经仔细看过铁蛋的视频、理解了它的结构、在真实评论区识别了不同类型的评论，并尝试写了自己的一条。写评论的环节可能让你意识到：「知道什么是好评论」和「能写出好评论」之间有一段距离——那正是下一层级的起点。',
+    'You\'ve now read Tyler\'s video closely, understood its structure, spotted different types of comments, and written your own. The writing task probably showed you the gap between knowing what a good comment looks like and being able to produce one — that gap is the starting point for the next level.');
+  renderHub();show('s-result');
+}
+function retryRound(){
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='0%';
+  document.getElementById('danmu-screen').innerHTML='';
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  document.getElementById('dm-btn').style.display='block';
+}
+function backToHub(){
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  renderHub();show('s-hub');
+}
+
+// ── TEACHER JUMPS ─────────────────────────────────────────────
+function tJump(where){
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  var badge=document.getElementById('lvbadge');
+  if(where==='l1'){badge.textContent='看懂 Reader';show('s-l1');}
+  else if(where==='quiz'){badge.textContent='看懂 Reader';startQuiz();}
+  else if(where==='staging'){badge.textContent='看懂 Reader';goStaging();}
+  else if(where.indexOf('dm')===0){
+    var r=parseInt(where.slice(2),10);badge.textContent='评论 Commenter';
+    initDanmu();S.dmRound=r;resetDmWrong(r);
+    document.getElementById('dm-round').textContent=r+1;
+    document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(dmRounds[r].task,dmRounds[r].task_en);
+    show('s-l2');
+  }
+  else if(where==='write'){badge.textContent='评论 Commenter';goWriteComment();}
+  else if(where==='likes'){goLikes();}
+  else if(where==='reply'){badge.textContent='评论 Commenter';goReply();}
+  else if(where==='report'){showReport();}
+}
+
+// ── ENGLISH GLOSS TOGGLE (danmu) ──────────────────────────────
+var glossOn=window.innerWidth>520;
+try{var gp=localStorage.getItem('navcsm-gloss');if(gp!==null)glossOn=gp==='1';}catch(e){}
+function applyGloss(){
+  document.body.classList.toggle('no-gloss',!glossOn);
+  document.getElementById('gloss-btn').textContent='英文注释：'+(glossOn?'开 On':'关 Off');
+}
+function toggleGloss(){glossOn=!glossOn;try{localStorage.setItem('navcsm-gloss',glossOn?'1':'0');}catch(e){}applyGloss();}
+
+// ── LEARNING RECORD (screenshot / print) ──────────────────────
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function showReport(){
+  document.getElementById('lvbadge').textContent='学习记录';
+  document.getElementById('stu-name').value=S.name||'';
+  var d=new Date();
+  document.getElementById('rep-date').textContent='铁蛋儿Tyler「我的新形象有没有很惊艳」 · '
+    +d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  var na='<div class="rep-na">未完成 Not done yet</div>';
+  var h='';
+  // Quiz
+  var qAnswered=S.qResults&&S.qResults.filter(function(x){return x!==undefined&&x!==null;}).length;
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">任务一 · 理解题</div>'
+    +(qAnswered?'<div class="rep-score">'+S.qScore+' / '+Qs.length+'</div>':'')+'</div>';
+  if(!qAnswered)h+=na;
+  else Qs.forEach(function(q,i){
+    var r=S.qResults[i];
+    var mark=r===true?'<span class="rep-ok">✓</span>':r===false?'<span class="rep-no">✗</span>':'<span class="rep-na">–</span>';
+    h+='<div class="rep-row">'+mark+'<span>'+esc(q.tag)+'</span></div>';
+  });
+  h+='</div>';
+  // Staging
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">任务二 · 体裁结构</div>'
+    +(S.stageCorrect!==null?'<div class="rep-score">'+S.stageCorrect+' / 3</div>':'')+'</div>'
+    +(S.stageCorrect===null?na:'<div class="rep-row"><span>轶事：背景 → 意外事件 → 反应</span></div>')+'</div>';
+  // Danmu
+  var dmLabels=['语言能力 Language','外貌造型 Appearance','家庭氛围 Family'];
+  var anyDm=S.dmDone.some(Boolean);
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">Level 2 · 弹幕练习</div></div>';
+  if(!anyDm)h+=na;
+  else dmRounds.forEach(function(rd,i){
+    var tot=rd.items.filter(function(x){return x.type===rd.target;}).length;
+    h+='<div class="rep-row"><span style="flex:1">第'+(i+1)+'轮 '+dmLabels[i]+'</span><span>'
+      +(S.dmDone[i]?'找到 '+S.dmScores[i]+'/'+tot+' · 点错 '+(S.dmWrong[i]||0):'<span class="rep-na">未完成</span>')+'</span></div>';
+    var wl=(S.dmWrongItems&&S.dmWrongItems[i])||[];
+    if(S.dmDone[i]&&wl.length)h+='<div class="rep-row" style="border-top:none;padding-top:0;color:#6E635A;font-size:12px">点错：'+wl.map(function(x){return '「'+esc(x)+'」';}).join(' ')+'</div>';
+  });
+  h+='</div>';
+  // Likes guess
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">猜猜哪条最火 Guess the likes</div>'
+    +(S.likeGuess?'<div class="rep-score">'+(S.likeGuess==='img'?'猜对 ✓':'猜错')+'</div>':'')+'</div>'
+    +(S.likeGuess?'<div class="rep-row"><span>我选了：「'+esc(rcById(S.likeGuess).cn)+'」（'+fmtN(rcById(S.likeGuess).likes)+' 赞）</span></div>':na)+'</div>';
+  // Comment
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">我的评论 My comment</div></div>';
+  if(!S.comment)h+=na;
+  else{
+    h+='<div class="rep-quote">'+esc(S.comment)+'</div>';
+    if(S.langResult&&S.langResult.length){
+      h+='<div class="rep-sub">维度一：语言检查 Language check</div>';
+      S.langResult.forEach(function(r){
+        var cls=r.lv==='warn'?'rep-no':r.lv==='tip'?'rep-na':'rep-ok';
+        h+='<div class="rep-row"><span class="'+cls+'">'+LV_MARK[r.lv]+'</span><span>'+esc(r.cn)+'</span></div>';
+      });
+    }
+    if(S.commentChecked){
+      h+='<div class="rep-sub">维度二：自评 Self-check</div>';
+      commentCriteria.forEach(function(c){
+        var on=S.checkedItems&&S.checkedItems[c.id];
+        h+='<div class="rep-row">'+(on?'<span class="rep-ok">✓</span>':'<span class="rep-na">○</span>')+'<span>'+esc(c.text)+'</span></div>';
+      });
+    }
+  }
+  h+='</div>';
+  // Reply
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">我的回复 My reply</div></div>';
+  if(!S.reply||!S.replyTo)h+=na;
+  else{
+    h+='<div class="rep-row" style="border-top:none;color:#6E635A">回复「'+esc(rcById(S.replyTo).cn)+'」</div><div class="rep-quote">'+esc(S.reply)+'</div>';
+    (S.replyResult||[]).forEach(function(r){
+      var cls=r.lv==='warn'?'rep-no':r.lv==='tip'?'rep-na':'rep-ok';
+      h+='<div class="rep-row"><span class="'+cls+'">'+LV_MARK[r.lv]+'</span><span>'+esc(r.cn)+'</span></div>';
+    });
+  }
+  h+='</div>';
+  document.getElementById('rep-body').innerHTML=h;
+  show('s-report');
+}
+
+
+// ── GUIDE CHARACTER 小白 ─────────────────────────────────────
+var GUIDE_TIPS={
+  's-hub':['嗨！我是小白，也在学中文、刷小红书。我们一起看看铁蛋这条视频吧！',"Hi! I'm Xiaobai — I'm learning Chinese and scrolling Xiaohongshu too. Let's look at Tyler's video together!"],
+  's-l1':['先去小红书看视频，再读简介。注意看：视频里发生了什么意外的事？','Watch the video on Xiaohongshu first, then read the summary. Look out for: what unexpected thing happens?'],
+  's-quiz':['每道题都想一想：谁在说话？对谁说？为什么这么说？','For each question, think: who is speaking, to whom, and why?'],
+  's-staging':['先点一个阶段，再点对应的片段。想想故事是怎么一步步发展的。','Tap a stage, then the matching clip. Think about how the story unfolds step by step.'],
+  's-staging-summary':['你已经会看轶事的结构了！接下来看看观众是怎么评论的。',"You can now spot the structure of an anecdote! Next, let's see how viewers comment."],
+  's-l2':['弹幕飞得很快！先读清楚这一轮要找哪一类评论。','The danmu move fast! First read carefully which kind of comment this round asks for.'],
+  's-likes':['猜一猜：在评论区里，用户最喜欢哪一条？','Take a guess: which comment did users like most?'],
+  's-reply':['点一条评论下面的「回复」，写一句就好。','Tap “Reply” under a comment — one sentence is enough.'],
+  's-write':['写之前想一想：你最想对铁蛋说什么？记得和视频内容有关哦。','Before you write, think: what do you most want to say to Tyler? Keep it related to the video.'],
+  's-write-summary':['恭喜！记住：评论得不得体，最后要看平台上的用户怎么回应。','Congratulations! Remember: whether a comment is appropriate is ultimately decided by how users on the platform respond.'],
+  's-result':['做得好！休息一下，再继续下一关。','Well done! Take a break, then carry on to the next level.'],
+  's-report':['写上名字，截图或者存成 PDF 交给老师吧。','Add your name, then screenshot it or save it as a PDF for your teacher.']
+};
+var guideTimer=null,guideSeen={},guideCur='s-hub',guideLastHit=0;
+function guideSay(mood,cn,en,ms){
+  var g=document.getElementById('guide');if(!g)return;
+  g.setAttribute('data-mood',mood||'normal');
+  g.classList.remove('bounce');void g.offsetWidth;g.classList.add('bounce');
+  var t=document.getElementById('guide-text');
+  t.textContent=cn;t.setAttribute('data-en',en);addEnToggles(t.parentNode);
+  var b=document.getElementById('guide-bubble');b.hidden=false;
+  document.getElementById('guide-av').setAttribute('aria-expanded','true');
+  clearTimeout(guideTimer);
+  if(ms)guideTimer=setTimeout(guideHide,ms);
+}
+function guideHide(){
+  clearTimeout(guideTimer);
+  document.getElementById('guide-bubble').hidden=true;
+  document.getElementById('guide-av').setAttribute('aria-expanded','false');
+}
+function guideToggle(){
+  if(!document.getElementById('guide-bubble').hidden){guideHide();return;}
+  var tip=GUIDE_TIPS[guideCur]||GUIDE_TIPS['s-hub'];
+  guideSay('think',tip[0],tip[1]);
+}
+function guideScreen(id){
+  guideCur=id;
+  document.getElementById('guide').setAttribute('data-mood','normal');
+  if(guideSeen[id]||!GUIDE_TIPS[id]){guideHide();return;}
+  guideSeen[id]=true;
+  guideSay('normal',GUIDE_TIPS[id][0],GUIDE_TIPS[id][1],8000);
+}
+document.getElementById('guide-bubble').addEventListener('click',function(){clearTimeout(guideTimer);});
+
+// ── INIT ──────────────────────────────────────────────────────
+load();
+if(TEACHER){unlock(1);unlock(2);document.getElementById('teacher-panel').style.display='block';}
+document.getElementById('comment-input').addEventListener('input',function(){S.comment=this.value;save();});
+window.addEventListener('resize',function(){if(document.getElementById('s-staging').classList.contains('on'))drawLines();});
+applyGloss();
+renderHub();updateFans();
+addEnToggles(document);
+new MutationObserver(function(){addEnToggles(document);}).observe(document.querySelector('.g'),{childList:true,subtree:true});
+setTimeout(function(){if(guideCur==='s-hub'&&!guideSeen['s-hub'])guideScreen('s-hub');},600);
+</script>
+</body>
+</html>
