@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet"/>
+<title>Navigate Chinese Social Media / 玩转中国社媒</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F6F1E9;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px}
+.g{max-width:680px;width:100%;background:#FFFDF9;border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.lvbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;white-space:nowrap;background:#E8EDF3;color:#2C4A6E}
+.fans{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;color:#1F1A17}
+.screen{display:none}.screen.on{display:block}
+.hub{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.app-hdr{text-align:center;margin-bottom:24px}
+.app-icon{width:64px;height:64px;background:linear-gradient(135deg,#B93A2B,#B93A2B);border-radius:16px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.app-title{font-size:20px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px}
+.app-sub{font-size:13px;color:#6E635A}
+.lcard{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.lcard:hover:not(.lk){border-color:#B3A796}
+.lcard.lk{opacity:.4;cursor:not-allowed;pointer-events:none}
+.lic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.linfo{flex:1}.lname{font-size:13px;font-weight:500;color:#1F1A17}.ldesc{font-size:11px;color:#6E635A;margin-top:2px}
+.ubadge{font-size:11px;background:#E2EEEA;color:#24574C;padding:2px 8px;border-radius:99px;margin-top:4px;display:inline-block}
+.card{background:#F6F1E9;border-radius:12px;padding:16px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:12px;background:#E8EDF3;color:#2C4A6E}
+.sec-title{font-size:13px;font-weight:500;color:#1F1A17;margin-bottom:6px}
+.sec-sub{font-size:12px;color:#5A514A;line-height:1.5;margin-bottom:10px}
+.qdots{display:flex;gap:4px;margin-bottom:14px}
+.qdot{flex:1;height:4px;border-radius:99px;background:#EFE8DC}
+.qdot.dn{background:#2F6B5E}.qdot.cu{background:#B93A2B}
+.qcard{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:16px;margin-bottom:10px}
+.qtag{font-size:11px;color:#6E635A;margin-bottom:6px}
+.qtext{font-size:15px;font-weight:500;color:#1F1A17;line-height:1.5;margin-bottom:4px}
+.qen{font-size:12px;color:#5A514A;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.opt{background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:11px 13px;text-align:left;cursor:pointer;font-family:inherit;transition:all .15s;width:100%}
+.opt:hover{border-color:#B3A796;background:#FBF8F2}
+.opt.ok{border-color:#2F6B5E;background:#E2EEEA}
+.opt.no{border-color:#A8322A;background:#FBEAE6}
+.opt.dis{cursor:default}
+.opt-cn{font-size:14px;color:#1F1A17;margin-bottom:2px;text-align:left}
+.opt-en{font-size:11px;color:#6E635A;text-align:left}
+.fb{border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.6;display:none}
+.fb.on{display:block}
+.fb.ok{background:#E2EEEA;color:#24574C;border:1px solid #A9CFC4}
+.fb.no{background:#FBEAE6;color:#8A2A22;border:1px solid #E5A79C}
+.fbt{font-weight:600;margin-bottom:3px}
+.pbtn{width:100%;padding:12px;background:#B93A2B;color:#FFFDF9;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.pbtn:hover{opacity:.9}.pbtn:disabled{opacity:.4;cursor:default}
+.sbtn{width:100%;padding:12px;background:#FFFDF9;color:#1F1A17;border:1px solid #E6DED2;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
+.sbtn:hover{background:#F6F1E9;border-color:#B3A796}
+.labels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.label-tag{background:#E8EDF3;color:#2C4A6E;border:1px solid #C9D5E3;border-radius:99px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;user-select:none}
+.label-tag:hover:not(.used){opacity:.8;background:#DCE4EE}
+.label-tag.active{outline:2px solid #B93A2B;background:#DCE4EE}
+.label-tag.used{opacity:.3;cursor:not-allowed;pointer-events:none}
+.stage-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.stage-item{background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.stage-item:hover{border-color:#B93A2B}
+.stage-item.assigned{border-color:#5B4A8A;background:#EEEBF5}
+.stage-item.correct{border-color:#2F6B5E;background:#E2EEEA;cursor:default}
+.stage-item.wrong{border-color:#A8322A;background:#FBEAE6;cursor:default}
+.stage-cn{font-size:14px;color:#1F1A17;margin-bottom:2px;line-height:1.5}
+.stage-en{font-size:11px;color:#6E635A}
+.stage-assigned-lbl{font-size:11px;color:#5B4A8A;margin-top:5px;font-weight:500}
+/* ── Match lines staging ── */
+.match-lbl{touch-action:none;border-radius:10px;padding:10px 12px;cursor:pointer;user-select:none;transition:all .18s;border:2px solid transparent;position:relative}
+.match-lbl:hover{filter:brightness(.95)}
+.match-lbl.sel{box-shadow:0 0 0 3px #B93A2B;z-index:2}
+.match-lbl.done{opacity:.7;cursor:pointer}
+.match-lbl.correct-lbl{opacity:1!important;cursor:default}
+.match-lbl.wrong-lbl{cursor:default}
+.match-lbl-name{font-size:13px;font-weight:700;line-height:1.2}
+.match-lbl-sub{font-size:11px;opacity:.7;margin-top:2px}
+.match-lbl-num{font-size:14px;font-weight:800;opacity:.25;display:block;margin-bottom:2px}
+.match-seg{background:#FFFDF9;border:1.5px solid #E6DED2;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .18s}
+.match-seg:hover:not(.seg-locked){border-color:#B93A2B;background:#F7F3EC}
+.match-seg.seg-active{border-color:#B93A2B;background:#E8EDF3}
+.match-seg.seg-locked{cursor:default}
+.match-seg.correct-seg{border-color:#2F6B5E;background:#E2EEEA;border-width:2px}
+.match-seg.wrong-seg{border-color:#A8322A;background:#FBEAE6;border-width:2px}
+.seg-cn{font-size:12px;color:#1F1A17;line-height:1.5}
+.seg-en{font-size:11px;color:#6E635A;line-height:1.4;margin-top:2px}
+@keyframes shake2{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.shk{animation:shake2 .3s}
+.danmu-wrap{background:#26201C;border-radius:12px;overflow:hidden;margin-bottom:14px;position:relative;height:360px}
+.danmu-screen{position:absolute;top:0;left:0;right:0;bottom:48px;overflow:hidden}
+.danmu-item{position:absolute;white-space:nowrap;font-size:14px;font-weight:500;padding:6px 14px;border-radius:99px;cursor:pointer;user-select:none}
+.dm-en-gloss{font-size:11px;opacity:.55;font-weight:400;margin-left:4px}
+.danmu-item.tagged-ok{opacity:.2;cursor:default;pointer-events:none}
+.danmu-item.tagged-wrong{opacity:.15;cursor:default;pointer-events:none;text-decoration:line-through}
+.danmu-overlay{position:absolute;bottom:0;left:0;right:0;height:48px;padding:8px 14px;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dm-info{color:#FFFDF9;font-size:11px;white-space:nowrap}
+.dm-bar{height:4px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;flex:1}
+.dm-fill{height:100%;background:#FFFDF9;border-radius:99px}
+.dm-task-banner{background:#2C4A6E;color:#FFFDF9;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:8px;line-height:1.4}
+.comment-area{background:#F6F1E9;border:1px solid #E6DED2;border-radius:10px;width:100%;min-height:80px;padding:10px 12px;font-size:13px;font-family:inherit;color:#1F1A17;resize:none;margin-bottom:10px;outline:none}
+.comment-area:focus{border-color:#B93A2B}
+.checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.check-item{display:flex;align-items:center;gap:10px;background:#FFFDF9;border:1px solid #E6DED2;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s}
+.check-item:hover{border-color:#B3A796}
+.check-item.checked{border-color:#2F6B5E;background:#E2EEEA}
+.check-box{width:18px;height:18px;border-radius:4px;border:1px solid #E6DED2;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#FFFDF9;background:#FFFDF9}
+.check-item.checked .check-box{background:#2F6B5E;border-color:transparent}
+.check-txt{font-size:12px;color:#1F1A17}
+.result-card{background:#FFFDF9;border:1px solid #E6DED2;border-radius:16px;padding:24px;text-align:center;margin-bottom:14px}
+.re{font-size:44px;margin-bottom:10px}
+.rt2{font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:5px}
+.rs2{font-size:13px;color:#6E635A;margin-bottom:16px}
+.sco{font-size:32px;font-weight:500;color:#1F1A17}
+.scol{font-size:12px;color:#6E635A}
+.fan-gain{display:flex;justify-content:center;margin:16px 0;padding:14px;background:#F6F1E9;border-radius:10px}
+.fw{text-align:center}.fwv{font-size:22px;font-weight:500;color:#1F1A17}.fwl{font-size:11px;color:#6E635A;margin-top:2px}
+.ins{background:#FFFDF9;border:1px solid #E6DED2;border-left:3px solid #B93A2B;border-radius:0 10px 10px 0;padding:12px;margin-bottom:12px}
+.inslbl{font-size:11px;color:#2C4A6E;font-weight:500;margin-bottom:5px}
+.instxt{font-size:12px;color:#5A514A;line-height:1.6}
+.err{font-size:12px;color:#A8322A;margin-bottom:8px;display:none}
+.err.on{display:block}
+.video-summary{background:#FBF1DE;border:1px solid #E8CB94;border-radius:8px;padding:16px;margin-bottom:12px;font-size:12px;line-height:1.8;color:#2E2824}
+.video-link-btn{display:flex;align-items:center;gap:8px;background:#B93A2B;color:#FFFDF9;border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:12px;width:100%;justify-content:center;text-decoration:none}
+.video-link-btn:hover{opacity:.9}
+.dm-score-row{display:flex;gap:8px;margin-bottom:10px}
+.dm-score-box{flex:1;text-align:center;background:#F6F1E9;border-radius:8px;padding:8px 4px}
+.dm-score-val{font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17}
+.dm-score-lbl{font-size:11px;color:#6E635A;margin-top:2px}
+/* ── Classroom additions ── */
+.tbar-btn{font-size:12px;min-height:32px;padding:0 12px;border-radius:99px;border:1px solid #D4C9B8;background:#FFFDF9;color:#4A423C;cursor:pointer;font-family:inherit}
+.tbar-btn:hover{border-color:#B3A796}
+.hub-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hub-actions .sbtn{flex:1;margin-top:0;min-width:140px}
+.done-badge{font-size:11px;background:#E2EEEA;color:#24574C;padding:2px 8px;border-radius:99px;margin-top:4px;display:inline-block}
+.teacher-panel{border:1px dashed #2C4A6E;background:#F7F3EC;border-radius:12px;padding:14px;margin-top:16px}
+.jump-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.jump-btn{min-height:40px;border-radius:10px;border:1px solid #C9D5E3;background:#FFFDF9;color:#2C4A6E;font-size:13px;font-family:inherit;cursor:pointer}
+.jump-btn:hover{background:#E8EDF3}
+.seg-tag{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.gloss-row{display:flex;justify-content:flex-end;margin-bottom:8px}
+body.no-gloss .dm-en-gloss{display:none}
+.name-input{width:100%;min-height:44px;border:1px solid #D4C9B8;border-radius:10px;padding:0 12px;font-size:15px;font-family:inherit;background:#FFFDF9;color:#1F1A17;outline:none}
+.name-input:focus{border-color:#B93A2B}
+.rep-sec{background:#FFFDF9;border:1px solid #E6DED2;border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.rep-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.rep-title{font-size:14px;font-weight:600;color:#1F1A17}
+.rep-score{font-size:14px;font-weight:600;color:#2C4A6E;white-space:nowrap}
+.rep-row{display:flex;gap:8px;font-size:13px;color:#2E2824;padding:5px 0;border-top:1px solid #EFE8DC;line-height:1.5}
+.rep-ok{color:#2F6B5E;font-weight:700}.rep-no{color:#A8322A;font-weight:700}
+.rep-na{font-size:12px;color:#6E635A}
+.rep-quote{background:#F6F1E9;border-radius:8px;padding:10px 12px;font-size:15px;line-height:1.6;color:#1F1A17;margin-bottom:8px;white-space:pre-wrap;word-break:break-word}
+/* ── Visual refresh: paper + vermilion ── */
+:root{--serif:'Noto Serif SC','Songti SC','STSong',serif;--sans:'Noto Sans SC','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  --paper:#F6F1E9;--card:#FFFDF9;--line:#E6DED2;--ink:#1F1A17;--ink2:#5A514A;--ink3:#6E635A;--red:#B93A2B;--red-d:#8F2B1F;--red-t:#F6E3DD}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;padding:32px 16px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 1px 2px rgba(60,40,20,.04),0 12px 40px rgba(60,40,20,.08)}
+.topbar{margin-bottom:24px}
+.lvbadge,.chip{font-size:12px;font-weight:500;padding:4px 12px;background:var(--red-t);color:var(--red)}
+.chip{margin-bottom:16px;letter-spacing:.3px}
+.app-hdr{margin-bottom:28px}
+.app-icon{width:64px;height:64px;border-radius:14px;background:var(--red);color:#FFF8F0;font-family:var(--serif);font-weight:900;font-size:30px;margin-bottom:16px;box-shadow:inset 0 0 0 3px rgba(255,248,240,.25)}
+.app-title{font-family:var(--serif);font-size:28px;font-weight:900;letter-spacing:.5px;margin-bottom:6px}
+.app-sub{font-size:14px;color:var(--ink3)}
+.lcard{border-radius:16px;padding:16px 18px;gap:14px}
+.lcard:hover:not(.lk){border-color:var(--ink);transform:translateY(-1px)}
+.lcard.lk{opacity:.5}
+.lic{width:44px;height:44px;border-radius:99px}
+.lname{font-size:15px;font-weight:600}.ldesc{font-size:13px;color:var(--ink3);margin-top:3px}
+.ubadge,.done-badge{font-size:12px;padding:2px 10px;margin-top:6px}
+.card{background:var(--paper);border-radius:16px;padding:18px}
+.sec-title{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.5;margin-bottom:8px}
+.sec-sub{font-size:13px;color:var(--ink2);line-height:1.7}
+.qdots{gap:6px;margin-bottom:20px}.qdot{height:6px;background:var(--line)}
+.qdot.dn{background:#2F6B5E}.qdot.cu{background:var(--red)}
+.qcard{border:none;background:transparent;padding:4px 2px 8px;margin-bottom:8px}
+.qtag{font-size:12px;font-weight:500;color:var(--ink3);letter-spacing:.5px;margin-bottom:8px}
+.qtext{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.55;margin-bottom:6px}
+.qen{font-size:14px;color:var(--ink2);line-height:1.5}
+.opts{gap:10px;margin-bottom:16px}
+.opt{border-radius:14px;padding:14px 16px;background:var(--card);min-height:48px}
+.opt:hover{border-color:var(--ink);background:var(--card)}
+.opt.ok{border:2px solid #2F6B5E;padding:13px 15px}.opt.no{border:2px solid #A8322A;padding:13px 15px;background:#F9E1DB}.opt.ok{background:#E2EEEA}
+.opt-cn{font-size:15px;line-height:1.55;margin-bottom:3px}.opt-en{font-size:12px;color:var(--ink3)}
+.fb{border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.75;margin-bottom:14px}
+.fb.ok,.fb.no{border:none}
+.fb.no{background:var(--ink);color:#F6F1E9}
+.fbt{font-family:var(--serif);font-size:16px;margin-bottom:4px}
+.pbtn{min-height:52px;padding:14px;background:var(--red);color:#FFF8F0;border-radius:14px;font-size:15px;letter-spacing:.3px;transition:background .15s,transform .1s}
+.pbtn:hover{opacity:1;background:var(--red-d)}.pbtn:active{transform:translateY(1px)}
+.pbtn:disabled{opacity:1;background:var(--line);color:var(--ink3)}
+.sbtn{min-height:48px;border-radius:14px;font-size:14px;background:var(--card);border-color:var(--line)}
+.sbtn:hover{background:var(--paper);border-color:var(--ink)}
+.pbtn:focus-visible,.sbtn:focus-visible,.opt:focus-visible,.tbar-btn:focus-visible,.jump-btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.match-lbl{border-radius:12px;padding:12px 14px}
+.match-lbl.sel{box-shadow:0 0 0 3px var(--ink)}
+.match-lbl-name{font-size:14px}.match-lbl-sub{font-size:12px}
+.match-seg{border-radius:12px;padding:12px 14px;border-width:1px;background:var(--card)}
+.match-seg:hover:not(.seg-locked){border-color:var(--ink);background:var(--card)}
+.seg-cn{font-size:13px;line-height:1.65}.seg-en{font-size:12px;color:var(--ink3)}
+.danmu-wrap{background:#26201C;border-radius:18px;height:380px}
+.danmu-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 115%,#4A3A30 0%,rgba(38,32,28,0) 60%);pointer-events:none}
+.danmu-overlay{height:52px;background:rgba(20,16,14,.9);padding:8px 16px}
+.danmu-screen{bottom:52px}
+.dm-info{font-size:13px}.dm-fill{background:#7FC3B0}
+.danmu-item{font-size:15px;padding:7px 15px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.dm-en-gloss{font-size:11px}
+.dm-task-banner{background:var(--ink);color:#F6F1E9;border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.6;margin-bottom:10px}
+.dm-task-banner strong{color:#F2B8AC}
+.comment-area{background:var(--card);border:2px solid var(--line);border-radius:14px;min-height:100px;padding:12px 14px;font-size:15px;line-height:1.6}
+.comment-area:focus{border-color:var(--ink)}
+.check-item{min-height:48px;border-radius:12px;padding:10px 14px}
+.check-box{width:20px;height:20px;border:1.5px solid #B3A796;border-radius:6px}
+.check-txt{font-size:14px}
+.result-card{border-radius:20px;padding:28px 24px;background:var(--paper);border:none}
+.rt2{font-family:var(--serif);font-size:22px;font-weight:600}
+.rs2{font-size:14px;color:var(--ink2)}
+.sco{font-family:var(--serif);font-size:36px;font-weight:900;color:var(--red)}
+.ins{border:none;border-radius:14px;background:var(--paper);padding:16px 18px;margin-bottom:14px}
+.inslbl{font-size:12px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:6px}
+.instxt{font-size:14px;color:var(--ink2);line-height:1.75}
+.video-summary{background:var(--card);border-color:var(--line);border-radius:14px;padding:16px 18px;font-size:14px;line-height:1.8}
+.video-link-btn{background:transparent;color:var(--red);border:1.5px solid var(--red);border-radius:14px;min-height:48px;font-size:15px}
+.video-link-btn:hover{opacity:1;background:var(--red-t)}
+.dm-score-box{background:var(--paper);border-radius:12px;padding:12px 4px}
+.dm-score-val{font-family:var(--serif);font-size:22px;font-weight:900}.dm-score-lbl{font-size:12px}
+.mark{width:64px;height:64px;margin:0 auto 14px;border-radius:99px;background:var(--red);color:#FFF8F0;display:flex;align-items:center;justify-content:center;font-size:0}
+.re.mark{margin-bottom:14px}
+.tbar-btn{background:var(--card);border-color:var(--line);color:var(--ink2);min-height:36px}
+.tbar-btn:hover{border-color:var(--ink)}
+.teacher-panel{border-color:#2C4A6E;background:#F2F5F8;border-radius:16px}
+.rep-sec{border-radius:14px;background:var(--card)}
+.rep-title{font-family:var(--serif)}.rep-score{color:var(--red)}
+.name-input{border-color:var(--line);background:var(--card)}.name-input:focus{border-color:var(--ink)}
+.err{color:#A8322A;font-size:13px}
+/* ── English toggles ── */
+.en-tog{display:block;width:fit-content;min-height:32px;margin-top:4px;padding:4px 0;background:none;border:none;font-family:inherit;font-size:12px;color:inherit;opacity:.8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.en-tog:hover{opacity:1}
+.en-tog:focus-visible{outline:2px solid #B93A2B;outline-offset:2px}
+.en-txt{margin-top:2px;font-size:13px;line-height:1.6;opacity:.85;font-weight:400;font-family:var(--sans)}
+@media print{.en-tog{display:none}}
+/* ── Phone ── */
+@media (max-width:520px){
+  body{padding:0}
+  .g{border-radius:0;padding:16px 16px 28px;box-shadow:none;min-height:100vh}
+  .qtext{font-size:16px}.qen{font-size:13px}
+  .opt{padding:12px 13px}.opt-cn{font-size:15px}.opt-en{font-size:12px}
+  .sec-sub,.instxt,.fb{font-size:13px}
+  #match-grid{grid-template-columns:1fr!important}
+  #match-labels{flex-direction:row!important}
+  #match-labels .match-lbl{flex:1;min-width:0;padding:8px}
+  .match-lbl-name{font-size:12px}
+  #match-svg{display:none}
+  .seg-cn{font-size:13px}.seg-en{font-size:11px}
+  .danmu-wrap{height:340px}
+  .qtext{font-size:18px}
+  .app-title{font-size:24px}
+  .g{border:none}
+  .danmu-item{font-size:13px;padding:6px 12px}
+  .comment-area{font-size:16px}
+}
+/* ── Print / PDF ── */
+@media print{
+  body{background:#FFFDF9;padding:0;display:block}
+  .g{box-shadow:none;max-width:none;padding:0}
+  .no-print{display:none!important}
+  .rep-sec{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="g">
+  <div class="topbar">
+    <div class="lvbadge" id="lvbadge">看懂 Reader</div>
+    <div style="flex:1"></div>
+    <button class="tbar-btn no-print" id="home-btn" onclick="backToHub()" style="visibility:hidden">返回关卡 Home</button>
+    <div class="fans" style="display:none">👥&nbsp;<span id="fancount">0</span>&nbsp;<span style="font-size:11px;color:#6E635A">粉丝</span></div>
+  </div>
+
+  <!-- HUB -->
+  <div class="screen on" id="s-hub">
+    <div class="app-hdr">
+      <div class="app-icon" aria-hidden="true">社</div>
+      <div class="app-title">Navigate Chinese Social Media</div>
+      <div class="app-sub">玩转中国社媒 · Based on real Xiaohongshu data</div>
+    </div>
+    <div class="hub" id="hub-cards"></div>
+    <div class="hub-actions no-print">
+      <button class="sbtn" onclick="showReport()">我的学习记录 My record</button>
+      <button class="sbtn" onclick="resetProgress()">重新开始 Start over</button>
+    </div>
+    <div class="teacher-panel no-print" id="teacher-panel" style="display:none">
+      <div class="sec-title" style="color:#2C4A6E">教师模式 · 直接跳转 Teacher mode</div>
+      <div class="sec-sub" style="margin-bottom:0" data-en="All levels are unlocked. Jump to any part for a classroom demo.">所有关卡已解锁，可以跳到任意环节做课堂演示。</div>
+      <div class="jump-grid">
+        <button class="jump-btn" onclick="tJump('l1')">视频导入</button>
+        <button class="jump-btn" onclick="tJump('quiz')">任务一 理解题</button>
+        <button class="jump-btn" onclick="tJump('staging')">任务二 体裁结构</button>
+        <button class="jump-btn" onclick="tJump('dm0')">弹幕 第1轮 语言</button>
+        <button class="jump-btn" onclick="tJump('dm1')">弹幕 第2轮 外貌</button>
+        <button class="jump-btn" onclick="tJump('dm2')">弹幕 第3轮 家庭</button>
+        <button class="jump-btn" onclick="tJump('write')">写评论</button>
+        <button class="jump-btn" onclick="tJump('report')">学习记录</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- L1 INTRO -->
+  <div class="screen" id="s-l1">
+    <div class="chip">Level 1 — 看懂 Reader</div>
+    <!-- VIDEO LINK — replace href with real URL -->
+    <a class="video-link-btn" id="video-link-btn" href="https://www.xiaohongshu.com" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg> 先去看视频（跳转小红书）<span style="font-size:11px;opacity:.75;margin-left:6px">Watch the video first</span>
+    </a>
+    <div class="card">
+      <div class="sec-title">铁蛋儿Tyler — 「我的新形象有没有很惊艳」</div>
+      <div class="sec-sub">小红书爆款视频 · 3万点赞 · 1,263条评论 · 体裁：轶事 <span style="font-size:11px;color:#8A7F75;font-weight:400">· Anecdote</span></div>
+      <div class="video-summary">
+        <div style="color:#6E635A;font-size:12px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">视频简介（如无法访问链接）<span style="margin-left:4px;font-size:11px;opacity:.6">Video Summary</span></div>
+        <div><span style="color:#2F6B5E;font-weight:500">Opening:</span> 粉丝说铁蛋中文说得太好了，如果头发变黑根本看不出是外国人——铁蛋决定接受挑战。<br><span style="color:#6E635A;font-size:11px">Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he accepts the challenge.</span></div>
+        <div style="margin-top:8px"><span style="color:#2C4A6E;font-weight:500">Transformation:</span> 铁蛋染黑头发、画眉毛、戴美瞳，一步步完成造型变换。<br><span style="color:#6E635A;font-size:11px">Tyler dyes his hair, draws his eyebrows, and puts in coloured contacts.</span></div>
+        <div style="margin-top:8px"><span style="color:#9A6212;font-weight:500">The test:</span> 铁蛋走进小区，见到儿子、女儿和丈母娘——他们能认出他吗？<br><span style="color:#6E635A;font-size:11px">Tyler meets his son, daughter, and mother-in-law — can they recognise him?</span></div>
+        <div style="margin-top:8px"><span style="color:#5B4A8A;font-weight:500">Result 结果：</span> 家人们既惊讶又开心，Tyler也借此思考"真正融入"一种文化意味着什么。<br><span style="color:#6E635A;font-size:11px">His family's reactions are surprised and funny. Tyler reflects on what it means to truly "belong" to a culture.</span></div>
+      </div>
+    </div>
+    <button class="pbtn" onclick="startQuiz()">开始任务一 — 5道题 → <span style="font-size:11px;opacity:.75;font-weight:400">Start Task 1</span></button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="s-quiz">
+    <div class="qdots" id="qdots"></div>
+    <div id="qbody"></div>
+  </div>
+
+  <!-- STAGING -->
+  <div class="screen" id="s-staging">
+    <div class="chip">Task 2 — Genre Staging</div>
+    <div class="card" style="background:#E8EDF3;border:1px solid #C9D5E3">
+      <div class="sec-title" style="color:#2C4A6E">这条视频是一个「轶事（Anecdote）」</div>
+      <div class="sec-sub" style="color:#2C4A6E" data-en="This video is an anecdote. Every anecdote follows the same three-stage structure: ① Orientation → ② Remarkable Event → ③ Reaction.">所有轶事都遵循同一个三段式结构：<br>
+        <span style="color:#2F6B5E;font-weight:600">① Orientation 铺垫</span> →
+        <span style="color:#9A6212;font-weight:600">② Remarkable Event 转折</span> →
+        <span style="color:#A8322A;font-weight:600">③ Reaction 反应</span>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#5A514A;text-align:center;margin-bottom:10px" data-en="Tap a stage label first, then tap the matching video clip. Tap a matched label again to undo.">先点一个阶段标签，再点对应的视频片段。<br>再点一次已匹配的标签可以撤销。</div>
+    <div style="position:relative" id="match-root">
+      <svg id="match-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible"></svg>
+      <div id="match-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div id="match-labels" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div id="match-segs" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+    <div class="err" id="stage-err" style="margin-top:10px"></div>
+    <button class="pbtn" id="stage-check-btn" onclick="checkStaging()" style="margin-top:12px" disabled>检查我的答案 Check →</button>
+    <div id="stage-result" style="display:none">
+      <div class="ins"><div class="inslbl">为什么是这个结构？</div><div class="instxt" id="stage-insight"></div></div>
+      <button class="pbtn" onclick="showStagingSummary()">查看总结 Summary →</button>
+    </div>
+  </div>
+
+  <!-- STAGING SUMMARY -->
+  <div class="screen" id="s-staging-summary">
+    <div class="chip">Genre Staging — 完成</div>
+    <div style="text-align:center;padding:20px 0 12px">
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"></path><path d="M4 19V5"></path></svg></div>
+      <div style="font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px">你学会了轶事体裁结构</div>
+      <div style="font-size:13px;color:#6E635A" data-en="You&#x27;ve learned the structure of the anecdote genre — one of the most common storytelling patterns on Xiaohongshu.">小红书最常见的叙事模式之一</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="background:#E2EEEA;border:1px solid #A9CFC4;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#2F6B5E;margin-bottom:4px">① Orientation 铺垫</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="Sets the scene — who is involved, where it happens, and where the challenge came from, so viewers understand the situation first.">交代背景——人物、地点、挑战由何而来。让观众先了解情境。</div>
+      </div>
+      <div style="background:#FBF1DE;border:1px solid #E8CB94;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#9A6212;margin-bottom:4px">② Remarkable Event 转折</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="The heart of the story — the surprising moment. This is what drives comments and shares.">故事核心——令人意外的那一刻。这是吸引评论和转发的关键。</div>
+      </div>
+      <div style="background:#FBEAE6;border:1px solid #E5A79C;border-radius:12px;padding:12px 14px">
+        <div style="font-size:13px;font-weight:700;color:#A8322A;margin-bottom:4px">③ Reaction 反应</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="The genuine reaction — emotion gives the story warmth, and viewers connect with it.">真实反应——情感表达让故事有温度，观众由此产生共鸣。</div>
+      </div>
+    </div>
+    <div class="ins">
+      <div class="inslbl">核心规律 Key pattern</div>
+      <div class="instxt" data-en="The anecdote is one of the most common video genres on Xiaohongshu. If a video has a storyline, a twist and a reaction, it fits this pattern. Once you can recognise it, you can predict where a video is going and understand why comments cluster around certain moments.">「轶事」是小红书最常见的视频体裁之一。内容有情节、有转折、有反应，就符合这个模式。学会识别它，你就能预测视频走向，也能理解评论为什么集中在某些片段上。</div>
+    </div>
+    <button class="pbtn" onclick="finishL1()">继续：Level 2 评论任务 Continue →</button>
+  </div>
+
+  <!-- L2 DANMU -->
+  <div class="screen" id="s-l2">
+    <div class="chip">Level 2 — 评论 Commenter</div>
+    <div class="card">
+      <div class="sec-title">三轮弹幕练习</div>
+      <div class="sec-sub" data-en="Three danmu (bullet comment) rounds. Each round has a different task: find the comments that match that round&#x27;s goal and tap them to tag them. Read each round&#x27;s instructions carefully.">每轮任务不同——找出符合当轮要求的评论，点击即可标记。仔细阅读每轮任务说明。</div>
+    </div>
+    <div id="dm-task-banner" class="dm-task-banner"></div>
+    <div class="gloss-row no-print"><button class="tbar-btn" id="gloss-btn" onclick="toggleGloss()">英文注释：开</button></div>
+    <div class="danmu-wrap">
+      <div class="danmu-screen" id="danmu-screen"></div>
+      <div class="danmu-overlay">
+        <div class="dm-info">第 <span id="dm-round">1</span> / 3 轮 &nbsp;&middot;&nbsp; 抓到：<strong id="dm-caught">0</strong> / <span id="dm-need">?</span></div>
+        <div class="dm-bar"><div class="dm-fill" id="dm-fill" style="width:100%;transition:width .1s linear"></div></div>
+      </div>
+    </div>
+    <button class="pbtn" id="dm-btn" onclick="startDanmuRound()">开始 Start →</button>
+    <div id="dm-between" style="display:none">
+      <div class="ins"><div class="inslbl">本轮结果 This round</div><div class="instxt" id="dm-round-insight"></div></div>
+      <button class="pbtn" id="dm-next-btn" onclick="nextDanmuRound()">Next round →</button>
+      <button class="sbtn" onclick="retryRound()">↩ 重试本轮 Retry</button>
+    </div>
+    <div id="dm-done" style="display:none">
+      <div class="dm-score-row" id="dm-score-row"></div>
+      <div class="ins"><div class="inslbl">你发现了什么 What you found</div><div class="instxt" id="dm-final-insight"></div></div>
+      <button class="pbtn" onclick="goWriteComment()">继续：写评论 Continue →</button>
+    </div>
+  </div>
+
+  <!-- WRITE COMMENT -->
+  <div class="screen" id="s-write">
+    <div class="chip">Write your own comment</div>
+    <div class="card">
+      <div class="sec-title">用中文为Tyler的视频写一条评论。</div>
+      <div class="sec-sub" data-en="Write a comment on Tyler&#x27;s video in Chinese. Make it fit Xiaohongshu comment culture — genuine, natural and engaging. A short comment is totally fine.">写一条符合小红书评论文化的内容——真诚、自然、有互动感。短评也完全可以。</div>
+    </div>
+    <div class="card" style="background:#F6F1E9;margin-bottom:12px">
+      <div class="sec-title" style="font-size:12px;margin-bottom:8px">真实评论示例（你刚才在弹幕里找到过这些） · Real examples you just found</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#2F6B5E;font-weight:600;margin-bottom:3px">语言能力 Language Ability</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「这普通话太可以了」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">This Mandarin is seriously impressive</div>
+        </div>
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#2C4A6E;font-weight:600;margin-bottom:3px">外貌造型 Appearance</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「别说还真挨帅的」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">Honestly, he's actually quite good-looking</div>
+        </div>
+        <div style="background:#FFFDF9;border-radius:8px;padding:10px 12px;border:1px solid #E6DED2">
+          <div style="font-size:11px;color:#9A6212;font-weight:600;margin-bottom:3px">家庭氛围 Family Atmosphere</div>
+          <div style="font-size:13px;color:#1F1A17;font-weight:500">「他们这一家子太快乐了」</div>
+          <div style="font-size:11px;color:#6E635A;margin-top:2px">This whole family is just so full of joy</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 10px;background:#E8EDF3;border-radius:8px;font-size:11px;color:#2C4A6E;line-height:1.5" data-en="You can also comment from another angle — share how you felt after watching, or react to the video&#x27;s creative idea.">
+        你也可以从其他角度评论——比如表达你看完的感受，或者对视频创意的反应。
+      </div>
+    </div>
+    <textarea class="comment-area" id="comment-input" placeholder="在这里写你的评论 / Write your comment here..."></textarea>
+    <div class="err" id="comment-err">Please write something before checking!</div>
+    <button class="pbtn" onclick="checkComment()">检查我的评论 Check →</button>
+    <div id="comment-result" style="display:none">
+      <div class="sec-title" style="margin-bottom:10px">自我检测：你的评论怎么样？<span style="font-weight:400;font-family:var(--sans);font-size:13px;color:#6E635A"> Self-check</span></div>
+      <div class="checklist" id="comment-checklist"></div>
+      <div class="ins">
+        <div class="inslbl">铁蛋视频里的真实评论 A real comment</div>
+        <div class="instxt">「哇你真的像中国人了！我都忘了你是老外了哈哈」<br><span style="color:#6E635A;font-size:11px">Wow you really look Chinese now! I forgot you were a foreigner haha</span></div>
+      </div>
+      <div class="ins">
+        <div class="inslbl">好评论的秘诀 What makes a good comment</div>
+        <div class="instxt" id="comment-insight"></div>
+      </div>
+      <button class="pbtn" onclick="showWriteSummary()">查看完成总结 Summary →</button>
+    </div>
+  </div>
+
+  <!-- WRITE SUMMARY -->
+  <div class="screen" id="s-write-summary">
+    <div class="chip">完成 Complete</div>
+    <div style="text-align:center;padding:20px 0 12px">
+      <div class="mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></div>
+      <div style="font-size:18px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px" data-en="You&#x27;ve completed both levels: Reader and Commenter.">你完成了「看懂」和「写评论」两个层次</div>
+      <div style="font-size:13px;color:#6E635A">Navigate Chinese Social Media</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <div style="background:#E2EEEA;border-radius:12px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:600;color:#2F6B5E;margin-bottom:4px">✓ Level 1 — 看懂 Reader</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="You analysed the video&#x27;s context, the relationships involved and its genre structure, and understood why it drew so much engagement.">你分析了视频的语境、人物关系和体裁结构，理解了内容为什么能引发大量互动。</div>
+      </div>
+      <div style="background:#E8EDF3;border-radius:12px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:600;color:#2C4A6E;margin-bottom:4px">✓ Level 2 — 评论 Commenter</div>
+        <div style="font-size:12px;color:#1F1A17" data-en="You spotted three types of real comments in the danmu and tried writing your own comment in Chinese.">你在弹幕中识别了三类真实评论，并尝试用中文写了自己的评论。</div>
+      </div>
+    </div>
+    <div class="ins"><div class="inslbl">最重要的一课 The key lesson</div>
+    <div class="instxt" data-en="A good Xiaohongshu comment isn&#x27;t just about writing in Chinese — it&#x27;s about finding the right angle and saying something genuine, specific and warm.">写一条好的小红书评论，不只是用中文表达——而是要找准切入角度，说出真实、具体、有温度的内容。</div></div>
+    <button class="pbtn" onclick="finishL2()">查看最终得分 →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="s-result">
+    <div class="result-card">
+      <div class="re mark" id="re"></div>
+      <div class="rt2" id="rt2"></div>
+      <div class="rs2" id="rs2"></div>
+      <div class="sco" id="sco"></div>
+      <div class="scol" id="scol"></div>
+      <div class="fan-gain" style="display:none"><div class="fw"><div class="fwv" id="fan-total">0</div><div class="fwl">粉丝 followers</div></div></div>
+    </div>
+    <div class="ins"><div class="inslbl">关键收获</div><div class="instxt" id="r-insight"></div></div>
+    <button class="pbtn" onclick="backToHub()">返回关卡</button>
+    <button class="sbtn" onclick="showReport()">查看学习记录 My record →</button>
+  </div>
+
+  <!-- REPORT (for screenshot / PDF submission) -->
+  <div class="screen" id="s-report">
+    <div class="chip">学习记录 · Learning record</div>
+    <div class="card">
+      <label class="sec-title" for="stu-name" style="display:block">姓名 Name</label>
+      <input class="name-input" id="stu-name" placeholder="写上你的名字 / Your name" oninput="S.name=this.value;save()"/>
+      <div class="sec-sub" id="rep-date" style="margin:8px 0 0"></div>
+    </div>
+    <div id="rep-body"></div>
+    <div class="no-print">
+      <button class="pbtn" onclick="window.print()">打印 / 存为 PDF</button>
+      <button class="sbtn" onclick="backToHub()">返回关卡</button>
+      <div style="font-size:12px;color:#5A514A;text-align:center;margin-top:10px">也可以直接截图提交 · You can also screenshot this page</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG — replace video URL here ─────────────────────────
+var VIDEO_URL = 'https://www.xiaohongshu.com/explore/69c9d6190000000022026e03?xsec_token=CBY9giqXd6CGnXAGA3d-68IIKS7NbiRZU3TTz9F_IMkS8=&xsec_source=app_share'; // ← paste Tyler&#39;s actual video URL here
+
+document.getElementById('video-link-btn').href = VIDEO_URL;
+
+var MARK_CHECK='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>';
+// ── STATE ────────────────────────────────────────────────────
+var S={fans:0,unlocked:[1],qIdx:0,qScore:0,qAns:false,
+       stagePick:null,stageAnswers:{},
+       dmRound:0,dmScores:[0,0,0],dmTimers:[],
+       checkedItems:{},
+       qResults:[],quizDone:false,stageCorrect:null,dmDone:[false,false,false],dmWrong:[0,0,0],
+       comment:'',commentChecked:false,l1Done:false,l2Done:false,name:''};
+
+// ── SAVE / LOAD PROGRESS (this browser only) ──────────────────
+var SAVE_KEY='navcsm-progress-v1';
+var SAVE_FIELDS=['fans','unlocked','qScore','qResults','quizDone','stageCorrect','dmScores','dmDone','dmWrong','checkedItems','comment','commentChecked','l1Done','l2Done','name'];
+function save(){
+  try{var o={};SAVE_FIELDS.forEach(function(k){o[k]=S[k];});localStorage.setItem(SAVE_KEY,JSON.stringify(o));}catch(e){}
+}
+function load(){
+  try{var raw=localStorage.getItem(SAVE_KEY);if(!raw)return;var o=JSON.parse(raw);
+    SAVE_FIELDS.forEach(function(k){if(o[k]!==undefined)S[k]=o[k];});}catch(e){}
+}
+function resetProgress(){
+  if(!confirm('确定要清空所有进度重新开始吗？\nClear all progress and start over?'))return;
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  location.reload();
+}
+
+// ── TEACHER MODE: open the page with ?teacher=1 ───────────────
+var TEACHER=/[?&#]teacher/.test(location.search+location.hash);
+
+var levels=[
+  {id:1,icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#2C4A6E" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>',name:'Level 1 — 看懂 Reader',desc:'Understand Tyler\'s video: questions + genre staging',bg:'#E8EDF3'},
+  {id:2,icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#2F6B5E" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"></path></svg>',name:'Level 2 — 评论 Commenter',desc:'Three comment hunts + write your own',bg:'#E2EEEA'},
+];
+
+// ── QUIZ DATA ─────────────────────────────────────────────────
+var Qs=[
+  {tag:'Q1 · Time & Place',cn:'这条视频发生在哪里？什么时候？',en:'Where and when does this video take place?',
+   opts:[{cn:'A. 在中国，Tyler刚来中国不久',en:'In China, shortly after Tyler first arrived'},
+         {cn:'B. 在Tyler家里，他在街上接受路人采访那天',en:'At Tyler\'s home, on the day he was interviewed by strangers on the street'},
+         {cn:'C. 在Tyler的家里，他接受粉丝挑战、开始染发造型那天',en:'At Tyler\'s home, on the day he took on the fan challenge and began his makeover',correct:true},
+         {cn:'D. 在录音棚，Tyler录制中文歌曲的那天',en:'In a recording studio, on the day Tyler recorded a Chinese song'}],
+   fb:{ok:'Right — the video starts at Tyler\'s home, where he decides to take on the fan challenge and begins the transformation.',no:'The video starts at Tyler\'s home — this is where he decides to accept the challenge and begins dyeing his hair, drawing his eyebrows, and putting in contacts.',en_ok:'正确——视频发生在Tyler在中国的家里，他在家接受了7山粉丝挑战，开始染发、画眉、戴美瞳。地点：家中；时间：决定开始挑战那天。',en_no:'视频从家中开始——Tyler在家里接受粉丝挑战，开始染发、画眉、戴美瞳。地点在国内，时间是挑战当天。'}},
+  {tag:'Q2 · What Tyler does & why',cn:'Tyler在这条视频里做了什么？他为什么这样做？',en:'What does Tyler do, and why?',
+   opts:[{cn:'A. 他教中文词汇',en:'He teaches Chinese vocabulary'},
+         {cn:'B. 他染了黑头发，测试其他人能不能认出他是外国人',en:'He dyed his hair black, to test whether other people could still tell he was foreign',correct:true},
+         {cn:'C. 他做了一道中国菜',en:'He cooked a Chinese dish'},
+         {cn:'D. 他采访了路人',en:'He interviewed people on the street'}],
+   fb:{ok:'Right — a fan challenged him to look Chinese since he already sounds Chinese, so he took on the experiment.',no:'Tyler dyed his hair black because fans challenged him: if you sound Chinese, why not look Chinese too?',en_ok:'正确——粉丝挑战他：既然声音这么像中国人，为什么不试试外形也像？所以他开始做这个实验。',en_no:'Tyler染黑头发是因为粉丝的挑战——你说话这么像中国人，为什么不试试外形也像？'}},
+  {tag:'Q3 · Who Tyler is & who he\'s talking to',cn:'Tyler是谁？他在对谁说话？',en:'Who is Tyler, and who is he speaking to?',
+   opts:[{cn:'A. 他是一个在中国生活了17年的美国人，在对中国小红书用户说话',en:'He is an American who has lived in China for 17 years, speaking to Chinese Xiaohongshu users',correct:true},
+         {cn:'B. 他是中国人，在对外国粉丝说话',en:'He is Chinese, speaking to foreign fans'},
+         {cn:'C. 他是一个语言老师，在对他的学生说话',en:'He is a language teacher, speaking to his students'},
+         {cn:'D. 他是一个演员，在表演一个角色',en:'He is an actor, performing a character'}],
+   fb:{ok:'Right — Tyler is a foreigner making content for a Chinese audience. That combination creates the interesting tension in his videos.',no:'Tyler is a foreigner (from the US) making content for Chinese Xiaohongshu users. That gap between "outsider" and "insider" is what makes his content interesting.',en_ok:'正确——Tyler是在中国生活17年的外国人，专门为中国观众制作内容。这种局外人融入局内的张力，是他视频最吸引人的地方。',en_no:'Tyler是美国人，在中国生活多年，观众主要是小红书用户。这种外国人深度融入中国生活的反差，是他内容最特别的地方。'}},
+  {tag:'Q4 · Family reaction',cn:'Tyler染完头发去见自己的女儿、儿子和丈母娘。他为什么选择见家人，而不是随机路人？',en:'Tyler went to meet his daughter, son, and mother-in-law after dyeing his hair. Why test with family rather than random strangers?',
+   opts:[{cn:'A. 因为家人更容易被骗，实验更容易成功',en:'Because family are easier to fool, making the experiment easier to pass'},
+         {cn:'B. 因为丈母娘要求他染头发，所以要给她看结果',en:'Because his mother-in-law asked him to dye his hair, so he wanted to show her'},
+         {cn:'C. 因为家人最了解他的真实样子，如果连他们都认不出来，说明变化很大',en:'Because family know him best — if even they can\'t recognise him, the transformation is real',correct:true},
+         {cn:'D. 因为他不想让陌生人知道他是外国人',en:'Because he didn\'t want strangers to know he was a foreigner'}],
+   fb:{ok:'Right — testing with family who know him best makes the experiment more meaningful. Their genuine surprise shows the transformation worked.',no:'Family know Tyler best, so their reaction is the real test. If even they don\'t recognise him immediately, the change is genuinely striking.',en_ok:'正确——家人最了解他的真实样子，连家人都没认出来，说明这次改变真的很有说服力。',en_no:'家人最熟悉Tyler，所以他们的反应是最真实的测试。连家人都没认出他，说明造型改变真的很成功。'}},
+  {tag:'Q5 · Why this video went viral',cn:'这条视频的目的是什么？为什么它收到了1263条评论？',en:'What is the purpose of this video? Why did it get 1,263 comments?',
+   opts:[{cn:'A. 目的是回应粉丝的挑战，评论多因为粉丝觉得自己参与创造了这条内容',en:'To respond to a fan challenge; many comments because fans feel they helped create it',correct:true},
+         {cn:'B. 目的是教中文词汇，评论多因为词汇很实用',en:'To teach vocabulary; many comments because the words are useful'},
+         {cn:'C. 目的是批评中国社会，话题有争议所以评论多',en:'To criticise Chinese society; controversial topic means more comments'},
+         {cn:'D. 目的是展示铁蛋的新发型，评论多因为大家喜欢讨论发型',en:'To show Tyler\'s new hairstyle; many comments because people love discussing hair'}],
+   fb:{ok:'Right — because fans suggested the challenge, they feel ownership over the result and flock to the comment section.',no:'The key is that fans suggested the challenge — so they feel like they helped make the video, and that\'s why 1,263 comments followed.',en_ok:'正确——正因为挑战来自粉丝的建议，他们觉得自己参与创造了这条内容，于是纷纷涌入评论区。',en_no:'关键在于：挑战是粉丝提出的，所以粉丝觉得自己也参与制造了这条视频，这就是为什么有1263条评论。'}},
+];
+
+// ── STAGING DATA ──────────────────────────────────────────────
+var stageData=[
+  {id:'orientation',label:'Orientation',label_en:'Setting the scene',
+   desc:'粉丝留言说铁蛋的中文说得太好了——如果把头发染成黑色，根本看不出是外国人。铁蛋决定接受这个挑战，看看能不能以假乱真。',
+   desc_en:'Fans say Tyler sounds so Chinese that black hair might make him unrecognisable — he decides to take on the challenge'},
+  {id:'event',label:'Remarkable Event',label_en:'The transformation',
+   desc:'铁蛋开始改变造型：染黑头发、画眉毛、戴上美瞳。一步一步把自己变成"中国人的样子"。',
+   desc_en:'Tyler dyes his hair black, draws his eyebrows, and puts in coloured contacts — step by step transforming his appearance'},
+  {id:'reaction',label:'Reaction',label_en:'The real test',
+   desc:'铁蛋走进小区，见到自己的儿子、女儿和丈母娘，看他们的第一反应——能不能认出眼前这个人是他？',
+   desc_en:'Tyler walks into his neighbourhood to meet his son, daughter, and mother-in-law — can they recognise him?'},
+];
+
+// ── DANMU DATA (3 rounds) ─────────────────────────────────────
+// Each item: txt=Chinese comment, en=English gloss, type=target category or 'other'
+var dmRounds=[
+  {
+    task:'第一轮：找出评价铁蛋<strong>语言能力</strong>的评论——提到他说话方式、口音或普通话水平的。',
+    task_en:'Round 1: Find comments about Tyler\'s Chinese language ability — how he speaks, his accent, or his Mandarin.',
+    target:'language',
+    insight:'这一轮说明：中国社交媒体观众对外国人的语言能力非常敏感。正面评价（「太可以了」）和带观察性质的评论（「海蛎子味的」「大连话太6了」）都很常见，直接而具体。',
+    insight_en:'Chinese social media audiences pay close attention to language ability, especially for a foreigner. Both positive and observational language comments are normal and specific.',
+    items:[
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'language',col:'#E1F5EE',tc:'#085041'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'language',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'这普通话海蛎子味的',en:'His Mandarin has a real oyster-sauce (coastal) accent to it',type:'language',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'10年老外都到17年了',en:'He used to say "10 years in China", now it\'s 17 — time flies!',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'中文说得也太溜了吧',en:'His Chinese is just too fluent',type:'language',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'变成马斯克了哥',en:'He turned into Musk, bro',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'黑色显得更高级了铁蛋儿',en:'The black hair looks more sophisticated, Tyler!',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'好可爱的老公',en:'What a cute husband',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'哈哈，太有创意了',en:'Haha, so creative!',type:'other',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'other',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+    ]
+  },
+  {
+    task:'第二轮：找出评价铁蛋<strong>外貌造型</strong>的评论——提到他的头发、眼睛、样子或整体改变效果的。',
+    task_en:'Round 2: Find comments about Tyler\'s appearance — his hair, eyes, face, or overall look after the transformation.',
+    target:'appearance',
+    insight:'外貌类评论是这条视频中最多的。观众对造型细节的评价既有正面（「真挺帅的」「年轻了好几岁」），也有直接指出不足（「左眉没画好」「还是像老外」）。这种直接评价外貌的风格在中国社媒很正常，是重要的文化特点。',
+    insight_en:'Appearance comments dominate this video. Both complimentary and critical appearance comments are completely normal on Chinese social media — a cultural difference from many Western platforms.',
+    items:[
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'appearance',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair doesn\'t help',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'但是你的样子一看就知道是老外呦',en:'But one look at your face and you can still tell you\'re a foreigner',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'能看出眼睛还是有点蓝',en:'You can still see his eyes are a bit blue',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'这一打扮年轻了好几岁',en:'This look takes years off him',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'黑色显得更高级了铁蛋儿',en:'The black hair looks more sophisticated, Tyler!',type:'appearance',col:'#FAEEDA',tc:'#633806'},
+      {txt:'变成马斯克了哥',en:'He turned into Musk, bro',type:'appearance',col:'#F1EFE8',tc:'#5F5E5A'},
+      {txt:'你下次可以把肤色调黄一点',en:'Next time try adjusting your skin tone more yellow',type:'appearance',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'今天这个改完也很好看',en:'Today\'s look is really nice even after the makeover',type:'appearance',col:'#E1F5EE',tc:'#085041'},
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'other',col:'#FAEEDA',tc:'#633806'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+    ]
+  },
+  {
+    task:'第三轮：找出评价铁蛋<strong>家庭氛围</strong>的评论——提到他和家人的关系、或者视频里温暖幸福感的。',
+    task_en:'Round 3: Find comments about Tyler\'s family atmosphere — his relationship with family, or the warm feeling of the video.',
+    target:'family',
+    insight:'这些评论说明：观众不只在看铁蛋一个人，他们在看整个家庭。对幸福感和家庭关系的评论，反映出中国社媒观众会投入到创作者的整个生活世界里——这是为什么在内容里展示家庭是很有效的策略。',
+    insight_en:'Viewers are not just watching Tyler — they are watching his family. This reveals that Chinese social media audiences engage with a creator\'s whole social world, not just the individual.',
+    items:[
+      {txt:'他们这一家子太快乐了',en:'This whole family is just so full of joy',type:'family',col:'#FAEEDA',tc:'#633806'},
+      {txt:'好可爱的老公，好幸福的妻子',en:'Such a cute husband, what a lucky wife',type:'family',col:'#E1F5EE',tc:'#085041'},
+      {txt:'铁蛋你可逗死我了',en:'Tyler you\'re killing me haha',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'这家人好可爱啊',en:'This family is just adorable',type:'family',col:'#FAEEDA',tc:'#633806'},
+      {txt:'孩子们好可爱，家庭真幸福',en:'The kids are so cute — what a happy family',type:'family',col:'#E1F5EE',tc:'#085041'},
+      {txt:'大连话太6了',en:'His Dalian accent is so good!',type:'other',col:'#EEEDFE',tc:'#3C3489'},
+      {txt:'别说还真挺帅的',en:'I hate to admit it, but he actually looks quite handsome',type:'other',col:'#E6F1FB',tc:'#0C447C'},
+      {txt:'这普通话太可以了',en:'His Mandarin is seriously impressive',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'还是像老外，头发改变也没用',en:'Still looks foreign — changing the hair doesn\'t help',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'左眉没画好',en:'The left eyebrow isn\'t drawn quite right',type:'other',col:'#FCEBEB',tc:'#791F1F'},
+      {txt:'黑头发一下都年轻了',en:'The black hair makes him look so much younger',type:'other',col:'#E1F5EE',tc:'#085041'},
+      {txt:'10年老外都到17年了',en:'He used to say "10 years", now it\'s 17!',type:'other',col:'#E1F5EE',tc:'#085041'},
+    ]
+  },
+];
+
+// ── COMMENT CRITERIA ──────────────────────────────────────────
+var commentCriteria=[
+  {id:'cn',text:'Written in Chinese (at least partially)'},
+  {id:'warm',text:'Has a warm or positive tone'},
+  {id:'specific',text:'Mentions something specific from the video'},
+  {id:'natural',text:'Sounds natural, not like a textbook sentence'},
+  {id:'engage',text:'Invites further interaction or conversation'},
+];
+
+// ── HUB ──────────────────────────────────────────────────────
+function renderHub(){
+  var h='';
+  levels.forEach(function(lv){
+    var un=S.unlocked.indexOf(lv.id)>=0;
+    var icon=un?'<span style="color:#6E635A;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>':'<span style="color:#8A7F75;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></span>';
+    var done=(lv.id===1&&S.l1Done)||(lv.id===2&&S.l2Done);
+    var badge=done?'<span class="done-badge">已完成 Done'+(lv.id===1?' · 理解 '+S.qScore+'/5':'')+'</span>'
+      :(un&&lv.id>1?'<span class="ubadge">Unlocked ✓</span>':'');
+    h+='<div class="lcard'+(un?'':' lk')+'" onclick="startLevel('+lv.id+')">'
+      +'<div class="lic" style="background:'+lv.bg+'">'+lv.icon+'</div>'
+      +'<div class="linfo"><div class="lname">'+lv.name+'</div><div class="ldesc">'+lv.desc+'</div>'+badge+'</div>'+icon+'</div>';
+  });
+  document.getElementById('hub-cards').innerHTML=h;
+}
+function unlock(n){if(S.unlocked.indexOf(n)<0)S.unlocked.push(n);}
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  document.getElementById('home-btn').style.visibility=id==='s-hub'?'hidden':'visible';
+  window.scrollTo(0,0);
+}
+function updateFans(){document.getElementById('fancount').textContent=S.fans;}
+function startLevel(n){
+  if(S.unlocked.indexOf(n)<0)return;
+  var labels=['','看懂 Reader','评论 Commenter'];
+  document.getElementById('lvbadge').textContent=labels[n];
+  if(n===1)show('s-l1');
+  else if(n===2){initDanmu();show('s-l2');}
+}
+
+// ── QUIZ ─────────────────────────────────────────────────────
+function startQuiz(){S.qIdx=0;S.qScore=0;S.qResults=[];S.quizDone=false;renderQ();show('s-quiz');}
+function renderDots(){
+  var d=document.getElementById('qdots');d.innerHTML='';
+  for(var i=0;i<Qs.length;i++){var e=document.createElement('div');e.className='qdot'+(i<S.qIdx?' dn':i===S.qIdx?' cu':'');d.appendChild(e);}
+}
+function renderQ(){
+  renderDots();S.qAns=false;var q=Qs[S.qIdx];
+  var opts=q.opts.map(function(o,i){
+    return '<button class="opt" onclick="pickOpt(this,'+i+')">'
+      +'<div class="opt-cn">'+o.cn+'</div>'
+      +'<div class="opt-en">'+o.en+'</div></button>';
+  }).join('');
+  document.getElementById('qbody').innerHTML=
+    '<div class="qcard"><div class="qtag">'+q.tag+'</div>'
+    +'<div class="qtext">'+q.cn+'</div>'
+    +'<div class="qen">'+q.en+'</div></div>'
+    +'<div class="opts">'+opts+'</div>'
+    +'<div class="fb" id="fb"></div>'
+    +'<button class="pbtn" id="nb" onclick="nextQ()" disabled>'+(S.qIdx<Qs.length-1?'Next →':'Continue to staging →')+'</button>';
+}
+function pickOpt(btn,i){
+  if(S.qAns)return;S.qAns=true;var q=Qs[S.qIdx];var ok=!!q.opts[i].correct;if(ok)S.qScore++;
+  if(!S.qResults)S.qResults=[];S.qResults[S.qIdx]=ok;
+  document.querySelectorAll('.opt').forEach(function(b,j){b.classList.add('dis');if(q.opts[j].correct)b.classList.add('ok');else if(j===i&&!ok)b.classList.add('no');});
+  var fb=document.getElementById('fb');fb.className='fb on '+(ok?'ok':'no');
+  var fbCn=ok?(q.fb.en_ok||''):(q.fb.en_no||'');
+  var fbEn=ok?q.fb.ok:q.fb.no;
+  var enId='fb-en-'+S.qIdx;
+  fb.innerHTML='<div class="fbt">'+(ok?'正确 ✓':'再想想')+'</div>'+fbCn;
+  if(fbEn){var enDiv=document.createElement('div');enDiv.style.marginTop='6px';
+    var tog=document.createElement('span');tog.textContent='查看英文解释 ▸';
+    tog.style.cssText='font-size:11px;opacity:.7;cursor:pointer;text-decoration:underline';
+    var enTxt=document.createElement('div');enTxt.id=enId;enTxt.textContent=fbEn;
+    enTxt.style.cssText='display:none;margin-top:4px;font-size:11px;opacity:.85;line-height:1.5';
+    tog.addEventListener('click',function(){
+      var open=enTxt.style.display!=='none';
+      enTxt.style.display=open?'none':'block';
+      tog.textContent=open?'查看英文解释 ▸':'收起英文解释 ▾';
+    });
+    enDiv.appendChild(tog);enDiv.appendChild(enTxt);fb.appendChild(enDiv);}
+  document.getElementById('nb').disabled=false;
+  if(S.qIdx===Qs.length-1)S.quizDone=true;
+  save();
+}
+function toggleEl(id){var el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+
+function escAttr(t){return String(t).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function makeCnEnBlock(cn,en){return '<div data-en="'+escAttr(en)+'">'+cn+'</div>';}
+function setCnEn(el,cn,en){el.textContent=cn;el.setAttribute('data-en',en);addEnToggles(el.parentNode);}
+// Adds a "查看英文" toggle to every element carrying data-en
+function addEnToggles(root){
+  (root||document).querySelectorAll('[data-en]').forEach(function(el){
+    for(var i=0;i<el.children.length;i++){if(el.children[i].classList.contains('en-tog'))return;}
+    var b=document.createElement('button');b.type='button';b.className='en-tog';b.textContent='查看英文 ▸';
+    var t=document.createElement('div');t.className='en-txt';t.textContent=el.getAttribute('data-en');t.hidden=true;
+    if(getComputedStyle(el).textAlign==='center'){b.style.marginLeft='auto';b.style.marginRight='auto';}
+    b.setAttribute('aria-expanded','false');
+    b.addEventListener('click',function(ev){ev.stopPropagation();t.hidden=!t.hidden;b.textContent=t.hidden?'查看英文 ▸':'收起英文 ▾';b.setAttribute('aria-expanded',String(!t.hidden));});
+    el.appendChild(b);el.appendChild(t);
+  });
+}
+
+function nextQ(){S.qIdx++;if(S.qIdx>=Qs.length)showQuizSummary();else renderQ();}
+
+// ── QUIZ SUMMARY ───────────────────────────────
+function showQuizSummary(){
+  var correct=S.qScore;var total=Qs.length;
+  var rows=Qs.map(function(q,i){
+    var ok=S.qResults&&S.qResults[i];
+    return '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #EFE8DC">'
+      +'<span style="font-size:16px;flex-shrink:0;margin-top:1px">'+(ok?'<span class="rep-ok">✓</span>':'<span class="rep-no">✗</span>')+'</span>'
+      +'<div><div style="font-size:11px;color:#6E635A;margin-bottom:2px">'+q.tag+'</div>'
+      +'<div style="font-size:13px;font-weight:500;color:#1F1A17;margin-bottom:2px">'+q.cn+'</div>'
+      +'<div style="font-size:11px;color:#5A514A">'+q.en+'</div></div></div>';
+  }).join('');
+  var scoreMsg=correct===total?'满分！你完全读懂了这条视频。':correct>=3?'答对了'+correct+'题——理解得不错！':'答对了'+correct+'题，继续加油。';
+  var scoreEn=correct===total?'Full marks! You fully understood this video.':correct>=3?'You got '+correct+' right — good understanding!':'You got '+correct+' right. Keep going!';
+  document.getElementById('qbody').innerHTML=
+    '<div style="text-align:center;padding:16px 0 12px">'
+    +'<div class="mark">'+MARK_CHECK+'</div>'
+    +'<div style="font-size:20px;font-weight:600;font-family:var(--serif);color:#1F1A17;margin-bottom:4px">'+correct+' / '+total+'</div>'
+    +'<div style="font-size:13px;color:#6E635A;text-align:center">'+makeCnEnBlock(scoreMsg,scoreEn)+'</div></div>'
+    +'<div style="margin-bottom:14px">'+rows+'</div>'
+    +'<div class="ins"><div class="inslbl">这五道题考查了什么？ What did these test?</div>'
+    +'<div class="instxt">'+makeCnEnBlock('这些问题帮你从<strong>语境（field）</strong>、<strong>关系（tenor）</strong>和<strong>体裁（genre）</strong>三个角度理解这条视频。','These questions help you understand the video from three angles: field (context), tenor (relationships) and genre.')+'</div></div>'
+    +'<button class="pbtn" onclick="goStaging()">继续：体裁结构任务 Continue →</button>';
+  document.getElementById('qdots').innerHTML='';
+}
+
+// ── STAGING (connect-the-lines 连线题) ─────────────────────────
+var stageColors=[
+  {bg:'#E2EEEA',border:'#2F6B5E',text:'#24574C',stroke:'#2F6B5E',num:'①'},
+  {bg:'#FBF1DE',border:'#9A6212',text:'#7A4E0E',stroke:'#9A6212',num:'②'},
+  {bg:'#FBEAE6',border:'#A8322A',text:'#8A2A22',stroke:'#A8322A',num:'③'}
+];
+var matchState={};var selLabel=null;var lblOrder=[];var isDragging=false;var dragFromId=null;var dragFromDi=-1;var dragWasSel=false;var dragWasMatched=false;
+
+function goStaging(){
+  matchState={};selLabel=null;
+  lblOrder=[0,1,2];
+  for(var i=lblOrder.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));var t=lblOrder[i];lblOrder[i]=lblOrder[j];lblOrder[j]=t;
+  }
+  var labelsEl=document.getElementById('match-labels');labelsEl.innerHTML='';
+  var segsEl=document.getElementById('match-segs');segsEl.innerHTML='';
+  lblOrder.forEach(function(di){
+    var s=stageData[di];var col=stageColors[di];
+    var el=document.createElement('div');
+    el.className='match-lbl';el.id='lbl-'+s.id;
+    el.style.background=col.bg;el.style.border='2px solid '+col.border;el.style.color=col.text;
+    el.innerHTML='<span class="match-lbl-num">'+col.num+'</span>'
+      +'<div class="match-lbl-name">'+s.label+'</div>'
+      +'<div class="match-lbl-sub">'+s.label_en+'</div>';
+    // taps and drags on labels are both handled in setupDragListeners (pointer events)
+    labelsEl.appendChild(el);
+  });
+  var segOrder=[0,1,2];
+  for(var si=segOrder.length-1;si>0;si--){
+    var sj=Math.floor(Math.random()*(si+1));var st=segOrder[si];segOrder[si]=segOrder[sj];segOrder[sj]=st;
+  }
+  segOrder.forEach(function(di){
+    var s=stageData[di];
+    var el=document.createElement('div');
+    el.className='match-seg';el.id='seg-'+di;
+    el.dataset.di=di;
+    el.innerHTML='<div class="seg-cn">'+s.desc+'</div><div class="seg-en">'+s.desc_en+'</div>';
+    el.addEventListener('click',function(){onSegClick(di);});
+    segsEl.appendChild(el);
+  });
+  document.getElementById('stage-check-btn').disabled=true;
+  document.getElementById('stage-result').style.display='none';
+  document.getElementById('stage-check-btn').style.display='block';
+  document.getElementById('stage-err').style.display='none';
+  drawLines();
+  show('s-staging');
+  setupDragListeners();
+}
+
+function onLabelClick(id,di){
+  if(matchState[id]!==undefined){disconnectLabel(id);return;}
+  if(selLabel===id){
+    selLabel=null;
+    var e=document.getElementById('lbl-'+id);if(e)e.classList.remove('sel');
+    return;
+  }
+  if(selLabel){var old=document.getElementById('lbl-'+selLabel);if(old)old.classList.remove('sel');}
+  selLabel=id;
+  var e=document.getElementById('lbl-'+id);if(e)e.classList.add('sel');
+}
+
+function onSegClick(segIdx){
+  if(!selLabel){
+    var err=document.getElementById('stage-err');
+    err.textContent='请先点一个阶段标签，再点视频片段。 Tap a stage label first.';
+    err.style.display='block';
+    setTimeout(function(){err.style.display='none';},2000);
+    return;
+  }
+  var existing=null;
+  Object.keys(matchState).forEach(function(k){if(matchState[k]===segIdx)existing=k;});
+  if(existing===selLabel){disconnectLabel(selLabel);return;}
+  if(existing){delete matchState[existing];updateLabelDone(existing);}
+  matchState[selLabel]=segIdx;
+  var lblEl=document.getElementById('lbl-'+selLabel);
+  if(lblEl){lblEl.classList.remove('sel');lblEl.classList.add('done');}
+  selLabel=null;
+  document.getElementById('stage-err').style.display='none';
+  drawLines();
+  document.getElementById('stage-check-btn').disabled=Object.keys(matchState).length<stageData.length;
+}
+
+function disconnectLabel(id){
+  delete matchState[id];
+  var lblEl=document.getElementById('lbl-'+id);
+  if(lblEl){lblEl.classList.remove('sel','done');if(selLabel===id)selLabel=null;}
+  drawLines();
+  document.getElementById('stage-check-btn').disabled=true;
+}
+
+function updateLabelDone(id){
+  var el=document.getElementById('lbl-'+id);if(!el)return;
+  if(matchState[id]!==undefined)el.classList.add('done');
+  else el.classList.remove('done');
+}
+
+function getNodeRight(el,container){
+  var er=el.getBoundingClientRect();var cr=container.getBoundingClientRect();
+  return{x:er.right-cr.left,y:er.top-cr.top+er.height/2};
+}
+function getNodeLeft(el,container){
+  var er=el.getBoundingClientRect();var cr=container.getBoundingClientRect();
+  return{x:er.left-cr.left,y:er.top-cr.top+er.height/2};
+}
+
+function drawLines(previewPt){
+  var svg=document.getElementById('match-svg');
+  var root=document.getElementById('match-root');
+  svg.innerHTML='';
+  // Stage tag on each matched clip — this is what shows the match on phones, where lines are hidden
+  document.querySelectorAll('.match-seg .seg-tag').forEach(function(t){t.parentNode.removeChild(t);});
+  Object.keys(matchState).forEach(function(lblId){
+    var segEl=document.getElementById('seg-'+matchState[lblId]);
+    var di=stageData.findIndex(function(s){return s.id===lblId;});
+    if(!segEl||di<0)return;
+    var col=stageColors[di];var tag=document.createElement('span');
+    tag.className='seg-tag';tag.style.background=col.border;tag.style.color='#FFFDF9';
+    tag.textContent=col.num+' '+stageData[di].label;segEl.appendChild(tag);
+  });
+  Object.keys(matchState).forEach(function(lblId){
+    var segIdx=matchState[lblId];
+    var lblEl=document.getElementById('lbl-'+lblId);
+    var segEl=document.getElementById('seg-'+segIdx);
+    if(!lblEl||!segEl)return;
+    var di=stageData.findIndex(function(s){return s.id===lblId;});
+    var col=stageColors[di];
+    var A=getNodeRight(lblEl,root);var B=getNodeLeft(segEl,root);
+    var cx1=A.x+(B.x-A.x)*0.45;var cy1=A.y;
+    var cx2=A.x+(B.x-A.x)*0.55;var cy2=B.y;
+    var isCorrect=lblEl.classList.contains('correct-lbl');
+    var isWrong=lblEl.classList.contains('wrong-lbl');
+    var path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d','M'+A.x+','+A.y+' C'+cx1+','+cy1+' '+cx2+','+cy2+' '+B.x+','+B.y);
+    path.setAttribute('stroke',isCorrect?'#2F6B5E':isWrong?'#A8322A':col.stroke);
+    path.setAttribute('stroke-width',isCorrect||isWrong?'3':'2.5');
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke-opacity',isCorrect||isWrong?'1':'.7');
+    path.setAttribute('stroke-dasharray',isCorrect||isWrong?'':'6,3');
+    path.style.pointerEvents='stroke';path.style.cursor=isCorrect||isWrong?'default':'pointer';
+    if(!isCorrect&&!isWrong){path.addEventListener('click',function(){disconnectLabel(lblId);});}
+    svg.appendChild(path);
+    if(!isCorrect&&!isWrong){
+      var mx=(A.x+B.x)/2;var my=(A.y+B.y)/2;
+      var circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx',mx);circle.setAttribute('cy',my);circle.setAttribute('r','8');
+      circle.setAttribute('fill','#FFFDF9');circle.setAttribute('stroke',col.stroke);circle.setAttribute('stroke-width','1.5');
+      circle.style.pointerEvents='all';circle.style.cursor='pointer';
+      var xt=document.createElementNS('http://www.w3.org/2000/svg','text');
+      xt.setAttribute('x',mx);xt.setAttribute('y',my+4);xt.setAttribute('text-anchor','middle');
+      xt.setAttribute('font-size','10');xt.setAttribute('fill',col.stroke);xt.setAttribute('pointer-events','none');
+      xt.textContent='×';
+      circle.addEventListener('click',function(){disconnectLabel(lblId);});
+      svg.appendChild(circle);svg.appendChild(xt);
+    }
+  });
+  // draw drag preview rubber-band line
+  if(previewPt&&dragFromId){
+    var fromEl=document.getElementById('lbl-'+dragFromId);
+    if(fromEl){
+      var A2=getNodeRight(fromEl,root);
+      var B2=previewPt;
+      var cx1b=A2.x+(B2.x-A2.x)*0.45;var cy1b=A2.y;
+      var cx2b=A2.x+(B2.x-A2.x)*0.55;var cy2b=B2.y;
+      var col2=stageColors[dragFromDi>=0?dragFromDi:0];
+      var prev=document.createElementNS('http://www.w3.org/2000/svg','path');
+      prev.setAttribute('d','M'+A2.x+','+A2.y+' C'+cx1b+','+cy1b+' '+cx2b+','+cy2b+' '+B2.x+','+B2.y);
+      prev.setAttribute('stroke',col2.stroke);
+      prev.setAttribute('stroke-width','2');
+      prev.setAttribute('fill','none');
+      prev.setAttribute('stroke-opacity','.5');
+      prev.setAttribute('stroke-dasharray','5,4');
+      prev.style.pointerEvents='none';
+      svg.appendChild(prev);
+    }
+  }
+}
+
+function setupDragListeners(){
+  var root=document.getElementById('match-root');
+  var svg=document.getElementById('match-svg');
+  // pointer move on root – draw preview
+  root.onpointermove=function(e){
+    if(!isDragging)return;
+    var cr=root.getBoundingClientRect();
+    var pt={x:e.clientX-cr.left,y:e.clientY-cr.top};
+    drawLines(pt);
+  };
+  // pointer up on root – cancel drag if not over a seg
+  root.onpointerup=function(e){
+    if(!isDragging)return;
+    isDragging=false;
+    root.releasePointerCapture&&root.releasePointerCapture(e.pointerId);
+    // check if released over a seg
+    var target=document.elementFromPoint(e.clientX,e.clientY);
+    var segEl=target&&(target.closest?target.closest('.match-seg'):null);
+    var lblHit=target&&(target.closest?target.closest('.match-lbl'):null);
+    if(segEl&&segEl.dataset&&segEl.dataset.di!==undefined){
+      var di=parseInt(segEl.dataset.di,10);
+      onSegClick(di);
+    } else if(lblHit&&dragFromId&&lblHit.id==='lbl-'+dragFromId){
+      // a tap on a label (no drag): matched → undo; already selected → deselect; else keep selected
+      if(dragWasMatched){disconnectLabel(dragFromId);}
+      else if(dragWasSel){lblHit.classList.remove('sel');selLabel=null;}
+    } else {
+      // cancel – deselect
+      if(dragFromId){
+        var lblEl=document.getElementById('lbl-'+dragFromId);
+        if(lblEl&&selLabel===dragFromId){lblEl.classList.remove('sel');}
+      }
+      selLabel=null;
+    }
+    dragFromId=null;dragFromDi=-1;
+    drawLines();
+  };
+  // attach pointerdown to each label for drag start
+  document.querySelectorAll('.match-lbl').forEach(function(lblEl){
+    lblEl.onpointerdown=function(e){
+      var id=lblEl.id.replace('lbl-','');
+      var di=stageData.findIndex(function(s){return s.id===id;});
+      if(lblEl.classList.contains('correct-lbl')||lblEl.classList.contains('wrong-lbl'))return;
+      e.preventDefault();
+      dragWasSel=(selLabel===id);
+      dragWasMatched=(matchState[id]!==undefined);
+      isDragging=true;
+      dragFromId=id;
+      dragFromDi=di;
+      selLabel=id;
+      // clear old sel
+      document.querySelectorAll('.match-lbl.sel').forEach(function(x){x.classList.remove('sel');});
+      lblEl.classList.add('sel');
+      root.setPointerCapture&&root.setPointerCapture(e.pointerId);
+    };
+  });
+}
+
+function checkStaging(){
+  var correct=0;
+  stageData.forEach(function(s,i){
+    var lblEl=document.getElementById('lbl-'+s.id);
+    var segEl=document.getElementById('seg-'+i);
+    if(lblEl){lblEl.classList.remove('sel','done');}
+    if(segEl){segEl.classList.remove('seg-active');}
+    if(matchState[s.id]===i){
+      correct++;
+      if(lblEl)lblEl.classList.add('correct-lbl');
+      if(segEl){segEl.classList.add('correct-seg','seg-locked');}
+    } else {
+      if(lblEl)lblEl.classList.add('wrong-lbl');
+      var wrongSegEl=segEl;
+      if(wrongSegEl){
+        wrongSegEl.classList.add('wrong-seg','seg-locked');
+        wrongSegEl.classList.add('shk');
+        setTimeout(function(){wrongSegEl.classList.remove('shk');},400);
+      }
+    }
+  });
+  drawLines();
+  document.getElementById('stage-insight').innerHTML=makeCnEnBlock(
+    '这条视频是一个<strong>輶事（Anecdote）</strong>：'
+    +'① <strong>Orientation</strong>——铺垫背景（粉丝提出挑战，Tyler决定接受）；'
+    +'② <strong>Remarkable Event</strong>——关键转折（Tyler染发、画眉、戴美瞳，完成变装）；'
+    +'③ <strong>Reaction</strong>——真实反应（Tyler走进小区见家人，家人们惊讶又开心）。'
+    ,'This video is an anecdote: ① Orientation — setting the scene (fans set a challenge and Tyler accepts); ② Remarkable Event — the turning point (Tyler dyes his hair, draws his eyebrows and puts in coloured contacts); ③ Reaction — the genuine reaction (Tyler walks into his neighbourhood to meet his family, who are surprised and delighted).');
+  document.getElementById('stage-result').style.display='block';
+  document.getElementById('stage-check-btn').style.display='none';
+  S.fans+=correct===stageData.length?200:100;updateFans();
+  S.stageCorrect=correct;save();
+}
+function showStagingSummary(){show('s-staging-summary');}
+function finishL1(){
+  unlock(2);S.l1Done=true;save();
+  document.getElementById('re').innerHTML=MARK_CHECK;
+  document.getElementById('rt2').textContent='Level 1 完成！';
+  setCnEn(document.getElementById('rs2'),'答对了 '+S.qScore+' / 5 题，Level 2 已解锁！','You got '+S.qScore+' / 5 right — Level 2 is unlocked!');
+  document.getElementById('sco').textContent=S.qScore+' / 5';
+  document.getElementById('scol').textContent='理解得分 Comprehension score';
+  document.getElementById('fan-total').textContent=S.fans;
+  document.getElementById('r-insight').innerHTML=makeCnEnBlock(
+    '你刚才分析了一条小红书视频的构成——谁做的、为谁做的、想达到什么效果、以及如何组织结构。Level 2 将带你看观众是怎么回应的。',
+    'You just analysed why a Xiaohongshu video works — who made it, who it\'s for, what it\'s trying to do, and how it\'s structured. In Level 2, you\'ll look at how the audience responds.');
+  renderHub();show('s-result');
+}
+
+// ── DANMU (3 rounds) ─────────────────────────────────────────
+var dmTimers=[];
+function initDanmu(){
+  S.dmRound=0;
+  document.getElementById('dm-btn').style.display='block';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-done').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-round').textContent='1';
+  document.getElementById('dm-fill').style.width='0%';
+  document.getElementById('danmu-screen').innerHTML='';
+  var r0=dmRounds[0];document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(r0.task,r0.task_en);
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+}
+function startDanmuRound(){
+  document.getElementById('dm-btn').style.display='none';
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='0%';
+  var scr=document.getElementById('danmu-screen');scr.innerHTML='';
+  var round=dmRounds[S.dmRound];
+  var total=round.items.filter(function(i){return i.type===round.target;}).length;
+  document.getElementById('dm-need').textContent=total;
+  S.dmWrong[S.dmRound]=0;
+  launchWave(round,0,total,scr);
+}
+function launchWave(round,caught,total,scr,taggedOk,taggedWrong){
+  if(!taggedOk)taggedOk={};
+  if(!taggedWrong)taggedWrong={};
+  var W=scr.offsetWidth||400;
+  var ROW_H=W<480?44:52;
+  var ROWS=Math.max(3,Math.floor(((scr.offsetHeight||312)-40)/ROW_H)+1);
+  var DUR=8000;
+  var SPACING=900;
+  scr.innerHTML='';
+  round.items.forEach(function(item,idx){
+    var t=setTimeout(function(){
+      var el=document.createElement('div');el.className='danmu-item';
+      el.innerHTML=item.txt+(item.en?'<span class="dm-en-gloss"> — '+item.en+'</span>':'');
+      el.style.background=item.col;el.style.color=item.tc;
+      el.style.top=((idx%ROWS)*ROW_H+8)+'px';
+      el.style.left=(W+10)+'px';el.style.transition='left '+DUR+'ms linear';
+      // Restore tagged state from previous wave
+      if(taggedOk[item.txt]){el.classList.add('tagged-ok');}
+      else if(taggedWrong[item.txt]){el.classList.add('tagged-wrong');}
+      el.addEventListener('click',function(){
+        if(el.classList.contains('tagged-ok')||el.classList.contains('tagged-wrong'))return;
+        if(item.type===round.target){
+          el.classList.add('tagged-ok');taggedOk[item.txt]=true;caught++;
+          document.getElementById('dm-caught').textContent=caught;
+          document.getElementById('dm-fill').style.width=Math.round(caught/total*100)+'%';
+          if(caught>=total){
+            dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+            S.dmScores[S.dmRound]=caught;
+            setTimeout(function(){endDanmuRound(round,caught);},400);
+          }
+        } else {
+          el.classList.add('tagged-wrong');taggedWrong[item.txt]=true;
+          S.dmWrong[S.dmRound]=(S.dmWrong[S.dmRound]||0)+1;
+        }
+      });
+      scr.appendChild(el);
+      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.left='-300px';});});
+      setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},DUR+200);
+    },idx*SPACING);dmTimers.push(t);
+  });
+  var relaunchDelay=round.items.length*SPACING+DUR+600;
+  var rt=setTimeout(function(){
+    if(caught<total){launchWave(round,caught,total,scr,taggedOk,taggedWrong);}
+  },relaunchDelay);
+  dmTimers.push(rt);
+}
+function endDanmuRound(round,caught){
+  var total=round.items.filter(function(i){return i.type===round.target;}).length;
+  var insHtml='<strong>抓到了 '+caught+' / '+total+' 条 · Found '+caught+' / '+total+'</strong><br>'
+    +makeCnEnBlock(round.insight,round.insight_en);
+  document.getElementById('dm-round-insight').innerHTML=insHtml;
+  S.dmDone[S.dmRound]=true;save();
+  document.getElementById('dm-between').style.display='block';
+  var isLast=S.dmRound>=dmRounds.length-1;
+  document.getElementById('dm-next-btn').textContent=isLast?'查看总结 →':'下一轮 →';
+}
+function nextDanmuRound(){
+  S.dmRound++;
+  if(S.dmRound>=dmRounds.length){
+    showDanmuDone();return;
+  }
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-round').textContent=S.dmRound+1;
+  var r=dmRounds[S.dmRound];
+  document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(r.task,r.task_en);
+  document.getElementById('danmu-screen').innerHTML='';
+  document.getElementById('dm-btn').style.display='block';
+}
+function showDanmuDone(){
+  document.getElementById('dm-between').style.display='none';
+  var scoreHtml='';
+  var labels=['语言能力','外貌造型','家庭氛围'];
+  S.dmScores.forEach(function(sc,i){
+    scoreHtml+='<div class="dm-score-box"><div class="dm-score-val">'+sc+'</div><div class="dm-score-lbl">'+labels[i]+'</div></div>';
+  });
+  document.getElementById('dm-score-row').innerHTML=scoreHtml;
+  document.getElementById('dm-final-insight').innerHTML=makeCnEnBlock(
+    '铁蛋评论区的主要内容是对他本人的直接评价——外貌、中文水平、身份认同。正面评价和直接的批评都很常见，都属于正常互动。这种直接性是中国社媒文化的重要特点。写你自己的评论时，你也可以直接说出你的真实感受。',
+    'Tyler\'s comment section is dominated by direct evaluations — appearance, language, identity. Both positive and critical comments are normal. When you write your own, be direct and specific.');
+  document.getElementById('dm-done').style.display='block';
+  S.fans+=S.dmScores.reduce(function(a,b){return a+b;},0)*20;updateFans();
+}
+
+// ── WRITE COMMENT ─────────────────────────────────────────────
+function goWriteComment(){
+  S.checkedItems={};S.commentChecked=false;
+  document.getElementById('comment-input').value=S.comment||'';
+  document.getElementById('comment-result').style.display='none';
+  document.getElementById('comment-err').classList.remove('on');
+  var checks=commentCriteria.map(function(c){
+    return '<div class="check-item" id="chk-'+c.id+'" onclick="toggleCheck(\''+c.id+'\')">'
+      +'<div class="check-box" id="chkbox-'+c.id+'"></div>'
+      +'<div class="check-txt">'+c.text+'</div></div>';
+  }).join('');
+  document.getElementById('comment-checklist').innerHTML=checks;
+  show('s-write');
+}
+function toggleCheck(id){
+  S.checkedItems[id]=!S.checkedItems[id];
+  var item=document.getElementById('chk-'+id);
+  var box=document.getElementById('chkbox-'+id);
+  if(S.checkedItems[id]){item.classList.add('checked');box.innerHTML='✓';}
+  else{item.classList.remove('checked');box.innerHTML='';}
+  save();
+}
+function checkComment(){
+  var val=document.getElementById('comment-input').value.trim();
+  if(!val){document.getElementById('comment-err').classList.add('on');return;}
+  document.getElementById('comment-err').classList.remove('on');
+  S.comment=val;S.commentChecked=true;save();
+  var checked=Object.values(S.checkedItems).filter(Boolean).length;
+  document.getElementById('comment-insight').innerHTML=makeCnEnBlock(
+    '好的小红书评论应该有温度、有具体内容——要对视频里的某个细节做出真实反应，而不是写泛泛的评语。最有效果的评论能让创作者感受到被看见和认可，并且往往能引发互动。说出你的真实感受、分享观点、对酷点表达惊喜——都很适合。',
+    'Good Xiaohongshu comments feel personal and warm — they react to something specific in the video rather than making a generic statement. The most effective comments make the creator feel seen and appreciated, and they often invite a response. You can express a personal feeling, share an opinion, or react to something you noticed — all three work well.');
+  document.getElementById('comment-result').style.display='block';
+  S.fans+=checked*20;updateFans();
+}
+function showWriteSummary(){show('s-write-summary');}
+function finishL2(){
+  S.l2Done=true;save();
+  document.getElementById('re').innerHTML=MARK_CHECK;
+  document.getElementById('rt2').textContent='Level 2 完成！';
+  setCnEn(document.getElementById('rs2'),'你已经从「读者」升级为「评论者」。',"You've gone from Reader to Commenter.");
+  document.getElementById('sco').textContent='';document.getElementById('scol').textContent='';
+  document.getElementById('fan-total').textContent=S.fans;
+  document.getElementById('r-insight').innerHTML=makeCnEnBlock(
+    '你已经仔细看过铁蛋的视频、理解了它的结构、在真实评论区识别了不同类型的评论，并尝试写了自己的一条。写评论的环节可能让你意识到：「知道什么是好评论」和「能写出好评论」之间有一段距离——那正是下一层级的起点。',
+    'You\'ve now read Tyler\'s video closely, understood its structure, spotted different types of comments, and written your own. The writing task probably showed you the gap between knowing what a good comment looks like and being able to produce one — that gap is the starting point for the next level.');
+  renderHub();show('s-result');
+}
+function retryRound(){
+  document.getElementById('dm-between').style.display='none';
+  document.getElementById('dm-caught').textContent='0';
+  document.getElementById('dm-fill').style.width='0%';
+  document.getElementById('danmu-screen').innerHTML='';
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  document.getElementById('dm-btn').style.display='block';
+}
+function backToHub(){
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  renderHub();show('s-hub');
+}
+
+// ── TEACHER JUMPS ─────────────────────────────────────────────
+function tJump(where){
+  dmTimers.forEach(function(t){clearTimeout(t);clearInterval(t);});dmTimers=[];
+  var badge=document.getElementById('lvbadge');
+  if(where==='l1'){badge.textContent='看懂 Reader';show('s-l1');}
+  else if(where==='quiz'){badge.textContent='看懂 Reader';startQuiz();}
+  else if(where==='staging'){badge.textContent='看懂 Reader';goStaging();}
+  else if(where.indexOf('dm')===0){
+    var r=parseInt(where.slice(2),10);badge.textContent='评论 Commenter';
+    initDanmu();S.dmRound=r;
+    document.getElementById('dm-round').textContent=r+1;
+    document.getElementById('dm-task-banner').innerHTML=makeCnEnBlock(dmRounds[r].task,dmRounds[r].task_en);
+    show('s-l2');
+  }
+  else if(where==='write'){badge.textContent='评论 Commenter';goWriteComment();}
+  else if(where==='report'){showReport();}
+}
+
+// ── ENGLISH GLOSS TOGGLE (danmu) ──────────────────────────────
+var glossOn=window.innerWidth>520;
+try{var gp=localStorage.getItem('navcsm-gloss');if(gp!==null)glossOn=gp==='1';}catch(e){}
+function applyGloss(){
+  document.body.classList.toggle('no-gloss',!glossOn);
+  document.getElementById('gloss-btn').textContent='英文注释：'+(glossOn?'开 On':'关 Off');
+}
+function toggleGloss(){glossOn=!glossOn;try{localStorage.setItem('navcsm-gloss',glossOn?'1':'0');}catch(e){}applyGloss();}
+
+// ── LEARNING RECORD (screenshot / print) ──────────────────────
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function showReport(){
+  document.getElementById('lvbadge').textContent='学习记录';
+  document.getElementById('stu-name').value=S.name||'';
+  var d=new Date();
+  document.getElementById('rep-date').textContent='铁蛋儿Tyler「我的新形象有没有很惊艳」 · '
+    +d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  var na='<div class="rep-na">未完成 Not done yet</div>';
+  var h='';
+  // Quiz
+  var qAnswered=S.qResults&&S.qResults.filter(function(x){return x!==undefined&&x!==null;}).length;
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">任务一 · 理解题</div>'
+    +(qAnswered?'<div class="rep-score">'+S.qScore+' / '+Qs.length+'</div>':'')+'</div>';
+  if(!qAnswered)h+=na;
+  else Qs.forEach(function(q,i){
+    var r=S.qResults[i];
+    var mark=r===true?'<span class="rep-ok">✓</span>':r===false?'<span class="rep-no">✗</span>':'<span class="rep-na">–</span>';
+    h+='<div class="rep-row">'+mark+'<span>'+esc(q.tag)+'</span></div>';
+  });
+  h+='</div>';
+  // Staging
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">任务二 · 体裁结构</div>'
+    +(S.stageCorrect!==null?'<div class="rep-score">'+S.stageCorrect+' / 3</div>':'')+'</div>'
+    +(S.stageCorrect===null?na:'<div class="rep-row"><span>轶事：铺垫 → 转折 → 反应</span></div>')+'</div>';
+  // Danmu
+  var dmLabels=['语言能力 Language','外貌造型 Appearance','家庭氛围 Family'];
+  var anyDm=S.dmDone.some(Boolean);
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">Level 2 · 弹幕练习</div></div>';
+  if(!anyDm)h+=na;
+  else dmRounds.forEach(function(rd,i){
+    var tot=rd.items.filter(function(x){return x.type===rd.target;}).length;
+    h+='<div class="rep-row"><span style="flex:1">第'+(i+1)+'轮 '+dmLabels[i]+'</span><span>'
+      +(S.dmDone[i]?'找到 '+S.dmScores[i]+'/'+tot+' · 点错 '+(S.dmWrong[i]||0):'<span class="rep-na">未完成</span>')+'</span></div>';
+  });
+  h+='</div>';
+  // Comment
+  h+='<div class="rep-sec"><div class="rep-h"><div class="rep-title">我的评论 My comment</div></div>';
+  if(!S.comment)h+=na;
+  else{
+    h+='<div class="rep-quote">'+esc(S.comment)+'</div>';
+    if(S.commentChecked)commentCriteria.forEach(function(c){
+      var on=S.checkedItems&&S.checkedItems[c.id];
+      h+='<div class="rep-row">'+(on?'<span class="rep-ok">✓</span>':'<span class="rep-na">○</span>')+'<span>'+esc(c.text)+'</span></div>';
+    });
+  }
+  h+='</div>';
+  document.getElementById('rep-body').innerHTML=h;
+  show('s-report');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+load();
+if(TEACHER){unlock(1);unlock(2);document.getElementById('teacher-panel').style.display='block';}
+document.getElementById('comment-input').addEventListener('input',function(){S.comment=this.value;save();});
+window.addEventListener('resize',function(){if(document.getElementById('s-staging').classList.contains('on'))drawLines();});
+applyGloss();
+renderHub();updateFans();
+addEnToggles(document);
+new MutationObserver(function(){addEnToggles(document);}).observe(document.querySelector('.g'),{childList:true,subtree:true});
+</script>
+</body>
+</html>
